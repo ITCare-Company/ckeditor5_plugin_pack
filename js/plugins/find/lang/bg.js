@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'bg', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'bg', {
 	find: 'Търсене',
 	findOptions: 'Find Options',
 	findWhat: 'Търси за:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'bg', {
 	replaceSuccessMsg: '%1 occurrence(s) replaced.',
 	replaceWith: 'Препокрива с:',
 	title: 'Търсене и препокриване'
-} );
+});

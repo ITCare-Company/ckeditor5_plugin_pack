@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'is', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'is', {
 	find: 'Leita',
 	findOptions: 'Find Options',
 	findWhat: 'Leita að:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'is', {
 	replaceSuccessMsg: '%1 occurrence(s) replaced.',
 	replaceWith: 'Skipta út fyrir:',
 	title: 'Finna og skipta'
-} );
+});

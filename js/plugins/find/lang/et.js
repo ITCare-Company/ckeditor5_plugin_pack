@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'et', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'et', {
 	find: 'Otsi',
 	findOptions: 'Otsingu valikud',
 	findWhat: 'Otsitav:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'et', {
 	replaceSuccessMsg: '%1 vastet asendati.',
 	replaceWith: 'Asendus:',
 	title: 'Otsimine ja asendamine'
-} );
+});

@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'hr', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'hr', {
 	find: 'Pronađi',
 	findOptions: 'Opcije traženja',
 	findWhat: 'Pronađi:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'hr', {
 	replaceSuccessMsg: 'Zamijenjeno %1 pojmova.',
 	replaceWith: 'Zamijeni s:',
 	title: 'Pronađi i zamijeni'
-} );
+});

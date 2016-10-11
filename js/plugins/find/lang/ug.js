@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'ug', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'ug', {
 	find: 'ئىزدە',
 	findOptions: 'ئىزدەش تاللانمىسى',
 	findWhat: 'ئىزدە:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'ug', {
 	replaceSuccessMsg: 'جەمئى %1 جايدىكى ئالماشتۇرۇش تاماملاندى',
 	replaceWith: 'ئالماشتۇر:',
 	title: 'ئىزدەپ ئالماشتۇر'
-} );
+});

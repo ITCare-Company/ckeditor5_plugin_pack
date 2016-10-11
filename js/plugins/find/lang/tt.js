@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'tt', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'tt', {
 	find: 'Эзләү',
 	findOptions: 'Эзләү көйләүләре',
 	findWhat: 'Нәрсә эзләргә:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'tt', {
 	replaceSuccessMsg: '%1 урында(ларда) алмаштырылган.',
 	replaceWith: 'Нәрсәгә алмаштыру:',
 	title: 'Эзләп табу һәм алмаштыру'
-} );
+});

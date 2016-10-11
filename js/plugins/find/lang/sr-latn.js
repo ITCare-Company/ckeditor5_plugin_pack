@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'sr-latn', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'sr-latn', {
 	find: 'Pretraga',
 	findOptions: 'Find Options',
 	findWhat: 'Pronadi:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'sr-latn', {
 	replaceSuccessMsg: '%1 occurrence(s) replaced.',
 	replaceWith: 'Zameni sa:',
 	title: 'Find and Replace'
-} );
+});

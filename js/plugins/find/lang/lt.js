@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'lt', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'lt', {
 	find: 'Rasti',
 	findOptions: 'Paieškos nustatymai',
 	findWhat: 'Surasti tekstą:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'lt', {
 	replaceSuccessMsg: '%1 sutapimas(ų) buvo pakeisti.',
 	replaceWith: 'Pakeisti tekstu:',
 	title: 'Surasti ir pakeisti'
-} );
+});

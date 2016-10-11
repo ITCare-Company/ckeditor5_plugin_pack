@@ -23,7 +23,7 @@
     return {
       textNode: this.textNode,
       offset: this.offset,
-      character: this.textNode ? this.textNode.getText().charAt( this.offset ) : null,
+      character: this.textNode ? this.textNode.getText().charAt(this.offset) : null,
       hitMatchBoundary: this._.matchBoundary
     };
   };
@@ -53,7 +53,7 @@
     }
   }
 
-  function findDialog( editor, startupPage ) {
+  function findDialog(editor, startupPage) {
     // Style object for highlights: (#5018)
     // 1. Defined as full match style to avoid compromising ordinary text color styles.
     // 2. Must be apply onto inner-most text to avoid conflicting with ordinary text color styles visually.
@@ -67,23 +67,23 @@
         return 0;
       }
     };
-    var highlightStyle = new CKEDITOR.style( CKEDITOR.tools.extend( highlightConfig, editor.config.find_highlight, true ) );
+    var highlightStyle = new CKEDITOR.style(CKEDITOR.tools.extend(highlightConfig, editor.config.find_highlight, true));
 
     // Iterator which walk through the specified range char by char. By
     // default the walking will not stop at the character boundaries, until
     // the end of the range is encountered.
     // @param { CKEDITOR.dom.range } range
     // @param {Boolean} matchWord Whether the walking will stop at character boundary.
-    function characterWalker( range, matchWord ) {
+    function characterWalker(range, matchWord) {
       var self = this;
-      var walker = new CKEDITOR.dom.walker( range );
-      walker.guard = matchWord ? nonCharactersBoundary : function( node ) {
-        !nonCharactersBoundary( node ) && ( self._.matchBoundary = true );
+      var walker = new CKEDITOR.dom.walker(range);
+      walker.guard = matchWord ? nonCharactersBoundary : function(node) {
+        !nonCharactersBoundary(node) && (self._.matchBoundary = true);
       };
       walker.evaluator = findEvaluator;
       walker.breakOnFalse = 1;
 
-      if ( range.startContainer.type == CKEDITOR.NODE_TEXT ) {
+      if (range.startContainer.type == CKEDITOR.NODE_TEXT) {
         this.textNode = range.startContainer;
         this.offset = range.startOffset - 1;
       }
@@ -101,44 +101,44 @@
       },
 
       back: function() {
-        return this.move( true );
+        return this.move(true);
       },
 
-      move: function( rtl ) {
+      move: function(rtl) {
         var currentTextNode = this.textNode;
         // Already at the end of document, no more character available.
-        if ( currentTextNode === null )
-          return cursorStep.call( this );
+        if (currentTextNode === null)
+          return cursorStep.call(this);
 
         this._.matchBoundary = false;
 
         // There are more characters in the text node, step forward.
-        if ( currentTextNode && rtl && this.offset > 0 ) {
+        if (currentTextNode && rtl && this.offset > 0) {
           this.offset--;
-          return cursorStep.call( this );
-        } else if ( currentTextNode && this.offset < currentTextNode.getLength() - 1 ) {
+          return cursorStep.call(this);
+        } else if (currentTextNode && this.offset < currentTextNode.getLength() - 1) {
           this.offset++;
-          return cursorStep.call( this );
+          return cursorStep.call(this);
         } else {
           currentTextNode = null;
           // At the end of the text node, walking forward for the next.
-          while ( !currentTextNode ) {
-            currentTextNode = this._.walker[ rtl ? 'previous' : 'next' ].call( this._.walker );
+          while (!currentTextNode) {
+            currentTextNode = this._.walker[ rtl ? 'previous' : 'next' ].call(this._.walker);
 
             // Stop searching if we're need full word match OR
             // already reach document end.
-            if ( this._.matchWord && !currentTextNode || this._.walker._.end )
+            if (this._.matchWord && !currentTextNode || this._.walker._.end)
               break;
           }
           // Found a fresh text node.
           this.textNode = currentTextNode;
-          if ( currentTextNode )
+          if (currentTextNode)
             this.offset = rtl ? currentTextNode.getLength() - 1 : 0;
           else
             this.offset = 0;
         }
 
-        return cursorStep.call( this );
+        return cursorStep.call(this);
       }
 
     };
@@ -153,7 +153,7 @@
      * @class CKEDITOR.plugins.find.characterRange
      * @constructor Creates a characterRange class instance.
      */
-    var characterRange = function( characterWalker, rangeLength ) {
+    var characterRange = function(characterWalker, rangeLength) {
       this._ = {
         walker: characterWalker,
         cursors: [],
@@ -170,18 +170,18 @@
       toDomRange: function() {
         var range = editor.createRange();
         var cursors = this._.cursors;
-        if ( cursors.length < 1 ) {
+        if (cursors.length < 1) {
           var textNode = this._.walker.textNode;
-          if ( textNode )
-            range.setStartAfter( textNode );
+          if (textNode)
+            range.setStartAfter(textNode);
           else
             return null;
         } else {
           var first = cursors[ 0 ],
             last = cursors[ cursors.length - 1 ];
 
-          range.setStart( first.textNode, first.offset );
-          range.setEnd( last.textNode, last.offset + 1 );
+          range.setStart(first.textNode, first.offset);
+          range.setEnd(last.textNode, last.offset + 1);
         }
 
         return range;
@@ -190,15 +190,15 @@
       /**
        * Reflect the latest changes from dom range.
        */
-      updateFromDomRange: function( domRange ) {
+      updateFromDomRange: function(domRange) {
         var cursor,
-          walker = new characterWalker( domRange );
+          walker = new characterWalker(domRange);
         this._.cursors = [];
         do {
           cursor = walker.next();
-          if ( cursor.character ) this._.cursors.push( cursor );
+          if (cursor.character) this._.cursors.push(cursor);
         }
-        while ( cursor.character );
+        while (cursor.character);
         this._.rangeLength = this._.cursors.length;
       },
 
@@ -219,46 +219,46 @@
        */
       highlight: function() {
         // Do not apply if nothing is found.
-        if ( this._.cursors.length < 1 )
+        if (this._.cursors.length < 1)
           return;
 
         // Remove the previous highlight if there's one.
-        if ( this._.highlightRange )
+        if (this._.highlightRange)
           this.removeHighlight();
 
         // Apply the highlight.
         var range = this.toDomRange(),
           bookmark = range.createBookmark();
-        highlightStyle.applyToRange( range, editor );
-        range.moveToBookmark( bookmark );
+        highlightStyle.applyToRange(range, editor);
+        range.moveToBookmark(bookmark);
         this._.highlightRange = range;
 
         // Scroll the editor to the highlighted area.
         var element = range.startContainer;
-        if ( element.type != CKEDITOR.NODE_ELEMENT )
+        if (element.type != CKEDITOR.NODE_ELEMENT)
           element = element.getParent();
         element.scrollIntoView();
 
         // Update the character cursors.
-        this.updateFromDomRange( range );
+        this.updateFromDomRange(range);
       },
 
       /**
        * Remove highlighted find result.
        */
       removeHighlight: function() {
-        if ( !this._.highlightRange )
+        if (!this._.highlightRange)
           return;
 
         var bookmark = this._.highlightRange.createBookmark();
-        highlightStyle.removeFromRange( this._.highlightRange, editor );
-        this._.highlightRange.moveToBookmark( bookmark );
-        this.updateFromDomRange( this._.highlightRange );
+        highlightStyle.removeFromRange(this._.highlightRange, editor);
+        this._.highlightRange.moveToBookmark(bookmark);
+        this.updateFromDomRange(this._.highlightRange);
         this._.highlightRange = null;
       },
 
       isReadOnly: function() {
-        if ( !this._.highlightRange )
+        if (!this._.highlightRange)
           return 0;
 
         return this._.highlightRange.startContainer.isReadOnly();
@@ -268,11 +268,11 @@
         var retval = this._.walker.back(),
           cursors = this._.cursors;
 
-        if ( retval.hitMatchBoundary )
+        if (retval.hitMatchBoundary)
           this._.cursors = cursors = [];
 
-        cursors.unshift( retval );
-        if ( cursors.length > this._.rangeLength )
+        cursors.unshift(retval);
+        if (cursors.length > this._.rangeLength)
           cursors.pop();
 
         return retval;
@@ -283,11 +283,11 @@
           cursors = this._.cursors;
 
         // Clear the cursors queue if we've crossed a match boundary.
-        if ( retval.hitMatchBoundary )
+        if (retval.hitMatchBoundary)
           this._.cursors = cursors = [];
 
-        cursors.push( retval );
-        if ( cursors.length > this._.rangeLength )
+        cursors.push(retval);
+        if (cursors.length > this._.rangeLength)
           cursors.shift();
 
         return retval;
@@ -295,23 +295,23 @@
 
       getEndCharacter: function() {
         var cursors = this._.cursors;
-        if ( cursors.length < 1 )
+        if (cursors.length < 1)
           return null;
 
         return cursors[ cursors.length - 1 ].character;
       },
 
-      getNextCharacterRange: function( maxLength ) {
+      getNextCharacterRange: function(maxLength) {
         var lastCursor, nextRangeWalker,
           cursors = this._.cursors;
 
-        if ( ( lastCursor = cursors[ cursors.length - 1 ] ) && lastCursor.textNode )
-          nextRangeWalker = new characterWalker( getRangeAfterCursor( lastCursor ) );
+        if ((lastCursor = cursors[ cursors.length - 1 ]) && lastCursor.textNode)
+          nextRangeWalker = new characterWalker(getRangeAfterCursor(lastCursor));
         // In case it's an empty range (no cursors), figure out next range from walker (#4951).
         else
           nextRangeWalker = this._.walker;
 
-        return new characterRange( nextRangeWalker, maxLength );
+        return new characterRange(nextRangeWalker, maxLength);
       },
 
       getCursors: function() {
@@ -321,18 +321,18 @@
 
 
     // The remaining document range after the character cursor.
-    function getRangeAfterCursor( cursor, inclusive ) {
+    function getRangeAfterCursor(cursor, inclusive) {
       var range = editor.createRange();
-      range.setStart( cursor.textNode, ( inclusive ? cursor.offset : cursor.offset + 1 ) );
-      range.setEndAt( editor.editable(), CKEDITOR.POSITION_BEFORE_END );
+      range.setStart(cursor.textNode, (inclusive ? cursor.offset : cursor.offset + 1));
+      range.setEndAt(editor.editable(), CKEDITOR.POSITION_BEFORE_END);
       return range;
     }
 
     // The document range before the character cursor.
-    function getRangeBeforeCursor( cursor ) {
+    function getRangeBeforeCursor(cursor) {
       var range = editor.createRange();
-      range.setStartAt( editor.editable(), CKEDITOR.POSITION_AFTER_START );
-      range.setEnd( cursor.textNode, cursor.offset );
+      range.setStartAt(editor.editable(), CKEDITOR.POSITION_AFTER_START);
+      range.setEnd(cursor.textNode, cursor.offset);
       return range;
     }
 
@@ -341,13 +341,13 @@
       KMP_MATCHED = 2;
 
     // Examination the occurrence of a word which implement KMP algorithm.
-    var kmpMatcher = function( pattern, ignoreCase ) {
+    var kmpMatcher = function(pattern, ignoreCase) {
       var overlap = [ -1 ];
-      if ( ignoreCase )
+      if (ignoreCase)
         pattern = pattern.toLowerCase();
-      for ( var i = 0; i < pattern.length; i++ ) {
-        overlap.push( overlap[ i ] + 1 );
-        while ( overlap[ i + 1 ] > 0 && pattern.charAt( i ) != pattern.charAt( overlap[ i + 1 ] - 1 ) )
+      for (var i = 0; i < pattern.length; i++) {
+        overlap.push(overlap[ i ] + 1);
+        while (overlap[ i + 1 ] > 0 && pattern.charAt(i) != pattern.charAt(overlap[ i + 1 ] - 1))
           overlap[ i + 1 ] = overlap[ overlap[ i + 1 ] - 1 ] + 1;
       }
 
@@ -360,19 +360,19 @@
     };
 
     kmpMatcher.prototype = {
-      feedCharacter: function( c ) {
-        if ( this._.ignoreCase )
+      feedCharacter: function(c) {
+        if (this._.ignoreCase)
           c = c.toLowerCase();
 
-        while ( true ) {
-          if ( c == this._.pattern.charAt( this._.state ) ) {
+        while (true) {
+          if (c == this._.pattern.charAt(this._.state)) {
             this._.state++;
-            if ( this._.state == this._.pattern.length ) {
+            if (this._.state == this._.pattern.length) {
               this._.state = 0;
               return KMP_MATCHED;
             }
             return KMP_ADVANCED;
-          } else if ( !this._.state ) {
+          } else if (!this._.state) {
             return KMP_NOMATCH;
           } else {
             this._.state = this._.overlap[this._.state];
@@ -387,59 +387,59 @@
 
     var wordSeparatorRegex = /[.,"'?!;: \u0085\u00a0\u1680\u280e\u2028\u2029\u202f\u205f\u3000]/;
 
-    var isWordSeparator = function( c ) {
-      if ( !c )
+    var isWordSeparator = function(c) {
+      if (!c)
         return true;
-      var code = c.charCodeAt( 0 );
-      return ( code >= 9 && code <= 0xd ) || ( code >= 0x2000 && code <= 0x200a ) || wordSeparatorRegex.test( c );
+      var code = c.charCodeAt(0);
+      return (code >= 9 && code <= 0xd) || (code >= 0x2000 && code <= 0x200a) || wordSeparatorRegex.test(c);
     };
 
     var finder = {
       searchRange: null,
       matchRange: null,
-      find: function( pattern, matchCase, matchWord, matchCyclic, highlightMatched, cyclicRerun ) {
-        if ( !this.matchRange )
-          this.matchRange = new characterRange( new characterWalker( this.searchRange ), pattern.length );
+      find: function(pattern, matchCase, matchWord, matchCyclic, highlightMatched, cyclicRerun) {
+        if (!this.matchRange)
+          this.matchRange = new characterRange(new characterWalker(this.searchRange), pattern.length);
         else {
           this.matchRange.removeHighlight();
-          this.matchRange = this.matchRange.getNextCharacterRange( pattern.length );
+          this.matchRange = this.matchRange.getNextCharacterRange(pattern.length);
         }
 
-        var matcher = new kmpMatcher( pattern, !matchCase ),
+        var matcher = new kmpMatcher(pattern, !matchCase),
           matchState = KMP_NOMATCH,
           character = '%';
 
-        while ( character !== null ) {
+        while (character !== null) {
           this.matchRange.moveNext();
-          while ( ( character = this.matchRange.getEndCharacter() ) ) {
-            matchState = matcher.feedCharacter( character );
-            if ( matchState == KMP_MATCHED )
+          while ((character = this.matchRange.getEndCharacter())) {
+            matchState = matcher.feedCharacter(character);
+            if (matchState == KMP_MATCHED)
               break;
-            if ( this.matchRange.moveNext().hitMatchBoundary )
+            if (this.matchRange.moveNext().hitMatchBoundary)
               matcher.reset();
           }
 
-          if ( matchState == KMP_MATCHED ) {
-            if ( matchWord ) {
+          if (matchState == KMP_MATCHED) {
+            if (matchWord) {
               var cursors = this.matchRange.getCursors(),
                 tail = cursors[ cursors.length - 1 ],
                 head = cursors[ 0 ];
 
-              var rangeBefore = getRangeBeforeCursor( head ),
-                rangeAfter = getRangeAfterCursor( tail );
+              var rangeBefore = getRangeBeforeCursor(head),
+                rangeAfter = getRangeAfterCursor(tail);
 
               // The word boundary checks requires to trim the text nodes. (#9036)
               rangeBefore.trim();
               rangeAfter.trim();
 
-              var headWalker = new characterWalker( rangeBefore, true ),
-                tailWalker = new characterWalker( rangeAfter, true );
+              var headWalker = new characterWalker(rangeBefore, true),
+                tailWalker = new characterWalker(rangeAfter, true);
 
-              if ( !( isWordSeparator( headWalker.back().character ) && isWordSeparator( tailWalker.next().character ) ) )
+              if (!(isWordSeparator(headWalker.back().character) && isWordSeparator(tailWalker.next().character)))
                 continue;
             }
             this.matchRange.setMatched();
-            if ( highlightMatched !== false )
+            if (highlightMatched !== false)
               this.matchRange.highlight();
             return true;
           }
@@ -450,10 +450,10 @@
         // Clear current session and restart with the default search
         // range.
         // Re-run the finding once for cyclic.(#3517)
-        if ( matchCyclic && !cyclicRerun ) {
-          this.searchRange = getSearchRange( 1 );
+        if (matchCyclic && !cyclicRerun) {
+          this.searchRange = getSearchRange(1);
           this.matchRange = null;
-          return arguments.callee.apply( this, Array.prototype.slice.call( arguments ).concat( [ true ] ) );
+          return arguments.callee.apply(this, Array.prototype.slice.call(arguments).concat([ true ]));
         }
 
         return false;
@@ -462,46 +462,46 @@
       // Record how much replacement occurred toward one replacing.
       replaceCounter: 0,
 
-      replace: function( dialog, pattern, newString, matchCase, matchWord, matchCyclic, isReplaceAll ) {
+      replace: function(dialog, pattern, newString, matchCase, matchWord, matchCyclic, isReplaceAll) {
         isReplace = 1;
 
         // Successiveness of current replace/find.
         var result = 0,
-          matchOptionsChanged = this.hasMatchOptionsChanged( pattern, matchCase, matchWord );
+          matchOptionsChanged = this.hasMatchOptionsChanged(pattern, matchCase, matchWord);
 
         // 1. Perform the replace when there's already a match here and match options hasn't change since previous find.
         // 2. Otherwise perform the find but don't replace it immediately.
-        if ( this.matchRange && this.matchRange.isMatched() && !this.matchRange._.isReplaced && !this.matchRange.isReadOnly() && !matchOptionsChanged ) {
+        if (this.matchRange && this.matchRange.isMatched() && !this.matchRange._.isReplaced && !this.matchRange.isReadOnly() && !matchOptionsChanged) {
           // Turn off highlight for a while when saving snapshots.
           this.matchRange.removeHighlight();
           var domRange = this.matchRange.toDomRange();
-          var text = editor.document.createText( newString );
-          if ( !isReplaceAll ) {
+          var text = editor.document.createText(newString);
+          if (!isReplaceAll) {
             // Save undo snaps before and after the replacement.
             var selection = editor.getSelection();
-            selection.selectRanges( [ domRange ] );
-            editor.fire( 'saveSnapshot' );
+            selection.selectRanges([ domRange ]);
+            editor.fire('saveSnapshot');
           }
           domRange.deleteContents();
-          domRange.insertNode( text );
-          if ( !isReplaceAll ) {
-            selection.selectRanges( [ domRange ] );
-            editor.fire( 'saveSnapshot' );
+          domRange.insertNode(text);
+          if (!isReplaceAll) {
+            selection.selectRanges([ domRange ]);
+            editor.fire('saveSnapshot');
           }
-          this.matchRange.updateFromDomRange( domRange );
-          if ( !isReplaceAll )
+          this.matchRange.updateFromDomRange(domRange);
+          if (!isReplaceAll)
             this.matchRange.highlight();
           this.matchRange._.isReplaced = true;
           this.replaceCounter++;
           result = 1;
         } else {
           // Reset match range so new search starts from primary cursor position (not an end of selection). (#11697)
-          if ( matchOptionsChanged && this.matchRange ) {
+          if (matchOptionsChanged && this.matchRange) {
             this.matchRange.clearMatched();
             this.matchRange.removeHighlight();
             this.matchRange = null;
           }
-          result = this.find( pattern, matchCase, matchWord, matchCyclic, !isReplaceAll );
+          result = this.find(pattern, matchCase, matchWord, matchCyclic, !isReplaceAll);
         }
 
         isReplace = 0;
@@ -511,8 +511,8 @@
 
       // Check if pattern or match options changed since last find. (#11697)
       matchOptions: null,
-      hasMatchOptionsChanged: function( pattern, matchCase, matchWord ) {
-        var matchOptions = [ pattern, matchCase, matchWord ].join( '.' ),
+      hasMatchOptionsChanged: function(pattern, matchCase, matchWord) {
+        var matchOptions = [ pattern, matchCase, matchWord ].join('.'),
           changed = this.matchOptions && this.matchOptions != matchOptions;
 
         this.matchOptions = matchOptions;
@@ -522,7 +522,7 @@
 
     // The range in which find/replace happened, receive from user
     // selection prior.
-    function getSearchRange( isDefault ) {
+    function getSearchRange(isDefault) {
       var searchRange,
         sel = editor.getSelection(),
         range = sel.getRanges()[ 0 ],
@@ -530,14 +530,14 @@
 
       // Blink browsers return empty array of ranges when editor is in read-only mode
       // and it hasn't got focus, so instead of selection, we check for range itself. (#12848)
-      if ( range && !isDefault ) {
+      if (range && !isDefault) {
         searchRange = range.clone();
-        searchRange.collapse( true );
+        searchRange.collapse(true);
       } else {
         searchRange = editor.createRange();
-        searchRange.setStartAt( editable, CKEDITOR.POSITION_AFTER_START );
+        searchRange.setStartAt(editable, CKEDITOR.POSITION_AFTER_START);
       }
-      searchRange.setEndAt( editable, CKEDITOR.POSITION_BEFORE_END );
+      searchRange.setEndAt(editable, CKEDITOR.POSITION_BEFORE_END);
       return searchRange;
     }
 
@@ -549,9 +549,9 @@
       minHeight: 170,
       buttons: [
         // Close button only.
-        CKEDITOR.dialog.cancelButton( editor, {
+        CKEDITOR.dialog.cancelButton(editor, {
           label: editor.lang.common.close
-        } )
+        })
       ],
       contents: [ {
         id: 'find',
@@ -577,20 +577,20 @@
             label: lang.find,
             onClick: function() {
               var dialog = this.getDialog();
-              if ( !finder.find(
-                dialog.getValueOf( 'find', 'txtFindFind' ),
-                dialog.getValueOf( 'find', 'txtFindCaseChk' ),
-                dialog.getValueOf( 'find', 'txtFindWordChk' ),
-                dialog.getValueOf( 'find', 'txtFindCyclic' )
-              ) ) {
-                alert( lang.notFoundMsg ); // jshint ignore:line
+              if (!finder.find(
+                dialog.getValueOf('find', 'txtFindFind'),
+                dialog.getValueOf('find', 'txtFindCaseChk'),
+                dialog.getValueOf('find', 'txtFindWordChk'),
+                dialog.getValueOf('find', 'txtFindCyclic')
+             )) {
+                alert(lang.notFoundMsg); // jshint ignore:line
               }
             }
           } ]
         },
         {
           type: 'fieldset',
-          label: CKEDITOR.tools.htmlEncode( lang.findOptions ),
+          label: CKEDITOR.tools.htmlEncode(lang.findOptions),
           style: 'margin-top:29px',
           children: [ {
             type: 'vbox',
@@ -640,15 +640,15 @@
             label: lang.replace,
             onClick: function() {
               var dialog = this.getDialog();
-              if ( !finder.replace(
+              if (!finder.replace(
                 dialog,
-                dialog.getValueOf( 'replace', 'txtFindReplace' ),
-                dialog.getValueOf( 'replace', 'txtReplace' ),
-                dialog.getValueOf( 'replace', 'txtReplaceCaseChk' ),
-                dialog.getValueOf( 'replace', 'txtReplaceWordChk' ),
-                dialog.getValueOf( 'replace', 'txtReplaceCyclic' )
-              ) ) {
-                alert( lang.notFoundMsg ); // jshint ignore:line
+                dialog.getValueOf('replace', 'txtFindReplace'),
+                dialog.getValueOf('replace', 'txtReplace'),
+                dialog.getValueOf('replace', 'txtReplaceCaseChk'),
+                dialog.getValueOf('replace', 'txtReplaceWordChk'),
+                dialog.getValueOf('replace', 'txtReplaceCyclic')
+             )) {
+                alert(lang.notFoundMsg); // jshint ignore:line
               }
             }
           } ]
@@ -677,36 +677,36 @@
               finder.replaceCounter = 0;
 
               // Scope to full document.
-              finder.searchRange = getSearchRange( 1 );
-              if ( finder.matchRange ) {
+              finder.searchRange = getSearchRange(1);
+              if (finder.matchRange) {
                 finder.matchRange.removeHighlight();
                 finder.matchRange = null;
               }
-              editor.fire( 'saveSnapshot' );
-              while ( finder.replace(
+              editor.fire('saveSnapshot');
+              while (finder.replace(
                 dialog,
-                dialog.getValueOf( 'replace', 'txtFindReplace' ),
-                dialog.getValueOf( 'replace', 'txtReplace' ),
-                dialog.getValueOf( 'replace', 'txtReplaceCaseChk' ),
-                dialog.getValueOf( 'replace', 'txtReplaceWordChk' ),
+                dialog.getValueOf('replace', 'txtFindReplace'),
+                dialog.getValueOf('replace', 'txtReplace'),
+                dialog.getValueOf('replace', 'txtReplaceCaseChk'),
+                dialog.getValueOf('replace', 'txtReplaceWordChk'),
                 false,
                 true
-              ) ) {
+             )) {
 
               }
 
-              if ( finder.replaceCounter ) {
-                alert( lang.replaceSuccessMsg.replace( /%1/, finder.replaceCounter ) ); // jshint ignore:line
-                editor.fire( 'saveSnapshot' );
+              if (finder.replaceCounter) {
+                alert(lang.replaceSuccessMsg.replace(/%1/, finder.replaceCounter)); // jshint ignore:line
+                editor.fire('saveSnapshot');
               } else {
-                alert( lang.notFoundMsg ); // jshint ignore:line
+                alert(lang.notFoundMsg); // jshint ignore:line
               }
             }
           } ]
         },
         {
           type: 'fieldset',
-          label: CKEDITOR.tools.htmlEncode( lang.findOptions ),
+          label: CKEDITOR.tools.htmlEncode(lang.findOptions),
           children: [ {
             type: 'vbox',
             padding: 0,
@@ -732,7 +732,7 @@
           } ]
         } ]
       } ],
-      onLoad: function() {
+      onLoad: function () {
         var dialog = this;
 
         // Keep track of the current pattern field in use.
@@ -740,83 +740,83 @@
 
         // Ignore initial page select on dialog show
         var isUserSelect = 0;
-        this.on( 'hide', function() {
+        this.on('hide', function () {
           isUserSelect = 0;
-        } );
-        this.on( 'show', function() {
+        });
+        this.on('show', function () {
           isUserSelect = 1;
-        } );
+        });
 
-        this.selectPage = CKEDITOR.tools.override( this.selectPage, function( originalFunc ) {
-          return function( pageId ) {
-            originalFunc.call( dialog, pageId );
+        this.selectPage = CKEDITOR.tools.override(this.selectPage, function(originalFunc) {
+          return function(pageId) {
+            originalFunc.call(dialog, pageId);
 
             var currPage = dialog._.tabs[ pageId ];
             var patternFieldInput, patternFieldId, wholeWordChkFieldId;
             patternFieldId = pageId === 'find' ? 'txtFindFind' : 'txtFindReplace';
             wholeWordChkFieldId = pageId === 'find' ? 'txtFindWordChk' : 'txtReplaceWordChk';
 
-            patternField = dialog.getContentElement( pageId, patternFieldId );
-            wholeWordChkField = dialog.getContentElement( pageId, wholeWordChkFieldId );
+            patternField = dialog.getContentElement(pageId, patternFieldId);
+            wholeWordChkField = dialog.getContentElement(pageId, wholeWordChkFieldId);
 
             // Prepare for check pattern text filed 'keyup' event
-            if ( !currPage.initialized ) {
-              patternFieldInput = CKEDITOR.document.getById( patternField._.inputId );
+            if (!currPage.initialized) {
+              patternFieldInput = CKEDITOR.document.getById(patternField._.inputId);
               currPage.initialized = true;
             }
 
             // Synchronize fields on tab switch.
-            if ( isUserSelect )
-              syncFieldsBetweenTabs.call( this, pageId );
+            if (isUserSelect)
+              syncFieldsBetweenTabs.call(this, pageId);
           };
-        } );
+        });
 
       },
-      onShow: function() {
+      onShow: function () {
         // Establish initial searching start position.
         finder.searchRange = getSearchRange();
 
         // Fill in the find field with selected text.
         var selectedText = this.getParentEditor().getSelection().getSelectedText(),
-          patternFieldId = ( startupPage == 'find' ? 'txtFindFind' : 'txtFindReplace' );
+          patternFieldId = (startupPage == 'find' ? 'txtFindFind' : 'txtFindReplace');
 
-        var field = this.getContentElement( startupPage, patternFieldId );
-        field.setValue( selectedText );
+        var field = this.getContentElement(startupPage, patternFieldId);
+        field.setValue(selectedText);
         field.select();
 
-        this.selectPage( startupPage );
+        this.selectPage(startupPage);
 
-        this[ ( startupPage == 'find' && this._.editor.readOnly ? 'hide' : 'show' ) + 'Page' ]( 'replace' );
+        this[ (startupPage == 'find' && this._.editor.readOnly ? 'hide' : 'show') + 'Page' ]('replace');
       },
-      onHide: function() {
+      onHide: function () {
         var range;
-        if ( finder.matchRange && finder.matchRange.isMatched() ) {
+        if (finder.matchRange && finder.matchRange.isMatched()) {
           finder.matchRange.removeHighlight();
           editor.focus();
 
           range = finder.matchRange.toDomRange();
-          if ( range )
-            editor.getSelection().selectRanges( [ range ] );
+          if (range)
+            editor.getSelection().selectRanges([ range ]);
         }
 
         // Clear current session before dialog close
         delete finder.matchRange;
       },
-      onFocus: function() {
-        if ( startupPage == 'replace' )
-          return this.getContentElement( 'replace', 'txtFindReplace' );
+      onFocus: function () {
+        if (startupPage == 'replace')
+          return this.getContentElement('replace', 'txtFindReplace');
         else
-          return this.getContentElement( 'find', 'txtFindFind' );
+          return this.getContentElement('find', 'txtFindFind');
       }
     };
   }
 
-  CKEDITOR.dialog.add( 'find', function( editor ) {
-    return findDialog( editor, 'find' );
+  CKEDITOR.dialog.add('find', function (editor) {
+    return findDialog(editor, 'find');
   });
 
-  CKEDITOR.dialog.add( 'replace', function( editor ) {
-    return findDialog( editor, 'replace' );
+  CKEDITOR.dialog.add('replace', function (editor) {
+    return findDialog(editor, 'replace');
   });
 
 })();

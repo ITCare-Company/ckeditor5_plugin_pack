@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'tr', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'tr', {
 	find: 'Bul',
 	findOptions: 'Seçenekleri Bul',
 	findWhat: 'Aranan:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'tr', {
 	replaceSuccessMsg: '%1 bulunanlardan değiştirildi.',
 	replaceWith: 'Bununla değiştir:',
 	title: 'Bul ve Değiştir'
-} );
+});

@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'th', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'th', {
 	find: 'ค้นหา',
 	findOptions: 'Find Options',
 	findWhat: 'ค้นหาคำว่า:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'th', {
 	replaceSuccessMsg: '%1 occurrence(s) replaced.',
 	replaceWith: 'แทนที่ด้วย:',
 	title: 'Find and Replace'
-} );
+});
