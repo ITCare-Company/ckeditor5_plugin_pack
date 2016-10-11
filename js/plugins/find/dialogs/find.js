@@ -1,11 +1,11 @@
 /**
  * @file
- * Implementation of Find/Replace dialog modified for Drupal
+ * Implementation of Find/Replace dialog modified for Drupal.
  * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-(function() {
+(function () {
   var isReplace;
 
   function findEvaluator(node) {
@@ -63,7 +63,7 @@
       },
       fullMatch: 1,
       ignoreReadonly: 1,
-      childRule: function() {
+      childRule: function () {
         return 0;
       }
     };
@@ -77,7 +77,7 @@
     function characterWalker(range, matchWord) {
       var self = this;
       var walker = new CKEDITOR.dom.walker(range);
-      walker.guard = matchWord ? nonCharactersBoundary : function(node) {
+      walker.guard = matchWord ? nonCharactersBoundary : function (node) {
         !nonCharactersBoundary(node) && (self._.matchBoundary = true);
       };
       walker.evaluator = findEvaluator;
@@ -96,15 +96,15 @@
     }
 
     characterWalker.prototype = {
-      next: function() {
+      next: function () {
         return this.move();
       },
 
-      back: function() {
+      back: function () {
         return this.move(true);
       },
 
-      move: function(rtl) {
+      move: function (rtl) {
         var currentTextNode = this.textNode;
         // Already at the end of document, no more character available.
         if (currentTextNode === null)
@@ -116,10 +116,12 @@
         if (currentTextNode && rtl && this.offset > 0) {
           this.offset--;
           return cursorStep.call(this);
-        } else if (currentTextNode && this.offset < currentTextNode.getLength() - 1) {
+        }
+        else if (currentTextNode && this.offset < currentTextNode.getLength() - 1) {
           this.offset++;
           return cursorStep.call(this);
-        } else {
+        }
+        else {
           currentTextNode = null;
           // At the end of the text node, walking forward for the next.
           while (!currentTextNode) {
@@ -153,7 +155,7 @@
      * @class CKEDITOR.plugins.find.characterRange
      * @constructor Creates a characterRange class instance.
      */
-    var characterRange = function(characterWalker, rangeLength) {
+    var characterRange = function (characterWalker, rangeLength) {
       this._ = {
         walker: characterWalker,
         cursors: [],
@@ -167,16 +169,19 @@
       /**
        * Translate this range to {@link CKEDITOR.dom.range}.
        */
-      toDomRange: function() {
+      toDomRange: function () {
         var range = editor.createRange();
         var cursors = this._.cursors;
         if (cursors.length < 1) {
           var textNode = this._.walker.textNode;
-          if (textNode)
+          if (textNode) {
             range.setStartAfter(textNode);
-          else
+          }
+          else {
             return null;
-        } else {
+          }
+        }
+        else {
           var first = cursors[ 0 ],
             last = cursors[ cursors.length - 1 ];
 
@@ -190,7 +195,7 @@
       /**
        * Reflect the latest changes from dom range.
        */
-      updateFromDomRange: function(domRange) {
+      updateFromDomRange: function (domRange) {
         var cursor,
           walker = new characterWalker(domRange);
         this._.cursors = [];
@@ -202,22 +207,22 @@
         this._.rangeLength = this._.cursors.length;
       },
 
-      setMatched: function() {
+      setMatched: function () {
         this._.isMatched = true;
       },
 
-      clearMatched: function() {
+      clearMatched: function () {
         this._.isMatched = false;
       },
 
-      isMatched: function() {
+      isMatched: function () {
         return this._.isMatched;
       },
 
       /**
        * Hightlight the current matched chunk of text.
        */
-      highlight: function() {
+      highlight: function () {
         // Do not apply if nothing is found.
         if (this._.cursors.length < 1)
           return;
@@ -246,7 +251,7 @@
       /**
        * Remove highlighted find result.
        */
-      removeHighlight: function() {
+      removeHighlight: function () {
         if (!this._.highlightRange)
           return;
 
@@ -257,14 +262,14 @@
         this._.highlightRange = null;
       },
 
-      isReadOnly: function() {
+      isReadOnly: function () {
         if (!this._.highlightRange)
           return 0;
 
         return this._.highlightRange.startContainer.isReadOnly();
       },
 
-      moveBack: function() {
+      moveBack: function () {
         var retval = this._.walker.back(),
           cursors = this._.cursors;
 
@@ -278,7 +283,7 @@
         return retval;
       },
 
-      moveNext: function() {
+      moveNext: function () {
         var retval = this._.walker.next(),
           cursors = this._.cursors;
 
@@ -293,7 +298,7 @@
         return retval;
       },
 
-      getEndCharacter: function() {
+      getEndCharacter: function () {
         var cursors = this._.cursors;
         if (cursors.length < 1)
           return null;
@@ -301,7 +306,7 @@
         return cursors[ cursors.length - 1 ].character;
       },
 
-      getNextCharacterRange: function(maxLength) {
+      getNextCharacterRange: function (maxLength) {
         var lastCursor, nextRangeWalker,
           cursors = this._.cursors;
 
@@ -314,7 +319,7 @@
         return new characterRange(nextRangeWalker, maxLength);
       },
 
-      getCursors: function() {
+      getCursors: function () {
         return this._.cursors;
       }
     };
@@ -341,7 +346,7 @@
       KMP_MATCHED = 2;
 
     // Examination the occurrence of a word which implement KMP algorithm.
-    var kmpMatcher = function(pattern, ignoreCase) {
+    var kmpMatcher = function (pattern, ignoreCase) {
       var overlap = [ -1 ];
       if (ignoreCase)
         pattern = pattern.toLowerCase();
@@ -360,7 +365,7 @@
     };
 
     kmpMatcher.prototype = {
-      feedCharacter: function(c) {
+      feedCharacter: function (c) {
         if (this._.ignoreCase)
           c = c.toLowerCase();
 
@@ -380,14 +385,14 @@
         }
       },
 
-      reset: function() {
+      reset: function () {
         this._.state = 0;
       }
     };
 
     var wordSeparatorRegex = /[.,"'?!;: \u0085\u00a0\u1680\u280e\u2028\u2029\u202f\u205f\u3000]/;
 
-    var isWordSeparator = function(c) {
+    var isWordSeparator = function (c) {
       if (!c)
         return true;
       var code = c.charCodeAt(0);
@@ -397,7 +402,7 @@
     var finder = {
       searchRange: null,
       matchRange: null,
-      find: function(pattern, matchCase, matchWord, matchCyclic, highlightMatched, cyclicRerun) {
+      find: function (pattern, matchCase, matchWord, matchCyclic, highlightMatched, cyclicRerun) {
         if (!this.matchRange)
           this.matchRange = new characterRange(new characterWalker(this.searchRange), pattern.length);
         else {
@@ -413,10 +418,12 @@
           this.matchRange.moveNext();
           while ((character = this.matchRange.getEndCharacter())) {
             matchState = matcher.feedCharacter(character);
-            if (matchState == KMP_MATCHED)
+            if (matchState == KMP_MATCHED) {
               break;
-            if (this.matchRange.moveNext().hitMatchBoundary)
+            }
+            if (this.matchRange.moveNext().hitMatchBoundary) {
               matcher.reset();
+            }
           }
 
           if (matchState == KMP_MATCHED) {
@@ -462,7 +469,7 @@
       // Record how much replacement occurred toward one replacing.
       replaceCounter: 0,
 
-      replace: function(dialog, pattern, newString, matchCase, matchWord, matchCyclic, isReplaceAll) {
+      replace: function (dialog, pattern, newString, matchCase, matchWord, matchCyclic, isReplaceAll) {
         isReplace = 1;
 
         // Successiveness of current replace/find.
@@ -511,7 +518,7 @@
 
       // Check if pattern or match options changed since last find. (#11697)
       matchOptions: null,
-      hasMatchOptionsChanged: function(pattern, matchCase, matchWord) {
+      hasMatchOptionsChanged: function (pattern, matchCase, matchWord) {
         var matchOptions = [ pattern, matchCase, matchWord ].join('.'),
           changed = this.matchOptions && this.matchOptions != matchOptions;
 
@@ -575,7 +582,7 @@
             align: 'left',
             style: 'width:100%',
             label: lang.find,
-            onClick: function() {
+            onClick: function () {
               var dialog = this.getDialog();
               if (!finder.find(
                 dialog.getValueOf('find', 'txtFindFind'),
@@ -638,7 +645,7 @@
             align: 'left',
             style: 'width:100%',
             label: lang.replace,
-            onClick: function() {
+            onClick: function () {
               var dialog = this.getDialog();
               if (!finder.replace(
                 dialog,
@@ -648,7 +655,7 @@
                 dialog.getValueOf('replace', 'txtReplaceWordChk'),
                 dialog.getValueOf('replace', 'txtReplaceCyclic')
              )) {
-                alert(lang.notFoundMsg); // jshint ignore:line
+                alert(lang.notFoundMsg);
               }
             }
           } ]
@@ -671,7 +678,7 @@
             style: 'width:100%',
             label: lang.replaceAll,
             isChanged: false,
-            onClick: function() {
+            onClick: function () {
               var dialog = this.getDialog();
 
               finder.replaceCounter = 0;
@@ -696,10 +703,11 @@
               }
 
               if (finder.replaceCounter) {
-                alert(lang.replaceSuccessMsg.replace(/%1/, finder.replaceCounter)); // jshint ignore:line
+                alert(lang.replaceSuccessMsg.replace(/%1/, finder.replaceCounter));
                 editor.fire('saveSnapshot');
-              } else {
-                alert(lang.notFoundMsg); // jshint ignore:line
+              }
+              else {
+                alert(lang.notFoundMsg);
               }
             }
           } ]
@@ -747,8 +755,8 @@
           isUserSelect = 1;
         });
 
-        this.selectPage = CKEDITOR.tools.override(this.selectPage, function(originalFunc) {
-          return function(pageId) {
+        this.selectPage = CKEDITOR.tools.override(this.selectPage, function (originalFunc) {
+          return function (pageId) {
             originalFunc.call(dialog, pageId);
 
             var currPage = dialog._.tabs[ pageId ];
@@ -766,8 +774,9 @@
             }
 
             // Synchronize fields on tab switch.
-            if (isUserSelect)
+            if (isUserSelect) {
               syncFieldsBetweenTabs.call(this, pageId);
+            }
           };
         });
 
@@ -795,18 +804,21 @@
           editor.focus();
 
           range = finder.matchRange.toDomRange();
-          if (range)
-            editor.getSelection().selectRanges([ range ]);
+          if (range) {
+            editor.getSelection().selectRanges([range]);
+          }
         }
 
-        // Clear current session before dialog close
+        // Clear current session before dialog close.
         delete finder.matchRange;
       },
       onFocus: function () {
-        if (startupPage == 'replace')
+        if (startupPage == 'replace') {
           return this.getContentElement('replace', 'txtFindReplace');
-        else
+        }
+        else {
           return this.getContentElement('find', 'txtFindFind');
+        }
       }
     };
   }
