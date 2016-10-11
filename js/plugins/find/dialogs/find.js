@@ -208,8 +208,7 @@
           if (cursor.character) {
             this._.cursors.push(cursor);
           }
-        }
-        while (cursor.character);
+        } while (cursor.character);
         this._.rangeLength = this._.cursors.length;
       },
 
