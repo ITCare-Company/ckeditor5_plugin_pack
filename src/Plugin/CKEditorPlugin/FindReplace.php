@@ -19,7 +19,7 @@ class FindReplace extends CKEditorPluginBase {
   /**
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
    */
-  function getFile() {
+  public function getFile() {
     return drupal_get_path('module', 'find_replace') . '/js/plugins/find/plugin.js';
   }
 
@@ -29,6 +29,7 @@ class FindReplace extends CKEditorPluginBase {
   public function getDependencies(Editor $editor) {
     return array();
   }
+
   /**
    * {@inheritdoc}
    */
@@ -46,7 +47,7 @@ class FindReplace extends CKEditorPluginBase {
   /**
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginButtonsInterface::getButtons().
    */
-  function getButtons() {
+  public function getButtons() {
     return array(
       'Find' => array(
         'label' => t('Find'),
@@ -59,7 +60,7 @@ class FindReplace extends CKEditorPluginBase {
       'Replace' => array(
         'label' => t('Replace'),
         'image' => drupal_get_path('module', 'find_replace') . '/js/plugins/find/icons/replace.png',
-      )
+      ),
     );
   }
 
@@ -69,4 +70,5 @@ class FindReplace extends CKEditorPluginBase {
   public function getConfig(Editor $editor) {
     return array();
   }
+
 }

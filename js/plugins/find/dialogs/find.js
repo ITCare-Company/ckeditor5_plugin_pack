@@ -1,18 +1,20 @@
-﻿/**
+/**
+ * @file
+ * Implementation of Find/Replace dialog modified for Drupal
  * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-( function() {
+(function() {
 	var isReplace;
 
-	function findEvaluator( node ) {
+	function findEvaluator(node) {
 		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && ( !isReplace || !node.isReadOnly() );
 	}
 
 	// Elements which break characters been considered as sequence.
-	function nonCharactersBoundary( node ) {
-		return !( node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary( CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$empty, CKEDITOR.dtd.$nonEditable ) ) );
+	function nonCharactersBoundary(node) {
+		return !(node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary( CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$empty, CKEDITOR.dtd.$nonEditable ) ) );
 	}
 
 	// Get the cursor object which represent both current character and it's dom
@@ -119,7 +121,7 @@
 					return cursorStep.call( this );
 				} else {
 					currentTextNode = null;
-					// At the end of the text node, walking foward for the next.
+					// At the end of the text node, walking forward for the next.
 					while ( !currentTextNode ) {
 						currentTextNode = this._.walker[ rtl ? 'previous' : 'next' ].call( this._.walker );
 
@@ -816,4 +818,4 @@
 	CKEDITOR.dialog.add( 'replace', function( editor ) {
 		return findDialog( editor, 'replace' );
 	} );
-} )();
+})();

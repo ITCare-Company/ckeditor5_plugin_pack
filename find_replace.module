@@ -1,8 +1,9 @@
 <?php
+
 /**
-* @file
-* Contains find_replace.module
-*/
+ * @file
+ * Contains find_replace.module
+ */
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
