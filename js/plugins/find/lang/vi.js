@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'vi', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'vi', {
 	find: 'Tìm kiếm',
 	findOptions: 'Tìm tùy chọn',
 	findWhat: 'Tìm chuỗi:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'vi', {
 	replaceSuccessMsg: '%1 vị trí đã được thay thế.',
 	replaceWith: 'Thay bằng:',
 	title: 'Tìm kiếm và thay thế'
-} );
+});

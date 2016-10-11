@@ -12,12 +12,12 @@ CKEDITOR.plugins.add('find', {
 	// jscs:enable maximumLineLength
 	icons: 'find,find-rtl,replace', // %REMOVE_LINE_CORE%
 	hidpi: true, // %REMOVE_LINE_CORE%
-	init: function( editor ) {
-		var findCommand = editor.addCommand( 'find', new CKEDITOR.dialogCommand( 'find' ) );
+	init: function(editor) {
+		var findCommand = editor.addCommand('find', new CKEDITOR.dialogCommand('find'));
 		findCommand.canUndo = false;
 		findCommand.readOnly = 1;
 
-		var replaceCommand = editor.addCommand( 'replace', new CKEDITOR.dialogCommand( 'replace' ) );
+		var replaceCommand = editor.addCommand('replace', new CKEDITOR.dialogCommand('replace'));
 		replaceCommand.canUndo = false;
 
 		if (editor.ui.addButton) {
@@ -34,8 +34,8 @@ CKEDITOR.plugins.add('find', {
 			});
 		}
 
-		CKEDITOR.dialog.add( 'find', this.path + 'dialogs/find.js' );
-		CKEDITOR.dialog.add( 'replace', this.path + 'dialogs/find.js' );
+		CKEDITOR.dialog.add('find', this.path + 'dialogs/find.js');
+		CKEDITOR.dialog.add('replace', this.path + 'dialogs/find.js');
 	}
 });
 
@@ -51,4 +51,4 @@ CKEDITOR.plugins.add('find', {
  * @cfg
  * @member CKEDITOR.config
  */
-CKEDITOR.config.find_highlight = { element: 'span', styles: { 'background-color': '#004', color: '#fff' } };
+CKEDITOR.config.find_highlight = {element: 'span', styles: {'background-color': '#004', 'color': '#fff'}};

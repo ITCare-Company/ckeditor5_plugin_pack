@@ -1,8 +1,8 @@
-/*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'find', 'zh-cn', {
+/**
+ * Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+CKEDITOR.plugins.setLang('find', 'zh-cn', {
 	find: '查找',
 	findOptions: '查找选项',
 	findWhat: '查找:',
@@ -15,4 +15,4 @@ CKEDITOR.plugins.setLang( 'find', 'zh-cn', {
 	replaceSuccessMsg: '共完成 %1 处替换。',
 	replaceWith: '替换:',
 	title: '查找和替换'
-} );
+});

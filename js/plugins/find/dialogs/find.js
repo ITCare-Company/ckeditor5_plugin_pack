@@ -12,7 +12,7 @@
 		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && ( !isReplace || !node.isReadOnly() );
 	}
 
-	// Elements which break characters been considered as sequence.
+  // Elements which break characters been considered as sequence.
 	function nonCharactersBoundary(node) {
 		return !(node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary( CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$empty, CKEDITOR.dtd.$nonEditable ) ) );
 	}
@@ -28,7 +28,7 @@
 		};
 	};
 
-	var pages = [ 'find', 'replace' ],
+	var pages = ['find', 'replace'],
 		fieldsMapping = [
 			[ 'txtFindFind', 'txtFindReplace' ],
 			[ 'txtFindCaseChk', 'txtReplaceCaseChk' ],
@@ -38,7 +38,7 @@
 
 	// Synchronize corresponding filed values between 'replace' and 'find' pages.
 	// @param {String} currentPageId	The page id which receive values.
-	function syncFieldsBetweenTabs( currentPageId ) {
+	function syncFieldsBetweenTabs(currentPageId) {
 		var sourceIndex, targetIndex, sourceField, targetField;
 
 		sourceIndex = currentPageId === 'find' ? 1 : 0;
@@ -813,9 +813,10 @@
 
 	CKEDITOR.dialog.add( 'find', function( editor ) {
 		return findDialog( editor, 'find' );
-	} );
+	});
 
 	CKEDITOR.dialog.add( 'replace', function( editor ) {
 		return findDialog( editor, 'replace' );
-	} );
+	});
+
 })();
