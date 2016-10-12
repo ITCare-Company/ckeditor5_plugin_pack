@@ -411,7 +411,7 @@
           else if (this._.state) {
             this._.state = this._.overlap[this._.state];
           }
-        } while (this._.state)
+        } while (this._.state);
 
         return KMP_NOMATCH;
       },
