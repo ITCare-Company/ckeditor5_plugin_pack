@@ -83,12 +83,8 @@
     function characterWalker(range, matchWord) {
       var self = this;
       var walker = new CKEDITOR.dom.walker(range);
-      if (matchWord) {
-        walker.guard = nonCharactersBoundary;
-      }
-      else {
-        walker.guard = !nonCharactersBoundary(node) && (self._.matchBoundary = true);
-      }
+      walker.guard = matchWord ? nonCharactersBoundary : (!nonCharactersBoundary && (self._.matchBoundary = true));
+      
       walker.evaluator = findEvaluator;
       walker.breakOnFalse = 1;
 
@@ -179,7 +175,6 @@
     };
 
     characterRange.prototype = {
-
       /**
        * Translate this range to {@link CKEDITOR.dom.range}.
        *
@@ -210,7 +205,7 @@
 
       /**
        * Reflect the latest changes from dom range.
-       * @param { CKEDITOR.dom.range } domRange Range of the DOM
+       * @param {CKEDITOR.dom.range} domRange Range of the DOM
        */
       updateFromDomRange: function (domRange) {
         var cursor;
@@ -402,25 +397,22 @@
           c = c.toLowerCase();
         }
 
-        var kmpResult;
-        while (!kmpResult) {
+        while (1===1) {
           if (c === this._.pattern.charAt(this._.state)) {
             this._.state++;
             if (this._.state === this._.pattern.length) {
               this._.state = 0;
-              kmpResult = KMP_MATCHED;
+              return KMP_MATCHED;
             }
-            kmpResult = KMP_ADVANCED;
+            return KMP_ADVANCED;
           }
           else if (!this._.state) {
-            kmpResult = KMP_NOMATCH;
+            return KMP_NOMATCH;
           }
           else {
             this._.state = this._.overlap[this._.state];
           }
         }
-
-        return kmpResult;
       },
 
       reset: function () {
