@@ -45,7 +45,8 @@ class FindReplace extends CKEditorPluginBase {
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginButtonsInterface::getButtons().
+   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginButtonsInterface::
+   * getButtons().
    */
   public function getButtons() {
     return array(

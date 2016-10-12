@@ -36,7 +36,7 @@
       ['txtFindCaseChk', 'txtReplaceCaseChk'],
       ['txtFindWordChk', 'txtReplaceWordChk'],
       ['txtFindCyclic', 'txtReplaceCyclic']
-    ];
+  ];
 
   // Synchronize corresponding filed values between 'replace' and 'find' pages.
   // @param {String} currentPageId  The page id which receive values.
@@ -72,17 +72,25 @@
     };
     var highlightStyle = new CKEDITOR.style(CKEDITOR.tools.extend(highlightConfig, editor.config.find_highlight, true));
 
-    // Iterator which walk through the specified range char by char. By
-    // default the walking will not stop at the character boundaries, until
-    // the end of the range is encountered.
-    // @param { CKEDITOR.dom.range } range
-    // @param {Boolean} matchWord Whether the walking will stop at character boundary.
+    /**
+     * Iterator which walk through the specified range char by char. By
+     * default the walking will not stop at the character boundaries, until
+     * the end of the range is encountered.
+     *
+     * @param { CKEDITOR.dom.range } range
+     * @param {Boolean} matchWord Whether the walking will stop at character boundary.
+     */
     function characterWalker(range, matchWord) {
       var self = this;
       var walker = new CKEDITOR.dom.walker(range);
-      walker.guard = matchWord ? nonCharactersBoundary : function (node) {
-        !nonCharactersBoundary(node) && (self._.matchBoundary = true);
-      };
+      if (matchWord) {
+        walker.guard = nonCharactersBoundary;
+      }
+      else {
+        walker.guard = function (node) {
+          !nonCharactersBoundary(node) && (self._.matchBoundary = true);
+        };
+      }
       walker.evaluator = findEvaluator;
       walker.breakOnFalse = 1;
 
@@ -154,9 +162,8 @@
 
     /**
      * A range of cursors which represent a trunk of characters which try to
-     * match, it has the same length as the pattern  string.
-     *
-     * **Note:** This class isn't accessible from global scope.
+     * match, it has the same length as the pattern string. Note: This class
+     * isn't accessible from global scope.
      *
      * @private
      * @class CKEDITOR.plugins.find.characterRange
@@ -173,8 +180,11 @@
     };
 
     characterRange.prototype = {
+
       /**
        * Translate this range to {@link CKEDITOR.dom.range}.
+       *
+       * @returns {CKEDITOR.dom.range} range
        */
       toDomRange: function () {
         var range = editor.createRange();
@@ -189,8 +199,8 @@
           }
         }
         else {
-          var first = cursors[0],
-            last = cursors[cursors.length - 1];
+          var first = cursors[0];
+          var last = cursors[cursors.length - 1];
 
           range.setStart(first.textNode, first.offset);
           range.setEnd(last.textNode, last.offset + 1);
@@ -201,10 +211,11 @@
 
       /**
        * Reflect the latest changes from dom range.
+       * @param domRange
        */
       updateFromDomRange: function (domRange) {
-        var cursor,
-          walker = new characterWalker(domRange);
+        var cursor;
+        var walker = new characterWalker(domRange);
         this._.cursors = [];
         do {
           cursor = walker.next();
@@ -242,15 +253,15 @@
         }
 
         // Apply the highlight.
-        var range = this.toDomRange(),
-          bookmark = range.createBookmark();
+        var range = this.toDomRange();
+        var bookmark = range.createBookmark();
         highlightStyle.applyToRange(range, editor);
         range.moveToBookmark(bookmark);
         this._.highlightRange = range;
 
         // Scroll the editor to the highlighted area.
         var element = range.startContainer;
-        if (element.type != CKEDITOR.NODE_ELEMENT) {
+        if (element.type !== CKEDITOR.NODE_ELEMENT) {
           element = element.getParent();
         }
         element.scrollIntoView();
@@ -283,8 +294,8 @@
       },
 
       moveBack: function () {
-        var retval = this._.walker.back(),
-          cursors = this._.cursors;
+        var retval = this._.walker.back()
+        var cursors = this._.cursors;
 
         if (retval.hitMatchBoundary) {
           this._.cursors = cursors = [];
@@ -299,8 +310,8 @@
       },
 
       moveNext: function () {
-        var retval = this._.walker.next(),
-          cursors = this._.cursors;
+        var retval = this._.walker.next();
+        var cursors = this._.cursors;
 
         // Clear the cursors queue if we've crossed a match boundary.
         if (retval.hitMatchBoundary) {
@@ -325,8 +336,9 @@
       },
 
       getNextCharacterRange: function (maxLength) {
-        var lastCursor, nextRangeWalker,
-          cursors = this._.cursors;
+        var lastCursor;
+        var nextRangeWalker;
+        var cursors = this._.cursors;
 
         if ((lastCursor = cursors[cursors.length - 1]) && lastCursor.textNode) {
           nextRangeWalker = new characterWalker(getRangeAfterCursor(lastCursor));
@@ -360,9 +372,9 @@
       return range;
     }
 
-    var KMP_NOMATCH = 0,
-      KMP_ADVANCED = 1,
-      KMP_MATCHED = 2;
+    var KMP_NOMATCH = 0;
+    var KMP_ADVANCED = 1;
+    var KMP_MATCHED = 2;
 
     // Examination the occurrence of a word which implement KMP algorithm.
     var kmpMatcher = function (pattern, ignoreCase) {
@@ -372,7 +384,7 @@
       }
       for (var i = 0; i < pattern.length; i++) {
         overlap.push(overlap[i] + 1);
-        while (overlap[i + 1] > 0 && pattern.charAt(i) != pattern.charAt(overlap[i + 1] - 1)) {
+        while (overlap[i + 1] > 0 && pattern.charAt(i) !== pattern.charAt(overlap[i + 1] - 1)) {
           overlap[i + 1] = overlap[overlap[i + 1] - 1] + 1;
         }
       }
@@ -391,22 +403,25 @@
           c = c.toLowerCase();
         }
 
-        while (true) {
+        var kmpResult;
+        while (!kmpResult) {
           if (c === this._.pattern.charAt(this._.state)) {
             this._.state++;
             if (this._.state === this._.pattern.length) {
               this._.state = 0;
-              return KMP_MATCHED;
+              kmpResult = KMP_MATCHED;
             }
-            return KMP_ADVANCED;
+            kmpResult = KMP_ADVANCED;
           }
           else if (!this._.state) {
-            return KMP_NOMATCH;
+            kmpResult = KMP_NOMATCH;
           }
           else {
             this._.state = this._.overlap[this._.state];
           }
         }
+
+        return kmpResult;
       },
 
       reset: function () {
@@ -434,9 +449,9 @@
         this.matchRange = this.matchRange.getNextCharacterRange(pattern.length);
       }
 
-      var matcher = new kmpMatcher(pattern, !matchCase),
-        matchState = KMP_NOMATCH,
-        character = '%';
+      var matcher = new kmpMatcher(pattern, !matchCase);
+      var matchState = KMP_NOMATCH;
+      var character = '%';
 
       while (character !== null) {
         this.matchRange.moveNext();
@@ -452,19 +467,19 @@
 
         if (matchState === KMP_MATCHED) {
           if (matchWord) {
-            var cursors = this.matchRange.getCursors(),
-              tail = cursors[cursors.length - 1],
-              head = cursors[0];
+            var cursors = this.matchRange.getCursors();
+            var tail = cursors[cursors.length - 1];
+            var head = cursors[0];
 
-            var rangeBefore = getRangeBeforeCursor(head),
-              rangeAfter = getRangeAfterCursor(tail);
+            var rangeBefore = getRangeBeforeCursor(head);
+            var rangeAfter = getRangeAfterCursor(tail);
 
             // The word boundary checks requires to trim the text nodes. (#9036)
             rangeBefore.trim();
             rangeAfter.trim();
 
-            var headWalker = new characterWalker(rangeBefore, true),
-              tailWalker = new characterWalker(rangeAfter, true);
+            var headWalker = new characterWalker(rangeBefore, true);
+            var tailWalker = new characterWalker(rangeAfter, true);
 
             if (!(isWordSeparator(headWalker.back().character) && isWordSeparator(tailWalker.next().character))) {
               continue;
@@ -504,8 +519,8 @@
         isReplace = 1;
 
         // Successiveness of current replace/find.
-        var result = 0,
-          matchOptionsChanged = this.hasMatchOptionsChanged(pattern, matchCase, matchWord);
+        var result = 0;
+        var matchOptionsChanged = this.hasMatchOptionsChanged(pattern, matchCase, matchWord);
 
         // 1. Perform the replace when there's already a match here and match options hasn't change since previous find.
         // 2. Otherwise perform the find but don't replace it immediately.
@@ -514,9 +529,10 @@
           this.matchRange.removeHighlight();
           var domRange = this.matchRange.toDomRange();
           var text = editor.document.createText(newString);
+          var selection;
           if (!isReplaceAll) {
             // Save undo snaps before and after the replacement.
-            var selection = editor.getSelection();
+            selection = editor.getSelection();
             selection.selectRanges([domRange]);
             editor.fire('saveSnapshot');
           }
@@ -768,7 +784,7 @@
               type: 'checkbox',
               id: 'txtReplaceCyclic',
               isChanged: false,
-              'default': true,
+              default: true,
               label: lang.matchCyclic
             }]
           }]
@@ -778,7 +794,7 @@
         var dialog = this;
 
         // Keep track of the current pattern field in use.
-        var patternField, wholeWordChkField;
+        var patternField;//, wholeWordChkField;
 
         // Ignore initial page select on dialog show.
         var isUserSelect = 0;
@@ -794,16 +810,16 @@
             originalFunc.call(dialog, pageId);
 
             var currPage = dialog._.tabs[pageId];
-            var patternFieldInput;
+            //var patternFieldInput;
             var patternFieldId = pageId === 'find' ? 'txtFindFind' : 'txtFindReplace';
             var wholeWordChkFieldId = pageId === 'find' ? 'txtFindWordChk' : 'txtReplaceWordChk';
 
             patternField = dialog.getContentElement(pageId, patternFieldId);
-            wholeWordChkField = dialog.getContentElement(pageId, wholeWordChkFieldId);
+            //wholeWordChkField = dialog.getContentElement(pageId, wholeWordChkFieldId);
 
             // Prepare for check pattern text filed 'keyup' event.
             if (!currPage.initialized) {
-              patternFieldInput = CKEDITOR.document.getById(patternField._.inputId);
+              //patternFieldInput = CKEDITOR.document.getById(patternField._.inputId);
               currPage.initialized = true;
             }
 

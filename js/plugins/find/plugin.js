@@ -45,9 +45,9 @@
    *
    *    // Highlight search results with blue on yellow.
    *    config.find_highlight = {
- *      element: 'span',
- *      styles: { 'background-color': '#ff0', color: '#00f' }
- *    };
+   *      element: 'span',
+   *      styles: { 'background-color': '#ff0', color: '#00f' }
+   *    };
    *
    * @cfg
    * @member CKEDITOR.config
