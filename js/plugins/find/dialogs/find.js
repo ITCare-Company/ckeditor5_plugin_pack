@@ -77,7 +77,7 @@
      * default the walking will not stop at the character boundaries, until
      * the end of the range is encountered.
      *
-     * @param { CKEDITOR.dom.range } range
+     * @param {CKEDITOR.dom.range} range Range of characters
      * @param {Boolean} matchWord Whether the walking will stop at character boundary.
      */
     function characterWalker(range, matchWord) {
@@ -87,9 +87,7 @@
         walker.guard = nonCharactersBoundary;
       }
       else {
-        walker.guard = function (node) {
-          !nonCharactersBoundary(node) && (self._.matchBoundary = true);
-        };
+        walker.guard = !nonCharactersBoundary(node) && (self._.matchBoundary = true);
       }
       walker.evaluator = findEvaluator;
       walker.breakOnFalse = 1;
@@ -161,13 +159,14 @@
     };
 
     /**
+     * Creates a characterRange class instance.
+     *
      * A range of cursors which represent a trunk of characters which try to
      * match, it has the same length as the pattern string. Note: This class
      * isn't accessible from global scope.
      *
      * @private
      * @class CKEDITOR.plugins.find.characterRange
-     * @constructor Creates a characterRange class instance.
      */
     var characterRange = function (characterWalker, rangeLength) {
       this._ = {
@@ -184,7 +183,7 @@
       /**
        * Translate this range to {@link CKEDITOR.dom.range}.
        *
-       * @returns {CKEDITOR.dom.range} range
+       * @return {CKEDITOR.dom.range} range
        */
       toDomRange: function () {
         var range = editor.createRange();
@@ -211,7 +210,7 @@
 
       /**
        * Reflect the latest changes from dom range.
-       * @param domRange
+       * @param { CKEDITOR.dom.range } domRange Range of the DOM
        */
       updateFromDomRange: function (domRange) {
         var cursor;
@@ -294,7 +293,7 @@
       },
 
       moveBack: function () {
-        var retval = this._.walker.back()
+        var retval = this._.walker.back();
         var cursors = this._.cursors;
 
         if (retval.hitMatchBoundary) {
@@ -793,9 +792,6 @@
       onLoad: function () {
         var dialog = this;
 
-        // Keep track of the current pattern field in use.
-        var patternField;//, wholeWordChkField;
-
         // Ignore initial page select on dialog show.
         var isUserSelect = 0;
         this.on('hide', function () {
@@ -810,16 +806,10 @@
             originalFunc.call(dialog, pageId);
 
             var currPage = dialog._.tabs[pageId];
-            //var patternFieldInput;
             var patternFieldId = pageId === 'find' ? 'txtFindFind' : 'txtFindReplace';
-            var wholeWordChkFieldId = pageId === 'find' ? 'txtFindWordChk' : 'txtReplaceWordChk';
-
-            patternField = dialog.getContentElement(pageId, patternFieldId);
-            //wholeWordChkField = dialog.getContentElement(pageId, wholeWordChkFieldId);
 
             // Prepare for check pattern text filed 'keyup' event.
             if (!currPage.initialized) {
-              //patternFieldInput = CKEDITOR.document.getById(patternField._.inputId);
               currPage.initialized = true;
             }
 
