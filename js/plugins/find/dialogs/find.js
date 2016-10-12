@@ -641,6 +641,7 @@
           type: 'fieldset',
           label: CKEDITOR.tools.htmlEncode(lang.findOptions),
           style: 'margin-top:29px',
+          className: 'fieldgroup',
           children: [{
             type: 'vbox',
             padding: 0,
@@ -757,6 +758,7 @@
         {
           type: 'fieldset',
           label: CKEDITOR.tools.htmlEncode(lang.findOptions),
+          className: 'fieldgroup',
           children: [{
             type: 'vbox',
             padding: 0,
