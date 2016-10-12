@@ -84,7 +84,6 @@
       var self = this;
       var walker = new CKEDITOR.dom.walker(range);
       walker.guard = matchWord ? nonCharactersBoundary : (!nonCharactersBoundary && (self._.matchBoundary = true));
-      
       walker.evaluator = findEvaluator;
       walker.breakOnFalse = 1;
 
@@ -163,6 +162,8 @@
      *
      * @private
      * @class CKEDITOR.plugins.find.characterRange
+     * @param {Object} characterWalker Iterates through characters
+     * @param {Number} rangeLength The length of the range
      */
     var characterRange = function (characterWalker, rangeLength) {
       this._ = {
@@ -175,6 +176,7 @@
     };
 
     characterRange.prototype = {
+
       /**
        * Translate this range to {@link CKEDITOR.dom.range}.
        *
@@ -397,7 +399,7 @@
           c = c.toLowerCase();
         }
 
-        while (1===1) {
+        do {
           if (c === this._.pattern.charAt(this._.state)) {
             this._.state++;
             if (this._.state === this._.pattern.length) {
@@ -406,13 +408,12 @@
             }
             return KMP_ADVANCED;
           }
-          else if (!this._.state) {
-            return KMP_NOMATCH;
-          }
-          else {
+          else if (this._.state) {
             this._.state = this._.overlap[this._.state];
           }
-        }
+        } while (this._.state)
+
+        return KMP_NOMATCH;
       },
 
       reset: function () {
@@ -798,7 +799,6 @@
             originalFunc.call(dialog, pageId);
 
             var currPage = dialog._.tabs[pageId];
-            var patternFieldId = pageId === 'find' ? 'txtFindFind' : 'txtFindReplace';
 
             // Prepare for check pattern text filed 'keyup' event.
             if (!currPage.initialized) {
