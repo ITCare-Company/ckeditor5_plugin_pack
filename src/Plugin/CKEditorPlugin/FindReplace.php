@@ -20,7 +20,7 @@ class FindReplace extends CKEditorPluginBase {
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
    */
   public function getFile() {
-    return drupal_get_path('module', 'find_replace') . '/js/plugins/find/plugin.js';
+    return base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/plugin.js';
   }
 
   /**
