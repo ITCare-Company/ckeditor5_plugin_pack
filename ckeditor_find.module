@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains find_replace.module.
+ * Contains ckeditor_find.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function find_replace_help($route_name, RouteMatchInterface $route_match) {
+function ckeditor_find_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the find_replace module.
-    case 'help.page.find_replace':
+    // Main module help for the ckeditor_find module.
+    case 'help.page.ckeditor_find':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('This plugin module adds the find and replace dialog to CKEditor in Drupal 8') . '</p>';

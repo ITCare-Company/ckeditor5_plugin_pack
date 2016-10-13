@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\find_replace\Plugin\CKEditorPlugin;
+namespace Drupal\ckeditor_find\Plugin\CKEditorPlugin;
 
 use Drupal\editor\Entity\Editor;
 use Drupal\ckeditor\CKEditorPluginBase;
@@ -11,10 +11,10 @@ use Drupal\ckeditor\CKEditorPluginBase;
  * @CKEditorPlugin(
  *   id = "find",
  *   label = @Translation("CKEditor Find/Replace"),
- *   module = "find_replace"
+ *   module = "ckeditor_find"
  * )
  */
-class FindReplace extends CKEditorPluginBase {
+class Find extends CKEditorPluginBase {
 
   /**
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
@@ -51,15 +51,15 @@ class FindReplace extends CKEditorPluginBase {
     return array(
       'Find' => array(
         'label' => t('Find'),
-        'image' => drupal_get_path('module', 'find_replace') . '/js/plugins/find/icons/find.png',
+        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find.png',
       ),
       'Find RTL' => array(
         'label' => t('Find RTL'),
-        'image' => drupal_get_path('module', 'find_replace') . '/js/plugins/find/icons/find-rtl.png',
+        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find-rtl.png',
       ),
       'Replace' => array(
         'label' => t('Replace'),
-        'image' => drupal_get_path('module', 'find_replace') . '/js/plugins/find/icons/replace.png',
+        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/replace.png',
       ),
     );
   }
