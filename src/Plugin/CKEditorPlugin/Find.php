@@ -20,7 +20,7 @@ class Find extends CKEditorPluginBase {
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
    */
   public function getFile() {
-    return base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/plugin.js';
+    return 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/plugin.js';
   }
 
   /**
