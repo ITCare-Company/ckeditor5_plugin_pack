@@ -51,15 +51,15 @@ class Find extends CKEditorPluginBase {
     return array(
       'Find' => array(
         'label' => t('Find'),
-        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find.png',
+        'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find.png',
       ),
       'Find RTL' => array(
         'label' => t('Find RTL'),
-        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find-rtl.png',
+        'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find-rtl.png',
       ),
       'Replace' => array(
         'label' => t('Replace'),
-        'image' => base_path() . 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/replace.png',
+        'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/replace.png',
       ),
     );
   }
