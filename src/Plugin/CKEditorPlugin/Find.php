@@ -34,7 +34,9 @@ class Find extends CKEditorPluginBase {
    * {@inheritdoc}
    */
   public function getLibraries(Editor $editor) {
-    return array();
+    return [
+      'ckeditor_find/styles',
+    ];
   }
 
   /**
