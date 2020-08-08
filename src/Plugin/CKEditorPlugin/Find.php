@@ -52,15 +52,15 @@ class Find extends CKEditorPluginBase {
   public function getButtons() {
     return [
       'Find' => [
-        'label' => t('Find'),
+        'label' => $this->t('Find'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find.png',
       ],
       'Find RTL' => [
-        'label' => t('Find RTL'),
+        'label' => $this->t('Find RTL'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find-rtl.png',
       ],
       'Replace' => [
-        'label' => t('Replace'),
+        'label' => $this->t('Replace'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/replace.png',
       ],
     ];
