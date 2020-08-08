@@ -27,7 +27,7 @@ class Find extends CKEditorPluginBase {
    * {@inheritdoc}
    */
   public function getDependencies(Editor $editor) {
-    return array();
+    return [];
   }
 
   /**
@@ -50,27 +50,27 @@ class Find extends CKEditorPluginBase {
    * Implements CKEditorPluginButtonsInterface::getButtons().
    */
   public function getButtons() {
-    return array(
-      'Find' => array(
+    return [
+      'Find' => [
         'label' => t('Find'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find.png',
-      ),
-      'Find RTL' => array(
+      ],
+      'Find RTL' => [
         'label' => t('Find RTL'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/find-rtl.png',
-      ),
-      'Replace' => array(
+      ],
+      'Replace' => [
         'label' => t('Replace'),
         'image' => 'libraries/ckeditor/plugins/' . $this->getPluginId() . '/icons/replace.png',
-      ),
-    );
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getConfig(Editor $editor) {
-    return array();
+    return [];
   }
 
 }
