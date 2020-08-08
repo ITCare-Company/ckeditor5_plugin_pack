@@ -3,10 +3,6 @@
   "description": "This plugin module adds the find and replace dialog to CKEditor in Drupal 8",
   "type": "drupal-module",
   "license": "GPL-2.0+",
-  "require": {
-    "composer/installers": "^1.0.24",
-    "ckeditor/find": "*"
-  },
   "minimum-stability": "dev",
   "homepage": "https://drupal.org/project/ckeditor_find",
   "authors": [
