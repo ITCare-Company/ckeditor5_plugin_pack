@@ -15,5 +15,26 @@
   "support": {
     "issues": "https://drupal.org/project/issues/ckeditor_find",
     "source": "http://cgit.drupalcode.org/ckeditor_find"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "ckeditor/find",
+        "version": "4.14.1",
+        "type": "drupal-library",
+        "extra": {
+          "installer-name": "ckeditor/plugins/find"
+        },
+        "dist": {
+          "url": "https://download.ckeditor.com/find/releases/find_4.14.1.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+      "ckeditor/find": "^4",
+      "drupal/core": "^8 || ^9"
   }
 }
