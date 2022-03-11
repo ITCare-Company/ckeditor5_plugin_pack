@@ -1,7 +1,7 @@
-name: 'CKEditor Extension Font'
+name: 'CKEditor 5 - Font Plugin (Text Color, Background Color)'
 type: module
-description: 'Font Extensions for CKEditor 5'
+description: 'Allows to control the text and background color directly inside the CKEditor 5 interface.'
 core_version_requirement: '^8.8 || ^9'
-package: 'Cactus'
+package: 'Devicious'
 dependencies:
   - drupal:ckeditor5

@@ -1,18 +1,26 @@
 {
     "name": "ckeditor5-font",
     "type": "drupal-module",
+    "description": "Allows to control the text and background color directly inside the CKEditor 5 interface.",
     "authors": [
         {
             "name": "devicious",
-            "email": "ivan.sollima@gmail.com"
+            "email": "ivan.sollima@gmail.com",
+            "role": "author"
         }
     ],
-    "description": "GPBackend Module",
     "keywords": [
         "ckeditor5",
-        "font"
+        "font",
+        "color",
+        "text-color",
+        "background-color"
     ],
+    "license": "GPL-2.0-or-later",
     "homepage": "https://ckeditor.com/docs/ckeditor5/latest/features/font.html",
     "minimum-stability": "dev",
-    "support": {}
+    "support": {
+        "issues": "http://drupal.org/project/issues/ckeditor5_font",
+        "source": "https://git.drupalcode.org/project/ckeditor5_font"
+    }
 }
