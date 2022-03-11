@@ -1,0 +1,7 @@
+name: 'CKEditor Extension Font'
+type: module
+description: 'Font Extensions for CKEditor 5'
+core_version_requirement: '^8.8 || ^9'
+package: 'Cactus'
+dependencies:
+  - drupal:ckeditor5
