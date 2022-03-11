@@ -1,5 +1,5 @@
 {
-    "name": "ckeditor5-font",
+    "name": "drupal/ckeditor5_font",
     "type": "drupal-module",
     "description": "Allows to control the text and background color directly inside the CKEditor 5 interface.",
     "authors": [
