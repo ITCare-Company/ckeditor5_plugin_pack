@@ -7,10 +7,8 @@ ckeditor5_font:
     gpl-compatible: true
   js:
     js/build/font.js: { preprocess: false, minified: true }
-  dependencies:
-    - CKEditor5/CKEditor5
 admin:
   css:
-    theme:
+    base:
       css/fontcolor.css: { }
       css/fontbackground.css: { }
