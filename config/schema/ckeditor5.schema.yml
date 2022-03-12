@@ -97,5 +97,3 @@ ckeditor5.plugin.ckeditor5_font_colors:
       sequence:
         type: string
         label: 'Color'
-        constraints:
-          NotNull: []
