@@ -1,0 +1,14 @@
+.editor-wrapper-flex > .fieldset__wrapper, .editor-wrapper-flex > .details-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.editor-wrapper-flex > .fieldset__wrapper > div, .editor-wrapper-flex > .details-wrapper > div {
+  display: block;
+  margin-right: 1em;
+}
+
+.editor-wrapper-flex .editor-element-extra-margin {
+  margin-top: 45px;
+}
