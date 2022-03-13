@@ -8,6 +8,8 @@ ckeditor5_font:
   js:
     js/build/font.js: { preprocess: false, minified: true }
 admin:
+  js:
+    js/editor.js: { preprocess: false, minified: true }
   css:
     base:
       css/fontcolor.css: { }

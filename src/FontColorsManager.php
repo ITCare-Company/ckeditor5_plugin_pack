@@ -51,11 +51,7 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
             '#title' => $this->t('Colors'),
             '#group' => 'saved_colors',
             '#collapsible' => false,
-            '#description' => $this->t('Enter a list of comma separated color hex codes including the starting # symbol. <br/>
-                Optionally you can add the color description using a colon separator. <br/>
-                Example: <code>#fff:White, #000:Black, #18515E, #ccc </code> <br/>
-                Leave empty to use the plugin default color configuration.
-                '),
+            '#attributes' => ['id' => 'ckeditor-ui-colors-panel'],
         ];
 
 
@@ -66,70 +62,33 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
             $hex = $raw[0];
             $label = $raw[1] ?? null;
 
-            $form['colors']['color-'.$i] = [
-                '#title' => $label ?? 'Color',
-                '#type' => 'details',
-                '#group' => 'color-'.$i,
-                '#attributes' => ['class' => ['editor-wrapper-flex']],
-            ];
-            $form['colors']['color-'.$i]['hex'] = [
-                '#type' => 'textfield',
-                '#title' => 'Hex Code',
-                '#size' => 7,
-                '#maxlength' => 7,
-                '#placeholder' => '#18515E',
-                '#default_value' => $hex,
-            ];
-            $form['colors']['color-'.$i]['label'] = [
-                '#type' => 'textfield',
-                '#title' => 'Label',
-                '#size' => 15,
-                '#maxlength' => 15,
-                '#placeholder' => 'Optional: color label',
-                '#default_value' => $label ?? '',
+            $form['colors']['color-' . $i] = [
+                '#type' => 'inline_template',
+                '#template' => '
+          <div class="color" style="background-color: '.$hex.'" data-id="color-'.$i.'">
+              <div class="delete-action"></div>
+              <span class="label">'.$label.'</span>
+          </div>
+        ',
             ];
 
-            $form['colors']['color-'.$i]['delete'] = [
-                '#type' => 'submit',
-                '#submit' => [[$this, 'delete']],
-                '#name' => 'color_delete',
-                '#value' => $this->t('Delete'),
-                '#button_type' => 'danger',
-                '#attributes' => ['class' => ['editor-element-extra-margin']],
-            ];
         }
 
-        //Form to add new colors
-
-        $form['colors']['new-color'] = [
-            '#title' => 'Add Color',
-            '#type' => 'fieldset',
-            '#collapsible' => false,
-            '#group' => 'new-color',
-            '#attributes' => ['class' => ['editor-wrapper-flex']],
-        ];
-        $form['colors']['new-color']['hex'] = [
-            '#type' => 'textfield',
-            '#title' => 'Hex Code',
-            '#size' => 7,
-            '#maxlength' => 7,
-            '#placeholder' => '#18515E',
-        ];
-        $form['colors']['new-color']['label'] = [
-            '#type' => 'textfield',
-            '#title' => 'Label',
-            '#size' => 15,
-            '#maxlength' => 15,
-            '#placeholder' => 'Petrol Blue',
+        //Add color widget
+        $form['colors']['color-add'] = [
+            '#type' => 'inline_template',
+            '#template' => '
+          <div class="color add">
+              <div class="add-action"></div>
+          </div>
+        ',
         ];
 
-        $form['colors']['new-color']['add'] = [
-            '#type' => 'submit',
-            '#submit' => [[$this, 'add']],
-            '#name' => 'color_add',
-            '#value' => $this->t('Add'),
-            '#button_type' => 'success',
-            '#attributes' => ['class' => ['editor-element-extra-margin']],
+        //System field to store JSON data
+        $form['colors']['color-data'] = [
+            '#type' => 'hidden',
+            '#default-value' => '',
+            '#attributes' => ['id' => ['colors-data-store']],
         ];
 
         return $form;
