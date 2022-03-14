@@ -110,13 +110,12 @@
   transform: scale(.7);
 }
 
-#ckeditor-ui-colors-panel .clearfix {
-  width: 100%;
+#ckeditor-ui-colors-panel .color + .new-color-panel {
+  margin-top: 2rem;
 }
 
 #ckeditor-ui-colors-panel .new-color-panel {
   width: 100%;
-  margin-top: 2rem;
   padding: 0 2rem;
   background: #edf0f1;
   border: 1px solid #dfe5e5;
