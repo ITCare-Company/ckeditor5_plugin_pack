@@ -22,8 +22,8 @@
   text-align: center;
   width: 120px;
   height: 120px;
-  margin-right: 1em;
-  margin-bottom: 1em;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   padding: 1rem;
   display: flex;
   justify-content: center;
@@ -110,9 +110,35 @@
   transform: scale(.7);
 }
 
+#ckeditor-ui-colors-panel .clearfix {
+  width: 100%;
+}
 
 #ckeditor-ui-colors-panel .new-color-panel {
   width: 100%;
-  margin-top: 2em;
+  margin-top: 2rem;
+  padding: 0 2rem;
+  background: #edf0f1;
+  border: 1px solid #dfe5e5;
 
+  border-radius: .5rem;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-elevation-low);
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#ckeditor-ui-colors-panel .new-color-panel .form-item {
+  margin-right: 1rem;
+}
+
+#ckeditor-ui-colors-panel .new-color-panel .form-item label {
+  margin-bottom: .5rem;
+  display: block;
+}
+
+#ckeditor-ui-colors-panel .new-color-panel .form-item input[type="color"] {
+  padding: 5px;
 }
