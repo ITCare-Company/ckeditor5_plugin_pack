@@ -114,9 +114,9 @@
   margin-top: 2rem;
 }
 
-#ckeditor-ui-colors-panel .new-color-panel {
+#ckeditor-ui-new-color-panel {
   width: 100%;
-  padding: 0 2rem;
+  padding: 2rem;
   background: #edf0f1;
   border: 1px solid #dfe5e5;
 
@@ -129,42 +129,50 @@
   flex-wrap: wrap;
 }
 
-#ckeditor-ui-colors-panel .new-color-panel .form-item {
+#ckeditor-ui-new-color-panel .form-item {
   margin-right: 1rem;
 }
 
-#ckeditor-ui-colors-panel .new-color-panel .form-item input {
+#ckeditor-ui-new-color-panel .form-item input {
   min-height: 50px;
 }
 
-#ckeditor-ui-colors-panel .new-color-panel .form-item label {
+#ckeditor-ui-new-color-panel .form-item label {
   margin-bottom: .5rem;
   display: block;
 }
 
-#ckeditor-ui-colors-panel .new-color-panel .form-item input[type="color"] {
+#ckeditor-ui-new-color-panel .form-item input[type="color"] {
   padding: 5px;
 }
 
 @media (max-width: 1024px) {
-  #ckeditor-ui-colors-panel .new-color-panel {
-    padding: 2rem;
+
+  #ckeditor-ui-colors-panel > div:last-child {
+    justify-content: space-around;
   }
 
-  #ckeditor-ui-colors-panel .new-color-panel .form-item {
+  #ckeditor-ui-colors-panel .color {
+    width: 80px;
+    height: 80px;
+    padding: .8rem;
+    font-size: 1rem;
+  }
+
+  #ckeditor-ui-new-color-panel .form-item {
     width: 100%;
     margin: 0 0 1rem;
   }
 
-  #ckeditor-ui-colors-panel .new-color-panel .form-item input {
+  #ckeditor-ui-new-color-panel .form-item input {
     width: 100%;
   }
 
-  #ckeditor-ui-colors-panel .new-color-panel .form-item .form-submit-label {
+  #ckeditor-ui-new-color-panel .form-item .form-submit-label {
     display: none;
   }
 
-  #ckeditor-ui-colors-panel .new-color-panel .form-item .form-submit {
+  #ckeditor-ui-new-color-panel .form-item .form-submit {
     width: 100%;
     padding: 1rem 0;
     margin: 0;

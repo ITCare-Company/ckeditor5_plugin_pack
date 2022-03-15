@@ -2,10 +2,11 @@
 
   const $panel = document.querySelector('#ckeditor-ui-colors-panel');
   const $storage = document.querySelector('#colors-data-store');
+  const $new_color = document.querySelector('#ckeditor-ui-new-color-panel');
 
   let model = [];
 
-  if ($panel && $storage) {
+  if ($panel && $storage && $new_color) {
 
 
     model = initModel();
@@ -72,7 +73,7 @@
       $color.querySelector('.label').innerText = clr.label || '';
       $color.style.backgroundColor = clr.color;
 
-      $target.prepend($color);
+      $target.append($color);
     });
 
     bindUI();
@@ -83,8 +84,9 @@
     const $colors = $panel.querySelectorAll('.color');
     $colors.forEach(($color) => {
       const $action = $color.querySelector('.delete-action');
-      if($action) {
-        $action.removeEventListener('click', () => {});
+      if ($action) {
+        $action.removeEventListener('click', () => {
+        });
         $action.addEventListener('click', (e) => {
           e.preventDefault();
           removeColor($color.getAttribute('data-hex'));
@@ -94,32 +96,28 @@
   }
 
   function bindAddNewColor() {
-    const $new_color = $panel.querySelector('.new-color-panel');
 
-    if ($new_color) {
-
-      const $hex = $new_color.querySelector('#hex');
-      const $label = $new_color.querySelector('#color-label');
-      const $submit = $new_color.querySelector('.form-submit');
+    const $hex = $new_color.querySelector('#hex');
+    const $label = $new_color.querySelector('#color-label');
+    const $submit = $new_color.querySelector('.form-submit');
 
 
-      $submit.addEventListener('click', (e) => {
-        e.preventDefault();
+    $submit.addEventListener('click', (e) => {
+      e.preventDefault();
 
-        const color = $hex.value;
-        const label = $label.value;
+      const color = $hex.value;
+      const label = $label.value;
 
-        if (color) {
-          addColor({
-            color,
-            label
-          });
-          $hex.value = '#000000';
-          $label.value = '';
+      if (color) {
+        addColor({
+          color,
+          label
+        });
+        $hex.value = '#000000';
+        $label.value = '';
 
-        }
-      });
-    }
+      }
+    });
 
   }
 

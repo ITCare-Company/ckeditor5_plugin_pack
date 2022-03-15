@@ -56,34 +56,34 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
         $form['color-panel']['color-template'] = [
             '#type' => 'inline_template',
             '#template' => '
-        <template id="color-template">
-          <div class="color">
-              <div class="delete-action"></div>
-              <span class="label"></span>
-          </div>
-        </template>
-      ',
+              <template id="color-template">
+                <div class="color">
+                    <div class="delete-action"></div>
+                    <span class="label"></span>
+                </div>
+              </template>
+            ',
         ];
 
         //Add color form
-        $form['color-panel']['color-add-form'] = [
+        $form['color-add-form'] = [
             '#type' => 'inline_template',
             '#template' => '
-          <div class="new-color-panel">
-              <div class="form-item">
-                  <label for="hex" class="form-item__label">' . $this->t("Color") . '</label>
-                  <input id="hex" type="color" maxlength="7" required name="hex" placeholder="#18515E" class="form-text form-element form-element--type-text form-element--api-textfield"/>
+              <div id="ckeditor-ui-new-color-panel">
+                  <div class="form-item">
+                      <label for="hex" class="form-item__label">' . $this->t("Color") . '</label>
+                      <input id="hex" type="color" maxlength="7" required name="hex" placeholder="#18515E" class="form-text form-element form-element--type-text form-element--api-textfield"/>
+                  </div>
+                  <div class="form-item">
+                      <label for="hex" class="form-item__label">' . $this->t("Name") . '</label>
+                      <input id="color-label" type="text" maxlength="15" placeholder="Color label"  class="form-text form-element form-element--type-text form-element--api-textfield">
+                  </div>
+                  <div class="form-item">
+                    <label class="form-item__label form-submit-label">&nbsp;</label>
+                    <div class="editor-element-extra-margin button button--success js-form-submit form-submit">' . $this->t("Add") . '</div>
+                  </div>
               </div>
-              <div class="form-item">
-                  <label for="hex" class="form-item__label">' . $this->t("Name") . '</label>
-                  <input id="color-label" type="text" maxlength="15" placeholder="Color label"  class="form-text form-element form-element--type-text form-element--api-textfield">
-              </div>
-              <div class="form-item">
-                <label class="form-item__label form-submit-label">&nbsp;</label>
-                <div class="editor-element-extra-margin button button--success js-form-submit form-submit">' . $this->t("Add") . '</div>
-              </div>
-          </div>
-        ',
+            ',
         ];
 
         //System field to store JSON data
