@@ -150,11 +150,13 @@
 
   #ckeditor-ui-colors-panel > div:last-child {
     justify-content: space-around;
+    margin: 1rem 0;
+    padding: 0;
   }
 
   #ckeditor-ui-colors-panel .color {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     padding: .8rem;
     font-size: 1rem;
   }
