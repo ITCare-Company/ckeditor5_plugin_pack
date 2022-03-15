@@ -92,8 +92,5 @@ ckeditor5.plugin.ckeditor5_font_colors:
   label: Font Colors
   mapping:
     colors:
-      type: sequence
+      type: string
       label: 'Font Colors'
-      sequence:
-        type: string
-        label: 'Color'

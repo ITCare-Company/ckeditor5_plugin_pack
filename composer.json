@@ -16,6 +16,9 @@
         "text-color",
         "background-color"
     ],
+    "require": {
+        "ext-json": "*"
+    },
     "license": "GPL-2.0-or-later",
     "homepage": "https://ckeditor.com/docs/ckeditor5/latest/features/font.html",
     "minimum-stability": "dev",

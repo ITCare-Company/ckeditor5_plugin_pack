@@ -30,7 +30,7 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
     public function defaultConfiguration(): array
     {
         return [
-            'colors' => [],
+            'colors' => '[]'
         ];
     }
 
@@ -42,11 +42,9 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
     public function buildConfigurationForm(array $form, FormStateInterface $form_state): array
     {
 
-        $colors = $this->configuration['colors'];
-
 
         //Fieldset grouping all the saved colors
-        $form['colors'] = [
+        $form['color-panel'] = [
             '#type' => 'fieldset',
             '#title' => $this->t('Colors'),
             '#group' => 'saved_colors',
@@ -55,51 +53,43 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
         ];
 
 
-        //Each single saved color
-        foreach ($colors as $i => $color) {
-
-            $raw = explode(':', $color);
-            $hex = $raw[0];
-            $label = $raw[1] ?? null;
-
-            $form['colors']['color-' . $i] = [
-                '#type' => 'inline_template',
-                '#template' => '
-          <div class="color" style="background-color: '.$hex.'" data-id="color-'.$i.'">
+        $form['color-panel']['color-template'] = [
+            '#type' => 'inline_template',
+            '#template' => '
+        <template id="color-template">
+          <div class="color">
               <div class="delete-action"></div>
-              <span class="label">'.$label.'</span>
+              <span class="label"></span>
           </div>
-        ',
-            ];
-
-        }
+        </template>
+      ',
+        ];
 
         //Add color form
-        $form['colors']['color-add-form'] = [
+        $form['color-panel']['color-add-form'] = [
             '#type' => 'inline_template',
             '#template' => '
           <div class="new-color-panel">
               <div class="form-item">
-                  <label for="hex" class="form-item__label">'.$this->t("Color").'</label>
+                  <label for="hex" class="form-item__label">' . $this->t("Color") . '</label>
                   <input id="hex" type="color" maxlength="7" required name="hex" placeholder="#18515E" class="form-text form-element form-element--type-text form-element--api-textfield"/>
               </div>
               <div class="form-item">
-                  <label for="hex" class="form-item__label">'.$this->t("Name").'</label>
+                  <label for="hex" class="form-item__label">' . $this->t("Name") . '</label>
                   <input id="color-label" type="text" maxlength="15" placeholder="Color label"  class="form-text form-element form-element--type-text form-element--api-textfield">
               </div>
               <div class="form-item">
               <label for="hex" class="form-item__label">&nbsp;</label>
-                <div class="editor-element-extra-margin button button--success js-form-submit form-submit">'.$this->t("Add").'</div>
+                <div class="editor-element-extra-margin button button--success js-form-submit form-submit">' . $this->t("Add") . '</div>
               </div>
           </div>
         ',
         ];
 
         //System field to store JSON data
-        $form['colors']['color-data'] = [
+        $form['colors'] = [
             '#type' => 'hidden',
-            '#default-value' => '',
-            '#attributes' => ['id' => ['colors-data-store']],
+            '#attributes' => ['id' => 'colors-data-store', 'data-colors' => $this->configuration['colors']],
         ];
 
         return $form;
@@ -111,9 +101,10 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
     public function validateConfigurationForm(array &$form, FormStateInterface $form_state)
     {
         // Match the config schema structure at ckeditor5.plugin.ckeditor5_colors.
-        $form_value = $form_state->getValue('colors');
+        $colors = json_decode($form_state->getValue('colors') ?? '[]', true);
+        $colors = $this->getValidColors($colors);
 
-        $form_state->setValue('colors', $this->extractColors($form_value));
+        $form_state->setValue('colors', json_encode($colors));
     }
 
     /**
@@ -124,20 +115,6 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
         $this->configuration['colors'] = $form_state->getValue('colors');
     }
 
-    public function extractColors($string)
-    {
-        $colors = explode(",", $string);
-        $colors = array_map(function ($item) {
-            return trim($item);
-        }, $colors);
-
-        return array_filter($colors, function ($item) {
-            $color = explode(':', $item)[0] ?? '';
-            return preg_match('/^#(?:[0-9a-f]{3}){1,2}$/i', $color);
-        });
-
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -145,15 +122,9 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
     public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array
     {
         $data = $this->configuration['colors'];
-        $colors = array_map(function ($data) {
-            $color = explode(':', $data);
-            return [
-                "color" => $color[0],
-                "label" => $color[1] ?? ''
-            ];
-        }, $data);
+        $colors = json_decode($data ?? '[]', true);
 
-        return !!$colors ? [
+        return sizeof($colors) ? [
             'fontColor' => [
                 'colors' => $colors
             ],
@@ -163,6 +134,12 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
         ] : [];
     }
 
+    public function getValidColors($colors): array
+    {
+        return array_filter($colors, function ($clr) {
+            return preg_match('/^#(?:[0-9a-f]{3}){1,2}$/i', $clr['color']);
+        });
+    }
 
     public function getElementsSubset(): array
     {
