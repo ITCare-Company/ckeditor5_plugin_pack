@@ -79,7 +79,7 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
                   <input id="color-label" type="text" maxlength="15" placeholder="Color label"  class="form-text form-element form-element--type-text form-element--api-textfield">
               </div>
               <div class="form-item">
-              <label for="hex" class="form-item__label">&nbsp;</label>
+                <label class="form-item__label form-submit-label">&nbsp;</label>
                 <div class="editor-element-extra-margin button button--success js-form-submit form-submit">' . $this->t("Add") . '</div>
               </div>
           </div>

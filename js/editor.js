@@ -15,7 +15,7 @@
   }
 
   function initModel() {
-    const rawData = $storage.getAttribute('data-colors');
+    const rawData = $storage.getAttribute('data-colors') || '[]';
     let data;
 
     try {
