@@ -27,7 +27,7 @@ function ckeditor_find_help($route_name, RouteMatchInterface $route_match) {
       $output .= '    </ul>';
       $output .= '  </li>';
       $output .= '</ul></p>';
-      $output .= '<p><a href="http://ckeditor.com/addon/find">http://ckeditor.com/addon/find</a></p>';
+      $output .= '<p><a href="https://ckeditor.com/docs/ckeditor5/latest/features/find-and-replace.html">https://ckeditor.com/docs/ckeditor5/latest/features/find-and-replace.html</a></p>';
       return $output;
 
     default:
