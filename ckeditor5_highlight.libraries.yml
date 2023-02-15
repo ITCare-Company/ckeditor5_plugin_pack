@@ -1,0 +1,15 @@
+highlight:
+  js:
+    js/build/highlight.js: { preprocess: false, minified: true }
+  dependencies:
+    - core/ckeditor5
+
+theme:
+  css:
+    theme:
+      css/highlight.css: {}
+
+admin.highlight:
+  css:
+    theme:
+      css/highlight.admin.css: {}
