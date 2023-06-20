@@ -21,6 +21,8 @@ npm package.
 3. Install the npm package: `npm i @ckeditor/ckeditor5-find-and-replace@~35.4.0`
 4. Overwrite the existing directory in the `js` directory with
    `node_modules/@ckeditor/ckeditor5-find-and-replace/build`
+5. Copy the CSS files into the `css` directory from
+   `node_modules/@ckeditor/ckeditor5-find-and-replace/theme`
 
 ## Related Blog Posts
 [Everything you need to know about CKEditor 5 integration for Drupal 9](https://www.qed42.com/insights/coe/drupal/everything-you-need-know-about-ckeditor-5-integration-drupal-9)

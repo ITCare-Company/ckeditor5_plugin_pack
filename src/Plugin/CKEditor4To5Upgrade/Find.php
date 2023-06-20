@@ -3,7 +3,9 @@
 namespace Drupal\ckeditor_find\Plugin\CKEditor4To5Upgrade;
 
 use Drupal\ckeditor5\HTMLRestrictions;
+use Drupal\ckeditor5\Plugin\CKEditor4To5UpgradePluginInterface;
 use Drupal\filter\FilterFormatInterface;
+use Drupal\Core\Plugin\PluginBase;
 
 /**
  * Provides a CKEditor4 to CKEditor5 upgrade path for the Find button.
@@ -20,12 +22,13 @@ use Drupal\filter\FilterFormatInterface;
  *   cke5_plugin_elements_subset_configuration = {
  *   }
  * )
- *
  */
-class Find extends \Drupal\Core\Plugin\PluginBase implements \Drupal\ckeditor5\Plugin\CKEditor4To5UpgradePluginInterface {
+class Find extends PluginBase implements CKEditor4To5UpgradePluginInterface {
+
+// phpcs:disable Drupal.NamingConventions.ValidFunctionNameSniff --inherited
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function mapCKEditor4ToolbarButtonToCKEditor5ToolbarItem(string $cke4_button, HTMLRestrictions $text_format_html_restrictions): ?array {
     $map = [
@@ -40,14 +43,14 @@ class Find extends \Drupal\Core\Plugin\PluginBase implements \Drupal\ckeditor5\P
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function mapCKEditor4SettingsToCKEditor5Configuration(string $cke4_plugin_id, array $cke4_plugin_settings): ?array {
     throw new \OutOfBoundsException();
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function computeCKEditor5PluginSubsetConfiguration(string $cke5_plugin_id, FilterFormatInterface $text_format): ?array {
     throw new \OutOfBoundsException();

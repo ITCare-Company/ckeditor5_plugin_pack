@@ -4,7 +4,7 @@
  */
 
 .ck.ck-find-and-replace-form {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 .ck.ck-find-and-replace-form fieldset {
@@ -15,5 +15,3 @@
 .ck.ck-find-and-replace-form fieldset.ck-find-and-replace-form__find .ck-results-counter {
    position: absolute;
  }
-
-
