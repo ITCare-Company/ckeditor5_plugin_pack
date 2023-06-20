@@ -26,6 +26,9 @@ class FindReplaceTest extends CKEditor5TestBase {
     'ckeditor_find',
   ];
 
+  /**
+   * Verify button and functionality.
+   */
   public function testFindReplacePlugin() {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
@@ -57,7 +60,7 @@ class FindReplaceTest extends CKEditor5TestBase {
       'body' => [
         'value' => '<p>This is the first test content paragraph</p><p>This is the second test content paragraph</p>',
         'format' => 'ckeditor5',
-      ]
+      ],
     ];
     $node = $this->drupalCreateNode($values);
     $this->drupalGet('node/' . $node->id() . '/edit');

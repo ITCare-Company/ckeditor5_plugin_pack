@@ -36,7 +36,7 @@ class Find extends PluginBase implements CKEditor4To5UpgradePluginInterface {
       'Find RTL' => 'findAndReplace',
       'Replace' => 'findAndReplace',
     ];
-    if (key_exists($cke4_button, $map)) {
+    if (array_key_exists($cke4_button, $map)) {
       return [$map[$cke4_button]];
     }
     return NULL;
