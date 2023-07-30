@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="ckeditor5_highlight">
+  <description>PHP CodeSniffer configuration for ckeditor5_highlight.</description>
+
+  <rule ref="./web/core/phpcs.xml.dist"/>
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+</ruleset>

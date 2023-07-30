@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Primary module hooks for CKEditor5 highlight module.
+ */
+
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\editor\EditorInterface;
 use Drupal\text\Plugin\Field\FieldType\TextItemBase;
