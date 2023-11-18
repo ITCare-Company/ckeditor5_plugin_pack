@@ -7,12 +7,12 @@
     "format:css": "stylelint css --fix"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-highlight": "~35.4.0"
+    "@ckeditor/ckeditor5-highlight": "~39.0.0"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^33.0.0",
-    "@ckeditor/ckeditor5-theme-lark": "~35.4.0",
-    "ckeditor5": "~35.4.0",
+    "@ckeditor/ckeditor5-theme-lark": "~39.0.0",
+    "ckeditor5": "~39.0.0",
     "css-loader": "^6.7.3",
     "mini-css-extract-plugin": "^2.7.2",
     "modify-selectors": "^2.0.0",
