@@ -136,6 +136,8 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
 
     public function getValidColors($colors): array
     {
+        if (empty($colors)) return [];
+
         return array_filter($colors, function ($clr) {
             return preg_match('/^#(?:[0-9a-f]{3}){1,2}$/i', $clr['color']);
         });
