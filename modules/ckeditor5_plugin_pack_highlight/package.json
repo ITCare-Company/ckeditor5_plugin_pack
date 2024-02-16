@@ -1,0 +1,28 @@
+{
+  "scripts": {
+    "watch": "webpack --mode development --watch",
+    "build": "webpack",
+    "build:css": "postcss node_modules/@ckeditor/ckeditor5-highlight/theme/highlight.css -d css",
+    "lint": "eslint --ext .js .",
+    "format:css": "stylelint css --fix"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-highlight": "~39.0.0"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-utils": "^33.0.0",
+    "@ckeditor/ckeditor5-theme-lark": "~39.0.0",
+    "ckeditor5": "~39.0.0",
+    "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.2",
+    "modify-selectors": "^2.0.0",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "postcss-loader": "^7.0.2",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.2.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

@@ -1,0 +1,14 @@
+ckeditor5_highlight_highlight:
+  ckeditor5:
+    plugins:
+      - highlight.Highlight
+  drupal:
+    label: Highlight
+    library: ckeditor5_highlight/highlight
+    admin_library: ckeditor5_highlight/admin.highlight
+    toolbar_items:
+      highlight:
+        label: Highlight
+    elements:
+      - <mark>
+      - <mark class="marker-yellow marker-green marker-pink marker-blue pen-red pen-green">
