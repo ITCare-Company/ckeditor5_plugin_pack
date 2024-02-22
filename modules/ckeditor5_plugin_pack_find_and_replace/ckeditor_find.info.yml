@@ -1,7 +1,7 @@
-name: CKEditor Find/Replace
+name: 'CKEditor 5 Find and replace'
 type: module
-description: This plugin module adds the find and replace dialog to CKEditor 5 in Drupal 9 or 10
+description: 'Provides CKEditor 5 Find and replace plugin'
 core_version_requirement: ^9 || ^10
-package: CKEditor
+package: CKEditor 5 Plugin Pack
 dependencies:
   - drupal:ckeditor5

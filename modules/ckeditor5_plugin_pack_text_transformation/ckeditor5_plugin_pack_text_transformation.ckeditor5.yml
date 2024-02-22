@@ -1,0 +1,8 @@
+ckeditor5_plugin_pack_text_transformation__text_transformation:
+  ckeditor5:
+    plugins:
+      - typing.TextTransformation
+  drupal:
+    label: CKEditor 5 Text transformation
+    elements: false
+    library: ckeditor5_plugin_pack_text_transformation/essentials

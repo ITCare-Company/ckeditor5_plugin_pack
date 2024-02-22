@@ -1,7 +1,7 @@
-name: 'CKEditor 5 - Font Plugin (Text Color, Background Color)'
+name: 'CKEditor 5 - Font Plugin'
 type: module
-description: 'Allows to control the text and background color directly inside the CKEditor 5 interface.'
+description: 'Provides CKEditor 5 Font family, size, and color plugins'
+package: CKEditor 5 Plugin Pack
 core_version_requirement: '^8.8 || ^9 || ^10'
-package: 'Devicious'
 dependencies:
   - drupal:ckeditor5
