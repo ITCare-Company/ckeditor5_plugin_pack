@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\Tests\ckeditor_find\FunctionalJavascript;
+namespace Drupal\Tests\ckeditor5_plugin_pack_find_and_replace\FunctionalJavascript;
 
 use Behat\Mink\Element\NodeElement;
 use Drupal\ckeditor5\Plugin\Editor\CKEditor5;
 use Drupal\editor\Entity\Editor;
 use Drupal\filter\Entity\FilterFormat;
-use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\Tests\ckeditor5\FunctionalJavascript\CKEditor5TestBase;
+use Drupal\Tests\ckeditor5\Traits\CKEditor5TestTrait;
 use Drupal\user\RoleInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 

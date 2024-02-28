@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\ckeditor_find\Plugin\CKEditor4To5Upgrade;
+namespace Drupal\ckeditor5_plugin_pack_find_and_replace\Plugin\CKEditor4To5Upgrade;
 
 use Drupal\ckeditor5\HTMLRestrictions;
 use Drupal\ckeditor5\Plugin\CKEditor4To5UpgradePluginInterface;

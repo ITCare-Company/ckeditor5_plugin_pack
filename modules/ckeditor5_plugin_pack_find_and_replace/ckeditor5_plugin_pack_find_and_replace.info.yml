@@ -1,7 +1,7 @@
 name: 'CKEditor 5 Find and replace'
 type: module
 description: 'Provides CKEditor 5 Find and replace plugin'
-core_version_requirement: ^9 || ^10
 package: CKEditor 5 Plugin Pack
+core_version_requirement: ^9.4 || ^10
 dependencies:
-  - drupal:ckeditor5
+  - ckeditor5_plugin_pack:ckeditor5_plugin_pack
