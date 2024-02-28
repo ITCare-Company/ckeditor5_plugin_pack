@@ -1,8 +1,0 @@
-name: CKEditor5 highlight
-type: module
-description: 'Provides CKEditor 5 Highlight plugin'
-package: CKEditor 5 Plugin Pack
-core_version_requirement: ^10.1
-php: 8.1
-dependencies:
-  - drupal:ckeditor5
