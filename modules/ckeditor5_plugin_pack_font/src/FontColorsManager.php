@@ -1,13 +1,12 @@
 <?php
 
-
 declare(strict_types=1);
 
-namespace Drupal\ckeditor5_font;
+namespace Drupal\ckeditor5_plugin_pack_font;
 
+use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableInterface;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableTrait;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
-use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableInterface;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginElementsSubsetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\EditorInterface;
@@ -18,44 +17,38 @@ use Drupal\editor\EditorInterface;
  * @internal
  *   Plugin classes are internal.
  */
-class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5PluginConfigurableInterface, CKEditor5PluginElementsSubsetInterface
-{
+class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5PluginConfigurableInterface, CKEditor5PluginElementsSubsetInterface {
 
-    use CKEditor5PluginConfigurableTrait;
+  use CKEditor5PluginConfigurableTrait;
 
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration(): array {
+    return [
+      'colors' => '[]',
+    ];
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function defaultConfiguration(): array
-    {
-        return [
-            'colors' => '[]'
-        ];
-    }
+  /**
+   * {@inheritdoc}
+   *
+   * Form for choosing which heading tags are available.
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
 
-    /**
-     * {@inheritdoc}
-     *
-     * Form for choosing which heading tags are available.
-     */
-    public function buildConfigurationForm(array $form, FormStateInterface $form_state): array
-    {
+    // Fieldset grouping all the saved colors.
+    $form['color-panel'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Colors'),
+      '#group' => 'saved_colors',
+      '#collapsible' => FALSE,
+      '#attributes' => ['id' => 'ckeditor-ui-colors-panel'],
+    ];
 
-
-        //Fieldset grouping all the saved colors
-        $form['color-panel'] = [
-            '#type' => 'fieldset',
-            '#title' => $this->t('Colors'),
-            '#group' => 'saved_colors',
-            '#collapsible' => false,
-            '#attributes' => ['id' => 'ckeditor-ui-colors-panel'],
-        ];
-
-
-        $form['color-panel']['color-template'] = [
-            '#type' => 'inline_template',
-            '#template' => '
+    $form['color-panel']['color-template'] = [
+      '#type' => 'inline_template',
+      '#template' => '
               <template id="color-template">
                 <div class="color">
                     <div class="delete-action"></div>
@@ -63,12 +56,12 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
                 </div>
               </template>
             ',
-        ];
+    ];
 
-        //Add color form
-        $form['color-add-form'] = [
-            '#type' => 'inline_template',
-            '#template' => '
+    // Add color form.
+    $form['color-add-form'] = [
+      '#type' => 'inline_template',
+      '#template' => '
               <div id="ckeditor-ui-new-color-panel">
                   <div class="form-item">
                       <label for="hex" class="form-item__label">' . $this->t("Color") . '</label>
@@ -84,67 +77,71 @@ class FontColorsManager extends CKEditor5PluginDefault implements CKEditor5Plugi
                   </div>
               </div>
             ',
-        ];
+    ];
+    $default = '[{"color":"hsl(0, 75%, 60%)","label":"RedR"},{"color":"hsl(30, 75%, 60%)","label":"Orange"},{"color":"hsl(60, 75%, 60%)","label":"Yellow"},{"color":"hsl(90, 75%, 60%)","label":"Light green"},{"color":"hsl(120, 75%, 60%)","label":"Green"}]';
+    $configColors = $this->configuration['colors'] ?? $default;
+    // System field to store JSON data.
+    $form['colors'] = [
+      '#type' => 'hidden',
+      '#attributes' => ['id' => 'colors-data-store', 'data-colors' => $configColors],
+    ];
 
-        //System field to store JSON data
-        $form['colors'] = [
-            '#type' => 'hidden',
-            '#attributes' => ['id' => 'colors-data-store', 'data-colors' => $this->configuration['colors']],
-        ];
+    return $form;
+  }
 
-        return $form;
+  /**
+   * {@inheritdoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    // Match the config schema structure at ckeditor5.plugin.ckeditor5_colors.
+    $colors = json_decode($form_state->getValue('colors') ?? '[]', TRUE);
+    $colors = $this->getValidColors($colors);
+
+    $form_state->setValue('colors', json_encode($colors));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+    $this->configuration['colors'] = $form_state->getValue('colors');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
+    $data = $this->configuration['colors'];
+    $colors = json_decode($data ?? '[]', TRUE);
+
+    return sizeof($colors) ? [
+      'fontColor' => [
+        'colors' => $colors,
+      ],
+      'fontBackgroundColor' => [
+        'colors' => $colors,
+      ],
+    ] : [];
+  }
+
+  /**
+   *
+   */
+  public function getValidColors($colors): array {
+    if (empty($colors)) {
+      return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validateConfigurationForm(array &$form, FormStateInterface $form_state)
-    {
-        // Match the config schema structure at ckeditor5.plugin.ckeditor5_colors.
-        $colors = json_decode($form_state->getValue('colors') ?? '[]', true);
-        $colors = $this->getValidColors($colors);
+    return array_filter($colors, function ($clr) {
+        return preg_match('/^#(?:[0-9a-f]{3}){1,2}$/i', $clr['color']);
+    });
+  }
 
-        $form_state->setValue('colors', json_encode($colors));
-    }
+  /**
+   *
+   */
+  public function getElementsSubset(): array {
+    return ['<p>'];
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function submitConfigurationForm(array &$form, FormStateInterface $form_state)
-    {
-        $this->configuration['colors'] = $form_state->getValue('colors');
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     */
-    public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array
-    {
-        $data = $this->configuration['colors'];
-        $colors = json_decode($data ?? '[]', true);
-
-        return sizeof($colors) ? [
-            'fontColor' => [
-                'colors' => $colors
-            ],
-            'fontBackgroundColor' => [
-                'colors' => $colors
-            ]
-        ] : [];
-    }
-
-    public function getValidColors($colors): array
-    {
-        if (empty($colors)) return [];
-
-        return array_filter($colors, function ($clr) {
-            return preg_match('/^#(?:[0-9a-f]{3}){1,2}$/i', $clr['color']);
-        });
-    }
-
-    public function getElementsSubset(): array
-    {
-        return ['<p>'];
-    }
 }

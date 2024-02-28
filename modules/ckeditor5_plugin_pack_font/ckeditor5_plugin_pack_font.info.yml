@@ -1,7 +1,7 @@
-name: 'CKEditor 5 - Font Plugin'
+name: 'CKEditor 5 Font Plugin'
 type: module
 description: 'Provides CKEditor 5 Font family, size, and color plugins'
 package: CKEditor 5 Plugin Pack
-core_version_requirement: '^8.8 || ^9 || ^10'
+core_version_requirement: ^9.4 || ^10
 dependencies:
-  - drupal:ckeditor5
+  - ckeditor5_plugin_pack:ckeditor5_plugin_pack

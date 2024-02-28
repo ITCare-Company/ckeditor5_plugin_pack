@@ -1,0 +1,13 @@
+admin.font:
+  version: 20240213
+  css:
+    theme:
+      css/font.admin.css: { }
+
+admin.font_color:
+  version: 20240227
+  js:
+    js/admin-font-color.js: { preprocess: false, minified: true }
+  css:
+    base:
+      css/editor.css: { }

@@ -1,0 +1,7 @@
+ckeditor5.plugin.ckeditor5_plugin_pack_font__font_color:
+  type: mapping
+  label: Font Colors
+  mapping:
+    colors:
+      type: string
+      label: 'Font Colors'
