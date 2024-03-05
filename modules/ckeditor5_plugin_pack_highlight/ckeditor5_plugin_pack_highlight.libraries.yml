@@ -1,0 +1,4 @@
+admin.highlight:
+  css:
+    theme:
+      css/highlight.admin.css: {}

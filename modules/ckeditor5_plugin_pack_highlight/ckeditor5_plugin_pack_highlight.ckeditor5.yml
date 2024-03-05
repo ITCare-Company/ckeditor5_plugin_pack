@@ -1,11 +1,11 @@
-ckeditor5_highlight_highlight:
+ckeditor5_plugin_pack_highlight__highlight:
   ckeditor5:
     plugins:
       - highlight.Highlight
   drupal:
     label: Highlight
-    library: ckeditor5_highlight/highlight
-    admin_library: ckeditor5_highlight/admin.highlight
+    library: ckeditor5_plugin_pack_highlight/highlight
+    admin_library: ckeditor5_plugin_pack_highlight/admin.highlight
     toolbar_items:
       highlight:
         label: Highlight
