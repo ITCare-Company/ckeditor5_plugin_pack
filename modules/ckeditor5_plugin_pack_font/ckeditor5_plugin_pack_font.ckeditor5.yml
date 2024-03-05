@@ -15,9 +15,8 @@ ckeditor5_plugin_pack_font__font_color:
   drupal:
     label: Font Colors
     elements:
-      - <p>
-    admin_library: ckeditor5_plugin_pack_font/admin.font_color
-    class: Drupal\ckeditor5_plugin_pack_font\FontColorsManager
+      - <span style>
+    class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontColor
     toolbar_items:
       fontColor:
         label: Color
@@ -52,3 +51,4 @@ ckeditor5_plugin_pack_font__font_size:
     conditions:
       plugins:
         - ckeditor5_plugin_pack_font__font
+
