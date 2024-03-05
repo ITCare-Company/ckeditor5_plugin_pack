@@ -30,7 +30,8 @@ ckeditor5_plugin_pack_font__font_family:
       - font.FontFamily
   drupal:
     label: CKEditor 5 Font family
-    elements: false
+    elements:
+      - <span style>
     toolbar_items:
       fontFamily:
         label: Font family
@@ -44,7 +45,8 @@ ckeditor5_plugin_pack_font__font_size:
       - font.FontSize
   drupal:
     label: CKEditor 5 Font size
-    elements: false
+    elements:
+      - <span style>
     toolbar_items:
       fontSize:
         label: Font size
