@@ -4,3 +4,12 @@ ckeditor5.plugin.ckeditor5_plugin_pack_font__font_size:
   mapping:
     options:
       type: string
+
+ckeditor5.plugin.ckeditor5_plugin_pack_font__font_family:
+  type: mapping
+  label: 'Font Family'
+  mapping:
+    options:
+      type: string
+    support_all_values:
+      type: boolean
