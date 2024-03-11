@@ -54,11 +54,12 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
     $form['options'] = [
       '#title' => $this->t('Options'),
       '#type' => 'textarea',
-      '#description' => $this->t('A list of sizes (in px) that will be provided in the "Font Size" dropdown. Enter one or more values. Note that "default" is controlled by the default styles of the web page<br /> Example:<br />
-                11<br />
+      '#description' => $this->t('A list of sizes (in px) that will be provided in the "Font Size" dropdown. Enter one or more values. Note that "default" is controlled by the default styles of the web page.<br /><br />
+            <b>Example:</b><br />
+            <code>11<br />
                 13<br />
                 default<br />
-                17'),
+                17</code>'),
       '#default_value' => $this->configuration['options'],
     ];
     return $form;
@@ -91,22 +92,22 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    *   Array of values.
    */
   private function getParsedOptions(?string $options): array {
+    $returnOptions = [];
+    $badValues = [];
     if ($options) {
       $options = explode("\n", $options);
-      $returnOptions = [];
-      $badValues = [];
       foreach ($options as $option) {
-        if (empty(trim($option))) {
+        $trimmedOption = trim($option);
+        if (empty($trimmedOption)) {
           continue;
         }
-        if (!is_numeric($option) && $option !== 'default') {
-          $badValues[] = $option;
+        if (!is_numeric($trimmedOption) && $trimmedOption !== 'default') {
+          $badValues[] = $trimmedOption;
         }
-        $returnOptions[] = trim($option);
+        $returnOptions[] = $trimmedOption;
       }
-      return [$returnOptions, $badValues];
     }
-    return [];
+    return [$returnOptions, $badValues];
   }
 
 }
