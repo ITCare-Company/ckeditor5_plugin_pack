@@ -4,5 +4,6 @@ ckeditor5_plugin_pack_text_transformation__text_transformation:
       - typing.TextTransformation
   drupal:
     label: CKEditor 5 Text transformation
+    class: Drupal\ckeditor5_plugin_pack_text_transformation\Plugin\CKEditor5Plugin\TextTransformation
     elements: false
     library: ckeditor5_plugin_pack_text_transformation/essentials
