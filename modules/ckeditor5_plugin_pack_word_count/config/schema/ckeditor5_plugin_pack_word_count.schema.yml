@@ -1,4 +1,4 @@
-ckeditor5.plugin.ckeditor5_plugin_pack_word_count:
+ckeditor5.plugin.ckeditor5_plugin_pack_word_count__word_count:
   type: mapping
   label: 'Word Count'
   mapping:
