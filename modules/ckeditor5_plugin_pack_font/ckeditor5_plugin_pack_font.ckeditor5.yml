@@ -45,6 +45,7 @@ ckeditor5_plugin_pack_font__font_size:
       - font.FontSize
   drupal:
     label: CKEditor 5 Font size
+    class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontSize
     elements:
       - <span style>
     toolbar_items:
