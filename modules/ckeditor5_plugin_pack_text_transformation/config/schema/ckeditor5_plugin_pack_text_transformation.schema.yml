@@ -1,0 +1,27 @@
+ckeditor5.plugin.ckeditor5_plugin_pack_text_transformation__text_transformation:
+  type: mapping
+  label: 'Text Transformation'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enabled'
+    extra_transformations:
+      type: string
+      label: 'Extra transformations'
+    groups:
+      type: sequence
+      label: 'Transformations groups'
+      mapping:
+        enabled:
+          type: boolean
+          label: 'Enabled'
+        transformations:
+          type: sequence
+          mapping:
+            transformation:
+              type: string
+              label: 'Transformation'
+            enabled:
+              type: boolean
+              label: 'Enabled'
+
