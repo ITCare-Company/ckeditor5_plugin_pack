@@ -10,7 +10,7 @@ ckeditor5_plugin_pack_highlight__highlight:
     admin_library: ckeditor5_plugin_pack_highlight/admin.highlight
     toolbar_items:
       highlight:
-        label: Highlight
+        label: CKEditor 5 Highlight
     elements:
       - <mark>
       - <mark class>
