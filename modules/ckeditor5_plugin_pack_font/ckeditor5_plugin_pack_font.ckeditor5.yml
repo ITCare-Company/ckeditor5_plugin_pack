@@ -7,7 +7,11 @@ ckeditor5_plugin_pack_font__font:
     elements: false
     library: ckeditor5_plugin_pack_font/font
     admin_library: ckeditor5_plugin_pack_font/admin.font
-
+    conditions:
+      plugins:
+        - ckeditor5_plugin_pack_font__font_color
+        - ckeditor5_plugin_pack_font__font_family
+        - ckeditor5_plugin_pack_font__font_size
 
 ckeditor5_plugin_pack_font__font_color:
   ckeditor5:
@@ -36,9 +40,6 @@ ckeditor5_plugin_pack_font__font_family:
     toolbar_items:
       fontFamily:
         label: Font family
-    conditions:
-      plugins:
-        - ckeditor5_plugin_pack_font__font
 
 ckeditor5_plugin_pack_font__font_size:
   ckeditor5:
@@ -52,7 +53,4 @@ ckeditor5_plugin_pack_font__font_size:
     toolbar_items:
       fontSize:
         label: Font size
-    conditions:
-      plugins:
-        - ckeditor5_plugin_pack_font__font
 
