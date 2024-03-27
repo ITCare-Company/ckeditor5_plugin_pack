@@ -4,8 +4,28 @@
  */
 
 import { Plugin } from 'ckeditor5/src/core';
+
 export default class DrupalPoweredBy extends Plugin {
+
   static get pluginName() {
     return 'drupalPoweredBy'
+  }
+
+  init() {
+    const editor = this.editor;
+    if (editor.config._config.drupalPoweredBy) {
+
+      if (!editor.config._config.ui) {
+        editor.config._config.ui = {
+          poweredBy: {
+            forceVisible: true
+          }
+        }
+      } else {
+        editor.config._config.ui.poweredBy = {
+          forceVisible: true
+        }
+      }
+    }
   }
 }
