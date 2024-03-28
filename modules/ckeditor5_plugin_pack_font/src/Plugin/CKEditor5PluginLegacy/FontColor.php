@@ -188,8 +188,12 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       $backgroundColors = array_merge($backgroundColors, $defaultMarkers);
     }
     // array_values() to make sure that we pass indexed array.
-    $static_plugin_config['fontColor']['colors'] = array_values($fontColors);
-    $static_plugin_config['fontBackgroundColor']['colors'] = array_values($backgroundColors);
+    if (!empty($fontColors)) {
+      $static_plugin_config['fontColor']['colors'] = array_values($fontColors);
+    }
+    if (!empty($backgroundColors)) {
+      $static_plugin_config['fontBackgroundColor']['colors'] = array_values($backgroundColors);
+    }
     return $static_plugin_config;
   }
 
