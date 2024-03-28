@@ -19,7 +19,7 @@ ckeditor5_plugin_pack_font__font_color:
   drupal:
     label: Font Colors
     elements:
-      - <span style>
+      - <span>
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontColor
     toolbar_items:
       fontColor:
@@ -36,7 +36,7 @@ ckeditor5_plugin_pack_font__font_family:
     label: CKEditor 5 Font family
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontFamily
     elements:
-      - <span style>
+      - <span>
     toolbar_items:
       fontFamily:
         label: Font family
@@ -49,7 +49,7 @@ ckeditor5_plugin_pack_font__font_size:
     label: CKEditor 5 Font size
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontSize
     elements:
-      - <span style>
+      - <span>
     toolbar_items:
       fontSize:
         label: Font size
