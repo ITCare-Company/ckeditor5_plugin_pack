@@ -185,8 +185,10 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       $defaultMarkers = $this->getDefaultMarkers();
       $markers = array_merge($markers, $defaultMarkers);
     }
-    // array_values() to make sure that we pass indexed array.
-    $static_plugin_config['highlight']['options'] = array_values($markers);
+    if (!empty($markers)) {
+      // array_values() to make sure that we pass indexed array.
+      $static_plugin_config['highlight']['options'] = array_values($markers);
+    }
 
     return $static_plugin_config;
   }
