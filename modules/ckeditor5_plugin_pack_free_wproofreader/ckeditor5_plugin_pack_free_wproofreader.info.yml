@@ -1,6 +1,6 @@
-name: CKEditor 5 WProofreader free trial
+name: CKEditor 5 Free WProofreader
 type: module
-description: "Provides CKEditor 5 WProofreader with free trial license"
+description: "Provides CKEditor 5 WProofreader with free license"
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:

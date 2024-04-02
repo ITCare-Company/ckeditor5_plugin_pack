@@ -1,4 +1,4 @@
-name: 'CKEditor 5 Font Plugins'
+name: CKEditor 5 Font Plugins
 type: module
 description: 'Provides CKEditor 5 Font family, size, and color plugins'
 package: CKEditor 5 Plugin Pack
