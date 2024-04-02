@@ -3,7 +3,7 @@ ckeditor5_plugin_pack_font__font:
     plugins:
       - font.Font
   drupal:
-    label: CKEditor 5 Font
+    label: Font
     elements: false
     library: ckeditor5_plugin_pack_font/font
     admin_library: ckeditor5_plugin_pack_font/admin.font
@@ -17,7 +17,7 @@ ckeditor5_plugin_pack_font__font_color:
   ckeditor5:
     plugins: [font.FontColor, font.FontBackgroundColor]
   drupal:
-    label: CKEditor 5 Font Colors
+    label: Font colors
     elements:
       - <span>
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontColor
@@ -33,7 +33,7 @@ ckeditor5_plugin_pack_font__font_family:
     plugins:
       - font.FontFamily
   drupal:
-    label: CKEditor 5 Font family
+    label: Font family
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontFamily
     elements:
       - <span>
@@ -46,7 +46,7 @@ ckeditor5_plugin_pack_font__font_size:
     plugins:
       - font.FontSize
   drupal:
-    label: CKEditor 5 Font size
+    label: Font size
     class: Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5Plugin\FontSize
     elements:
       - <span>

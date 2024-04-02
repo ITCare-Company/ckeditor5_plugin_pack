@@ -3,7 +3,7 @@ ckeditor5_plugin_pack_find_and_replace__find_and_replace:
     plugins:
       - findAndReplace.FindAndReplace
   drupal:
-    label: CKEditor 5 Find and replace
+    label: Find and replace
     elements: false
     library: ckeditor5_plugin_pack_find_and_replace/find-and-replace
     admin_library: ckeditor5_plugin_pack_find_and_replace/admin.find_and_replace

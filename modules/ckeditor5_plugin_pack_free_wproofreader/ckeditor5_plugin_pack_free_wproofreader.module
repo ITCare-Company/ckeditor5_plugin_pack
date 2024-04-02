@@ -33,8 +33,8 @@ function ckeditor5_plugin_pack_free_wproofreader_ckeditor5_plugin_info_alter(arr
  */
 function ckeditor5_plugin_pack_free_wproofreader_form_ckeditor5_premium_features_wproofreader_settings_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $form['trial_info'] = [
-    '#markup' => t('You are currently using free trial version of WProofreader. <br />
-                    To use premium license, uninstall CKEditor 5 WProofreader free trial module'),
+    '#markup' => t('You are currently using free version of WProofreader. <br />
+                    To use premium license, uninstall CKEditor 5 Free WProofreader module, then you will be able to configure your license and settings on this page.'),
   ];
   unset($form['service_id']);
   unset($form['language_container']);

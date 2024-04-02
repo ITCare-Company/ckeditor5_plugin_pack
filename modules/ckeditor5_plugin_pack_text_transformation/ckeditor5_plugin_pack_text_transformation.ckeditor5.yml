@@ -3,7 +3,7 @@ ckeditor5_plugin_pack_text_transformation__text_transformation:
     plugins:
       - typing.TextTransformation
   drupal:
-    label: CKEditor 5 Text transformation
+    label: Text transformation
     class: Drupal\ckeditor5_plugin_pack_text_transformation\Plugin\CKEditor5Plugin\TextTransformation
     elements: false
     library: ckeditor5_plugin_pack_text_transformation/essentials
