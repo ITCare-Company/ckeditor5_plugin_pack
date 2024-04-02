@@ -31,7 +31,7 @@ class WordCount extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $config = $static_plugin_config;
 
-    if ($this->configuration['word_count_enabled'] === 0) {
+    if ($this->configuration['word_count_enabled'] === FALSE) {
       $config['removePlugins'] = ['WordCount', 'WordCountAdapter'];
       return $config;
     }
