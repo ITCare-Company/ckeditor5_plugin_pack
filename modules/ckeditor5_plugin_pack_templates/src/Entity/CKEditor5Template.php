@@ -36,7 +36,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     }
  *   },
  *   config_prefix = "ckeditor5_template",
- *   admin_permission = "administer ckeditor5 productivity pack templates",
+ *   admin_permission = "administer ckeditor5 templates",
  *   links = {
  *     "collection" = "/admin/config/ckeditor5-templates/content-templates",
  *     "add-form" = "/admin/config/ckeditor5-templates/content-templates/add",
