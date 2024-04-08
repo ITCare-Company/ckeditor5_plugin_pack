@@ -35,6 +35,9 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
     if (!empty($options)) {
       $static_plugin_config['fontSize']['options'] = $options;
     }
+
+    $static_plugin_config['fontSize']['supportAllValues'] = $this->configuration['support_all_values'];
+
     return $static_plugin_config;
   }
 
@@ -44,6 +47,7 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
   public function defaultConfiguration(): array {
     return [
       'options' => '',
+      'support_all_values' => FALSE,
     ];
   }
 
@@ -62,6 +66,16 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
                 17</code>'),
       '#default_value' => $this->configuration['options'],
     ];
+
+    $form['support_all_values'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Support all values'),
+      '#description' => $this->t('
+      If you use <b><code>Limit allowed HTML tags and correct faulty HTML</code></b> filter, by default, all <code>font-size</code> values that are not specified in the font size options are stripped.<br />
+      You can enable support for all font sizes by selecting the checkbox'),
+      '#default_value' => $this->configuration['support_all_values'],
+    ];
+
     return $form;
   }
 
@@ -80,6 +94,7 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $this->configuration['options'] = $form_state->getValue('options');
+    $this->configuration['support_all_values'] = $form_state->getValue('support_all_values');
   }
 
   /**
