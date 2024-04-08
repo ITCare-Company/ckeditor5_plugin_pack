@@ -1,7 +1,7 @@
 {
-  "name": "ckeditor5-premium-features",
+  "name": "ckeditor5-plugin-pack",
   "version": "1.0.0",
-  "description": "Drupal CKEditor 5 Premium Features integration",
+  "description": "Drupal CKEditor 5 Plugin Pack integration",
   "author": "",
   "license": "GPL-2.0-or-later",
   "scripts": {

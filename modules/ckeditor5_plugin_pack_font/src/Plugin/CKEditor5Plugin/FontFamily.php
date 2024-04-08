@@ -75,7 +75,7 @@ Enter one or more values (one value = one line). Note that "default" is controll
       '#type' => 'checkbox',
       '#title' => $this->t('Support all values'),
       '#description' => $this->t('
-      By default, the plugin removes any <code>font-family</code> value that does not match the plugin\'s configuration.<br />
+      If you use <b><code>Limit allowed HTML tags and correct faulty HTML</code></b> filter, by default the plugin removes any <code>font-family</code> value that does not match the plugin\'s configuration.<br />
       It means that if you paste content with font families that the editor does not understand,
       the font-family attribute will be removed and the content will be displayed with the default font.<br />
       You can preserve pasted font family values by selecting the checkbox'),
