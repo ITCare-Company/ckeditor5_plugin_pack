@@ -89,10 +89,12 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
         '#title' => ucfirst($key),
         '#open' => TRUE,
       ];
+      $defaultGroupValue = !($key === 'misc');
+
       $group["enabled"] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Enable @group_name group', ['@group_name' => ucfirst($key)]),
-        '#default_value' => $this->configuration['groups'][$key]['enabled'] ?? TRUE,
+        '#default_value' => $this->configuration['groups'][$key]['enabled'] ?? $defaultGroupValue,
         '#attributes' => [
           "data-editor-text-transformation_{$key}_enabled" => 'status',
         ],
@@ -117,7 +119,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
         $group['transformations'][$tkey] = [
           '#type' => 'checkbox',
           '#title' => "<code>" . $tkey . "</code>: " . $transformation,
-          '#default_value' => $this->configuration['groups'][$key]['transformations'][$tkey]['enabled'] ?? TRUE,
+          '#default_value' => $this->configuration['groups'][$key]['transformations'][$tkey]['enabled'] ?? $defaultGroupValue,
           '#ajax' => FALSE,
         ];
       }
@@ -163,17 +165,34 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
    * {@inheritdoc}
    */
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
+    if (!$this->configuration['enabled']) {
+      $static_plugin_config['removePlugins'] = ['TextTransformation'];
+      return $static_plugin_config;
+    }
+
     $transformationsGroups = $this->configuration['groups'];
     $extraTransformations = $this->configuration['extra_transformations'];
-    $disabledGroups = array_filter($transformationsGroups, fn($group) => !$group['enabled']);
 
-    $static_plugin_config['typing']['transformations']['remove'] = array_keys($disabledGroups);
-    if ($extraTransformations) {
-      [$extraValues] = $this->getParsedTransformations($extraTransformations);
+    $enabledTransformations = [];
+    foreach ($transformationsGroups as $groupName => $group) {
+      if (!$group['enabled'] && $groupName !== 'misc') {
+        continue;
+      }
+      $disabledTransformations = array_filter($group['transformations'], fn($t) => !$t['enabled']);
+      if (empty($disabledTransformations) && $groupName !== 'misc') {
+        $enabledTransformations[] = $groupName;
+        continue;
+      }
+
+      $keys = array_keys(array_diff_key($group['transformations'], $disabledTransformations));
+      $enabledTransformations = array_merge($enabledTransformations, $keys);
     }
-    if (!empty($extraValues)) {
-      $static_plugin_config['typing']['transformations']['extra'] = $extraValues;
-    }
+
+    [$extraValues] = $this->getParsedTransformations($extraTransformations);
+    $include = array_merge($enabledTransformations, $extraValues);
+
+    $static_plugin_config['typing']['transformations']['include'] = $include;
+
     return $static_plugin_config;
   }
 
