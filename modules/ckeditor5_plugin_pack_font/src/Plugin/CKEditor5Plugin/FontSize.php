@@ -69,7 +69,7 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    [$wrongValues] = $this->getParsedOptions($form_state->getValue('options'));
+    [, $wrongValues] = $this->getParsedOptions($form_state->getValue('options'));
     if (!empty($wrongValues)) {
       $form_state->setError($form['options'], 'Unacceptable values provided for the CKEditor 5 Font Size plugin.');
     }
