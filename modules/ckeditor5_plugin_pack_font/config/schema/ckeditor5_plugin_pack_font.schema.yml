@@ -4,8 +4,6 @@ ckeditor5.plugin.ckeditor5_plugin_pack_font__font_size:
   mapping:
     options:
       type: string
-    support_all_values:
-      type: boolean
 
 ckeditor5.plugin.ckeditor5_plugin_pack_font__font_family:
   type: mapping
@@ -13,8 +11,6 @@ ckeditor5.plugin.ckeditor5_plugin_pack_font__font_family:
   mapping:
     options:
       type: string
-    support_all_values:
-      type: boolean
 
 ckeditor5.plugin.ckeditor5_plugin_pack_font__font_color:
   type: mapping

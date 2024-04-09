@@ -35,9 +35,6 @@ class FontFamily extends CKEditor5PluginDefault implements CKEditor5PluginConfig
     if (!empty($options)) {
       $static_plugin_config['fontFamily']['options'] = $options;
     }
-
-    $static_plugin_config['fontFamily']['supportAllValues'] = $this->configuration['support_all_values'];
-
     return $static_plugin_config;
   }
 
@@ -47,7 +44,6 @@ class FontFamily extends CKEditor5PluginDefault implements CKEditor5PluginConfig
   public function defaultConfiguration(): array {
     return [
       'options' => '',
-      'support_all_values' => FALSE,
     ];
   }
 
@@ -70,18 +66,6 @@ Enter one or more values (one value = one line). Note that "default" is controll
                 Ubuntu Mono, Courier New, Courier, monospace<br /></code>'),
       '#default_value' => $this->configuration['options'],
     ];
-
-    $form['support_all_values'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Support all values'),
-      '#description' => $this->t('
-      If you use <b><code>Limit allowed HTML tags and correct faulty HTML</code></b> filter, by default the plugin removes any <code>font-family</code> value that does not match the plugin\'s configuration.<br />
-      It means that if you paste content with font families that the editor does not understand,
-      the font-family attribute will be removed and the content will be displayed with the default font.<br />
-      You can preserve pasted font family values by selecting the checkbox'),
-      '#default_value' => $this->configuration['support_all_values'],
-    ];
-
     return $form;
   }
 
@@ -89,8 +73,8 @@ Enter one or more values (one value = one line). Note that "default" is controll
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    [, $badValues] = $this->getParsedOptions($form_state->getValue('options'));
-    if (!empty($badValues)) {
+    [, $wrongValues] = $this->getParsedOptions($form_state->getValue('options'));
+    if (!empty($wrongValues)) {
       $form_state->setError($form['options'], 'Unacceptable values provided for the CKEditor 5 Font Family plugin.');
     }
   }
@@ -100,7 +84,6 @@ Enter one or more values (one value = one line). Note that "default" is controll
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $this->configuration['options'] = $form_state->getValue('options');
-    $this->configuration['support_all_values'] = $form_state->getValue('support_all_values');
   }
 
   /**
@@ -114,7 +97,7 @@ Enter one or more values (one value = one line). Note that "default" is controll
    */
   private function getParsedOptions(?string $options): array {
     $returnOptions = [];
-    $badValues = [];
+    $wrongValues = [];
     if ($options) {
       $regex = '/\b\w+\b,\s*\b\w+\b/';
       $options = explode("\n", $options);
@@ -124,12 +107,12 @@ Enter one or more values (one value = one line). Note that "default" is controll
           continue;
         }
         if (!preg_match($regex, $trimmedOption) && $trimmedOption !== 'default') {
-          $badValues[] = $trimmedOption;
+          $wrongValues[] = $trimmedOption;
         }
         $returnOptions[] = $trimmedOption;
       }
     }
-    return [$returnOptions, $badValues];
+    return [$returnOptions, $wrongValues];
   }
 
 }

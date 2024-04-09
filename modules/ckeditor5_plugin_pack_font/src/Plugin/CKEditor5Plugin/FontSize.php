@@ -35,9 +35,6 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
     if (!empty($options)) {
       $static_plugin_config['fontSize']['options'] = $options;
     }
-
-    $static_plugin_config['fontSize']['supportAllValues'] = $this->configuration['support_all_values'];
-
     return $static_plugin_config;
   }
 
@@ -47,7 +44,6 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
   public function defaultConfiguration(): array {
     return [
       'options' => '',
-      'support_all_values' => FALSE,
     ];
   }
 
@@ -66,17 +62,6 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
                 17</code>'),
       '#default_value' => $this->configuration['options'],
     ];
-
-    $form['support_all_values'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Support all values'),
-      '#description' => $this->t('
-      If you use <b><code>Limit allowed HTML tags and correct faulty HTML</code></b> filter, by default, all <code>font-size</code> values that are not specified in the font size options are stripped.<br />
-      You can enable support for all font sizes by selecting the checkbox <br />
-      <b>Note: This option can only be used with numerical values as font size options.</b>'),
-      '#default_value' => $this->configuration['support_all_values'],
-    ];
-
     return $form;
   }
 
@@ -84,14 +69,10 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    [$validValues, $badValues] = $this->getParsedOptions($form_state->getValue('options'));
-    if (!empty($badValues)) {
+    [$wrongValues] = $this->getParsedOptions($form_state->getValue('options'));
+    if (!empty($wrongValues)) {
       $form_state->setError($form['options'], 'Unacceptable values provided for the CKEditor 5 Font Size plugin.');
     }
-    if (empty($validValues) && $form_state->getValue('support_all_values')) {
-      $form_state->setError($form['options'], 'Support all values can be used only with list of sizes (in px).');
-    }
-
   }
 
   /**
@@ -99,7 +80,6 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $this->configuration['options'] = $form_state->getValue('options');
-    $this->configuration['support_all_values'] = $form_state->getValue('support_all_values');
   }
 
   /**
@@ -113,7 +93,7 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    */
   private function getParsedOptions(?string $options): array {
     $returnOptions = [];
-    $badValues = [];
+    $wrongValues = [];
     if ($options) {
       $options = explode("\n", $options);
       foreach ($options as $option) {
@@ -122,12 +102,12 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
           continue;
         }
         if (!is_numeric($trimmedOption) && $trimmedOption !== 'default') {
-          $badValues[] = $trimmedOption;
+          $wrongValues[] = $trimmedOption;
         }
         $returnOptions[] = $trimmedOption;
       }
     }
-    return [$returnOptions, $badValues];
+    return [$returnOptions, $wrongValues];
   }
 
 }
