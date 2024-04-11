@@ -25,3 +25,7 @@
 .ck.ck-word-count div span {
   color: initial;
 }
+
+.ck-word-count-hide-element {
+  display: none;
+}

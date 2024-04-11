@@ -31,8 +31,19 @@ class WordCountAdapter {
         characterCount.innerText = stats.characters;
       }
     });
+
+    if (this.editor.plugins.has('SourceEditing')) {
+      const sourceEditing = this.editor.plugins.get('SourceEditing')
+      sourceEditing.on('change:isSourceEditingMode', (eventInfo, name, value) => {
+        if (value === true) {
+          this.wordCountWrapper.classList.add('ck-word-count-hide-element');
+        } else {
+          this.wordCountWrapper.classList.remove('ck-word-count-hide-element');
+        }
+      })
+    }
   }
-  
+
   wrapNumber(str) {
     const regex = /(\d+)/ig;
     return str.replace(regex, '<span>$1</span>')
