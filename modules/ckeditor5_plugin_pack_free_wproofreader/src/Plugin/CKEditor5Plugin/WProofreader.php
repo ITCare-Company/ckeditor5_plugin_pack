@@ -22,14 +22,14 @@ final class WProofreader extends CKEditor5PluginDefault {
    *
    * @var string
    */
-  private readonly string $serviceId;
+  private string $serviceId;
 
   /**
    * Default wscbundle url.
    *
    * @var string
    */
-  private readonly string $bundleUrl;
+  private string $bundleUrl;
 
   /**
    * {@inheritdoc}
