@@ -74,15 +74,15 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         '#default_value' => $option['color'] ?? '',
       ];
       $form['custom_colors_wrapper'][$colorId]['type'] = [
-        '#type' => 'select',
+        '#type' => 'checkboxes',
         '#title' => 'Type',
-        '#multiple' => TRUE,
         '#options' => [
           'font' => 'Font Color',
           'background' => 'Background Color',
         ],
         '#default_value' => $option['type'],
         '#ajax' => FALSE,
+        '#required' => TRUE
       ];
       $form['custom_colors_wrapper'][$colorId]['delete'] = [
         '#type' => 'submit',
@@ -178,8 +178,8 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $colors = $this->configuration['colors'];
 
-    $fontColors = array_filter($colors, fn($color) => isset($color['type']['font']) );
-    $backgroundColors = array_filter($colors, fn($color) => isset($color['type']['background']) );
+    $fontColors = array_filter($colors, fn($color) => !empty($color['type']['font']));
+    $backgroundColors = array_filter($colors, fn($color) => !empty($color['type']['background']));
 
     $useDefaultColors = $this->configuration['use_default_colors'];
     if (!empty($colors) && $useDefaultColors) {
