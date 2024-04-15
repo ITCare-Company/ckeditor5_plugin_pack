@@ -42,7 +42,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
 
     $form['use_default_markers'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use CKEditor5 default marker'),
+      '#title' => $this->t('Use CKEditor5 default markers'),
       '#description' => $this->t('Default CKEditor5 markers will be available with custom added markers.'),
       '#default_value' => $this->configuration['use_default_markers'] ?? TRUE,
     ];

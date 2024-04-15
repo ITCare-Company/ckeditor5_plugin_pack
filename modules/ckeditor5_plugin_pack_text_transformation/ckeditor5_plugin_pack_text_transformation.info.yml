@@ -1,6 +1,6 @@
 name: CKEditor 5 Text Transformation
 type: module
-description: "Provides CKEditor 5 Text transformation plugin"
+description: "Provides CKEditor 5 Text Transformation plugin."
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:

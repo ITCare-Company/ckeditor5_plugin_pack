@@ -1,6 +1,6 @@
 name: CKEditor 5 Font Plugins
 type: module
-description: 'Provides CKEditor 5 Font family, size, and color plugins'
+description: 'Provides CKEditor 5 Font Family, Size, and Color plugins.'
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:
