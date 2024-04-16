@@ -82,7 +82,6 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         ],
         '#default_value' => $option['type'],
         '#ajax' => FALSE,
-        '#required' => TRUE
       ];
       $form['custom_colors_wrapper'][$colorId]['delete'] = [
         '#type' => 'submit',
@@ -102,7 +101,6 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $form['custom_colors_wrapper']['add_custom_marker'] = [
       '#type' => 'submit',
       '#value' => 'Add Color',
-      '#id' => 'cke5-color-add',
       '#submit' => [[$this, 'addCustomColor']],
       '#ajax' => [
         'callback' => [$this, 'refreshColorsCallback'],
@@ -127,6 +125,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
 
   /**
    * Remove handler.
+   *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
@@ -149,6 +148,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
    * @return array
    */
   public function refreshColorsCallback(array &$form, FormStateInterface $form_state): array {
@@ -160,6 +160,21 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
+    $trigger = $form_state->getTriggeringElement();
+    if (str_contains($trigger['#id'], 'plugins-ckeditor5-plugin-pack-font-font-color-custom-colors-wrapper')) {
+      return;
+    }
+    $values = $form_state->getValues();
+    $customColors = $values['custom_colors_wrapper'];
+    // Remove add button from array.
+    unset($customColors['add_custom_marker']);
+    foreach ($customColors as $key => $color) {
+      $type = array_filter($color['type'], fn($x) => !empty($x));
+      if (empty($type)) {
+        $element = $form['custom_colors_wrapper'][$key]['type'];
+        $form_state->setError($element, $this->t('Font colors: Color type is required.'));
+      }
+    }
 
   }
 
@@ -207,65 +222,65 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     return [
         [
           'color' => 'hsl(0, 0%, 0%)',
-          'label' => 'Black'
+          'label' => 'Black',
         ],
         [
           'color' => 'hsl(0, 0%, 30%)',
-          'label' => 'Dim grey'
+          'label' => 'Dim grey',
         ],
         [
           'color' => 'hsl(0, 0%, 60%)',
-          'label' => 'Grey'
+          'label' => 'Grey',
         ],
         [
           'color' => 'hsl(0, 0%, 90%)',
-          'label' => 'Light grey'
+          'label' => 'Light grey',
         ],
         [
           'color' => 'hsl(0, 0%, 100%)',
           'label' => 'White',
-          'hasBorder' => true
+          'hasBorder' => TRUE,
         ],
         [
           'color' => 'hsl(0, 75%, 60%)',
-          'label' => 'Red'
+          'label' => 'Red',
         ],
         [
           'color' => 'hsl(30, 75%, 60%)',
-          'label' => 'Orange'
+          'label' => 'Orange',
         ],
         [
           'color' => 'hsl(60, 75%, 60%)',
-          'label' => 'Yellow'
+          'label' => 'Yellow',
         ],
         [
           'color' => 'hsl(90, 75%, 60%)',
-          'label' => 'Light green'
+          'label' => 'Light green',
         ],
         [
           'color' => 'hsl(120, 75%, 60%)',
-          'label' => 'Green'
+          'label' => 'Green',
         ],
         [
           'color' => 'hsl(150, 75%, 60%)',
-          'label' => 'Aquamarine'
+          'label' => 'Aquamarine',
         ],
         [
           'color' => 'hsl(180, 75%, 60%)',
-          'label' => 'Turquoise'
+          'label' => 'Turquoise',
         ],
         [
           'color' => 'hsl(210, 75%, 60%)',
-          'label' => 'Light blue'
+          'label' => 'Light blue',
         ],
         [
           'color' => 'hsl(240, 75%, 60%)',
-          'label' => 'Blue'
+          'label' => 'Blue',
         ],
         [
           'color' => 'hsl(270, 75%, 60%)',
-          'label' => 'Purple'
-        ]
+          'label' => 'Purple',
+        ],
     ];
   }
 
