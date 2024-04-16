@@ -7,11 +7,19 @@ class WordCountAdapter {
   constructor( editor ) {
     this.editor = editor;
     this.elementId = this.editor.sourceElement.dataset.drupalSelector;
+    this.isRevHistoryEnabled = false;
+    if (this.elementId.includes("revision-history")) {
+      this.isRevHistoryEnabled = true;
+      return;
+    }
     this.wordCountId = this.elementId + '-ck-word-count';
     this.wordCountWrapper = document.getElementById( this.wordCountId );
   }
 
   init() {
+    if (this.isRevHistoryEnabled) {
+      return;
+    }
     const wordCountPlugin = this.editor.plugins.get( 'WordCount' );
     for (var i = 0; i < wordCountPlugin.wordCountContainer.children.length; i++) {
       wordCountPlugin.wordCountContainer.children[i].innerHTML = this.wrapNumber(wordCountPlugin.wordCountContainer.children[i].innerHTML)
@@ -20,6 +28,9 @@ class WordCountAdapter {
   }
 
   afterInit() {
+    if (this.isRevHistoryEnabled) {
+      return;
+    }
     const wordCountPlugin = this.editor.plugins.get( 'WordCount' );
     const wordCount = this.wordCountWrapper.querySelector('.ck-word-count__words span');
     const characterCount = this.wordCountWrapper.querySelector('.ck-word-count__characters span');

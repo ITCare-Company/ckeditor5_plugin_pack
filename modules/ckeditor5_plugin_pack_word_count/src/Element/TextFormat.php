@@ -35,7 +35,7 @@ class TextFormat {
   public static function process(array &$element, FormStateInterface $form_state, array &$complete_form): array {
     $id = $element['#id'] . '-value-ck-word-count';
     $suffix = $element['value']['#suffix'] ?? '';
-    $element['value']['#suffix'] = '<div id="' . $id . '"></div>' . $suffix;
+    $element['value']['#suffix'] = '<div class="ck-word-count-container" id="' . $id . '"></div>' . $suffix;
     return $element;
   }
 
