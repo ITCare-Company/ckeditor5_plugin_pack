@@ -111,8 +111,8 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         '#type' => 'checkboxes',
         '#title' => $this->t('Type'),
         '#options' => [
-          'marker' => 'Marker',
-          'pen' => 'Pen',
+          'marker' =>  $this->t('Marker'),
+          'pen' => $this->t('Pen'),
         ],
         '#default_value' => $option['type'],
         '#ajax' => FALSE,
