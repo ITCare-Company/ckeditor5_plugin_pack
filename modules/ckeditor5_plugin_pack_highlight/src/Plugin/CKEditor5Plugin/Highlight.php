@@ -74,13 +74,13 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         '#default_value' => $option['color'] ?? '',
       ];
       $form['custom_marker_wrapper'][$markerId]['type'] = [
-        '#type' => 'select',
+        '#type' => 'checkboxes',
         '#title' => 'Type',
         '#options' => [
           'marker' => 'Marker',
           'pen' => 'Pen',
         ],
-        '#default_value' => $option['type'] ?? 'marker',
+        '#default_value' => $option['type'],
         '#ajax' => FALSE,
       ];
       $form['custom_marker_wrapper'][$markerId]['delete'] = [
@@ -101,7 +101,6 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $form['custom_marker_wrapper']['add_custom_marker'] = [
       '#type' => 'submit',
       '#value' => 'Add Marker',
-      '#id' => 'cke5-marker-add',
       '#submit' => [[$this, 'addCustomMarker']],
       '#ajax' => [
         'callback' => [$this, 'refreshMarkersCallback'],
@@ -159,7 +158,21 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
-
+    $trigger = $form_state->getTriggeringElement();
+    if (str_contains($trigger['#id'], 'plugins-ckeditor5-plugin-pack-highlight-highlight-custom-marker-wrapper')) {
+      return;
+    }
+    $values = $form_state->getValues();
+    $customMarkers = $values['custom_marker_wrapper'];
+    // Remove add button from array.
+    unset($customMarkers['add_custom_marker']);
+    foreach ($customMarkers as $key => $color) {
+      $type = array_filter($color['type'], fn($x) => !empty($x));
+      if (empty($type)) {
+        $element = $form['custom_marker_wrapper'][$key]['type'];
+        $form_state->setError($element, $this->t('Highlight: Marker type is required.'));
+      }
+    }
   }
 
   /**
@@ -176,18 +189,28 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    */
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $markers = $this->configuration['options'];
-    foreach ($markers as $key => &$marker) {
-      $marker['model'] = 'custom' . ucfirst($marker['type']) . $key;
-      $marker['class'] = 'custom-highlight-' . $marker['model'];
+    $customMarkers = [];
+    foreach ($markers as $key => $marker) {
+      foreach ($marker['type'] as $typeKey => $type) {
+        if (!$type) {
+          continue;
+        }
+        $marker['type'] = $typeKey;
+        $marker['model'] = 'custom' . ucfirst($type) . $key;
+        $marker['class'] = 'custom-highlight-' . $marker['model'];
+        $customMarkers[] = $marker;
+      }
+
     }
+
     $useDefaultMarkers = $this->configuration['use_default_markers'];
-    if (!empty($markers) && $useDefaultMarkers) {
+    if (!empty($customMarkers) && $useDefaultMarkers) {
       $defaultMarkers = $this->getDefaultMarkers();
-      $markers = array_merge($markers, $defaultMarkers);
+      $customMarkers = array_merge($customMarkers, $defaultMarkers);
     }
-    if (!empty($markers)) {
+    if (!empty($customMarkers)) {
       // array_values() to make sure that we pass indexed array.
-      $static_plugin_config['highlight']['options'] = array_values($markers);
+      $static_plugin_config['highlight']['options'] = array_values($customMarkers);
     }
 
     return $static_plugin_config;
