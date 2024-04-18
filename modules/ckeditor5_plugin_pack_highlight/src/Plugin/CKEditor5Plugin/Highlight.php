@@ -45,7 +45,30 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       '#title' => $this->t('Use CKEditor5 default markers'),
       '#description' => $this->t('Default CKEditor5 markers will be available with custom added markers.'),
       '#default_value' => $this->configuration['use_default_markers'] ?? TRUE,
+      '#attributes' => [
+        'data-editor-highlight-use-default-markers' => 'status',
+      ],
     ];
+
+    $form['classes_list'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Default classes'),
+      '#open' => FALSE,
+      '#description' => $this->t('<code>
+.marker-yellow { background-color: #fdfd77; }<br />
+.marker-green { background-color: #62f962; }<br />
+.marker-pink { background-color: #fc7899; }<br />
+.marker-blue { background-color: #72ccfd;  }<br />
+.pen-red { background-color: transparent; color: #e71313; }<br />
+.pen-green { background-color: transparent; color: #128a00; }<br />
+</code>'),
+      '#states' => [
+        'visible' => [
+          ':input[data-editor-highlight-use-default-markers="status"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $form['custom_marker_wrapper'] = [
       '#type' => 'fieldset',
       '#id' => 'custom-marker-wrapper',
@@ -64,18 +87,29 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       ];
       $form['custom_marker_wrapper'][$markerId]['title'] = [
         '#type' => 'textfield',
-        '#title' => 'Marker title',
+        '#title' => $this->t('Marker title'),
         '#maxlength' => 255,
         '#default_value' => $option['title'] ?? '',
       ];
       $form['custom_marker_wrapper'][$markerId]['color'] = [
         '#type' => 'color',
-        '#title' => 'Color',
+        '#title' => $this->t('Color'),
         '#default_value' => $option['color'] ?? '',
+      ];
+      $form['custom_marker_wrapper'][$markerId]['class_suffix'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Marker class suffix'),
+        '#description' => $this->t('Depending on the marker type, the following classes will be created: <br />
+         Marker: custom-highlight-marker-&lt;<b>SUFFIX</b>&gt;<br />
+         PEN: custom-highlight-pen-&lt;<b>SUFFIX</b>&gt; <br /><br />
+         If no suffix provided: custom-highlight-<code>&lt;<b>TYPE</b>&gt;</code>-&lt;<b>MARKER-TITLE</b>&gt;-&lt;<b>CURRENT_TEXT_FORMAT</b>&gt;
+         '),
+        '#maxlength' => 255,
+        '#default_value' => $option['class_suffix'] ?? '',
       ];
       $form['custom_marker_wrapper'][$markerId]['type'] = [
         '#type' => 'checkboxes',
-        '#title' => 'Type',
+        '#title' => $this->t('Type'),
         '#options' => [
           'marker' => 'Marker',
           'pen' => 'Pen',
@@ -85,7 +119,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       ];
       $form['custom_marker_wrapper'][$markerId]['delete'] = [
         '#type' => 'submit',
-        '#value' => 'Remove',
+        '#value' => $this->t('Remove'),
         '#name' => 'marker-' . $markerId . '-delete',
         '#button_type' => 'danger',
         '#submit' => [[$this, 'removeMarker']],
@@ -100,7 +134,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     }
     $form['custom_marker_wrapper']['add_custom_marker'] = [
       '#type' => 'submit',
-      '#value' => 'Add Marker',
+      '#value' => $this->t('Add Marker'),
       '#submit' => [[$this, 'addCustomMarker']],
       '#ajax' => [
         'callback' => [$this, 'refreshMarkersCallback'],
@@ -125,6 +159,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
 
   /**
    * Remove handler.
+   *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
@@ -147,6 +182,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
    * @return array
    */
   public function refreshMarkersCallback(array &$form, FormStateInterface $form_state): array {
@@ -166,11 +202,14 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $customMarkers = $values['custom_marker_wrapper'];
     // Remove add button from array.
     unset($customMarkers['add_custom_marker']);
-    foreach ($customMarkers as $key => $color) {
-      $type = array_filter($color['type'], fn($x) => !empty($x));
+    foreach ($customMarkers as $key => $marker) {
+      $element = $form['custom_marker_wrapper'][$key];
+      if (empty($marker['title'])) {
+        $form_state->setError($element['title'], $this->t('Highlight: Marker title is required.'));
+      }
+      $type = array_filter($marker['type'], fn($x) => !empty($x));
       if (empty($type)) {
-        $element = $form['custom_marker_wrapper'][$key]['type'];
-        $form_state->setError($element, $this->t('Highlight: Marker type is required.'));
+        $form_state->setError($element['type'], $this->t('Highlight: Marker type is required.'));
       }
     }
   }
@@ -196,8 +235,14 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
           continue;
         }
         $marker['type'] = $typeKey;
-        $marker['model'] = 'custom' . ucfirst($type) . $key;
-        $marker['class'] = 'custom-highlight-' . $marker['model'];
+        $marker['model'] = 'custom' . ucfirst($type) . '-' . $key . '-' . $editor->get('format');
+        if (!empty($marker['class_suffix'])) {
+          $marker['class'] = 'custom-highlight' . '-' . $typeKey . '-' . $marker['class_suffix'];
+        }
+        else {
+          $marker['class'] = 'custom-highlight' . '-' . $typeKey . '-' . str_replace(' ', '-', trim($marker['title'])) . '-' . $editor->get('format');
+        }
+
         $customMarkers[] = $marker;
       }
 
