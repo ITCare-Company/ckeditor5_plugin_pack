@@ -64,28 +64,28 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       ];
       $form['custom_colors_wrapper'][$colorId]['label'] = [
         '#type' => 'textfield',
-        '#title' => 'Color label',
+        '#title' => $this->t('Color label'),
         '#maxlength' => 255,
         '#default_value' => $option['label'] ?? '',
       ];
       $form['custom_colors_wrapper'][$colorId]['color'] = [
         '#type' => 'color',
-        '#title' => 'Color',
+        '#title' => $this->t('Color'),
         '#default_value' => $option['color'] ?? '',
       ];
       $form['custom_colors_wrapper'][$colorId]['type'] = [
         '#type' => 'checkboxes',
-        '#title' => 'Type',
+        '#title' => $this->t('Type'),
         '#options' => [
-          'font' => 'Font Color',
-          'background' => 'Background Color',
+          'font' => $this->t('Font Color'),
+          'background' => $this->t('Background Color'),
         ],
         '#default_value' => $option['type'],
         '#ajax' => FALSE,
       ];
       $form['custom_colors_wrapper'][$colorId]['delete'] = [
         '#type' => 'submit',
-        '#value' => 'Remove',
+        '#value' => $this->t('Remove'),
         '#name' => 'color-' . $colorId . '-delete',
         '#button_type' => 'danger',
         '#submit' => [[$this, 'removeColor']],
@@ -100,7 +100,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     }
     $form['custom_colors_wrapper']['add_custom_marker'] = [
       '#type' => 'submit',
-      '#value' => 'Add Color',
+      '#value' => $this->t('Add Color'),
       '#submit' => [[$this, 'addCustomColor']],
       '#ajax' => [
         'callback' => [$this, 'refreshColorsCallback'],
