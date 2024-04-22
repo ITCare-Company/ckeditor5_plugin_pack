@@ -12,6 +12,8 @@ namespace Drupal\ckeditor5_plugin_pack_highlight\Plugin\CKEditor5Plugin;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableInterface;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableTrait;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\EditorInterface;
 
@@ -42,8 +44,8 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
 
     $form['use_default_markers'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Use CKEditor5 default markers'),
-      '#description' => $this->t('Default CKEditor5 markers will be available with custom added markers.'),
+      '#title' => $this->t('Use CKEditor5 default highlights'),
+      '#description' => $this->t('Default CKEditor5 markers will be available with added custom markers.'),
       '#default_value' => $this->configuration['use_default_markers'] ?? TRUE,
       '#attributes' => [
         'data-editor-highlight-use-default-markers' => 'status',
@@ -54,19 +56,39 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       '#type' => 'details',
       '#title' => $this->t('Default classes'),
       '#open' => FALSE,
-      '#description' => $this->t('<code>
+      '#markup' => '<pre><code>
 .marker-yellow { background-color: #fdfd77; }<br />
 .marker-green { background-color: #62f962; }<br />
 .marker-pink { background-color: #fc7899; }<br />
-.marker-blue { background-color: #72ccfd;  }<br />
+.marker-blue { background-color: #72ccfd; }<br />
 .pen-red { background-color: transparent; color: #e71313; }<br />
 .pen-green { background-color: transparent; color: #128a00; }<br />
-</code>'),
+</code></pre>',
       '#states' => [
         'visible' => [
           ':input[data-editor-highlight-use-default-markers="status"]' => ['checked' => TRUE],
         ],
       ],
+    ];
+
+    $form['custom_classes_list'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Custom classes'),
+      '#open' => FALSE,
+      '#description' => $this->t('Click the button below to display CSS classes for the custom highlights.'),
+    ];
+
+    $form['custom_classes_list']['preview_button'] = [
+      '#type' => 'button',
+      '#executes_submit_callback' => FALSE,
+      '#ajax' => [
+        'callback' => [$this, 'classesPreview'],
+      ],
+      '#value' => $this->t('Refresh custom classes'),
+    ];
+    $form['custom_classes_list']['classes_preview'] = [
+      '#type' => 'container',
+      '#id' => 'cke5-content-custom-classes-container',
     ];
 
     $form['custom_marker_wrapper'] = [
@@ -111,7 +133,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         '#type' => 'checkboxes',
         '#title' => $this->t('Type'),
         '#options' => [
-          'marker' =>  $this->t('Marker'),
+          'marker' => $this->t('Marker'),
           'pen' => $this->t('Pen'),
         ],
         '#default_value' => $option['type'],
@@ -142,6 +164,44 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       ],
     ];
     return $form;
+  }
+
+  /**
+   * Refresh preview for the custom highlights CSS classes.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   */
+  public function classesPreview(array $form, FormStateInterface $form_state): AjaxResponse {
+    $userInput = $form_state->getUserInput();
+    $input = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_highlight__highlight']['custom_marker_wrapper'];
+    $data = '';
+    foreach ($input as $marker) {
+      $type = array_filter($marker['type'], fn($x) => !empty($x));
+      if (empty($type) || empty($marker['title'])) {
+        continue;
+      }
+      foreach ($type as $typeValue) {
+        if (!$typeValue) {
+          continue;
+        }
+        $className = $this->getHighlightClass($typeValue, $form['format']['#value'], $marker['title'], $marker['class_suffix']);
+
+        if ($typeValue === 'marker') {
+          $className .= ' { ' . 'background-color: ' . $marker['color'] . '; }';
+        }
+        else {
+          $className .= ' { ' . 'background-color: transparent; color: ' . $marker['color'] . '; }';
+        }
+        $data .= '.' . $className . '<br /><br />';
+      }
+
+    }
+    $response = new AjaxResponse();
+    $response->addCommand(new HtmlCommand('#cke5-content-custom-classes-container', '<pre><code>' . $data . '</code></pre>'));
+    return $response;
   }
 
   /**
@@ -195,7 +255,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
     $trigger = $form_state->getTriggeringElement();
-    if (str_contains($trigger['#id'], 'plugins-ckeditor5-plugin-pack-highlight-highlight-custom-marker-wrapper')) {
+    if (str_contains($trigger['#id'], 'plugins-ckeditor5-plugin-pack-highlight-highlight')) {
       return;
     }
     $values = $form_state->getValues();
@@ -236,13 +296,8 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         }
         $marker['type'] = $typeKey;
         $marker['model'] = 'custom' . ucfirst($type) . '-' . $key . '-' . $editor->get('format');
-        if (!empty($marker['class_suffix'])) {
-          $marker['class'] = 'custom-highlight' . '-' . $typeKey . '-' . $marker['class_suffix'];
-        }
-        else {
-          $marker['class'] = 'custom-highlight' . '-' . $typeKey . '-' . str_replace(' ', '-', trim($marker['title'])) . '-' . $editor->get('format');
-        }
-
+        $class = $this->getHighlightClass($type, $editor->get('format'), $marker['title'], $marker['class_suffix']);
+        $marker['class'] = $class;
         $customMarkers[] = $marker;
       }
 
@@ -312,6 +367,26 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         'type' => 'pen',
       ],
     ];
+  }
+
+  /**
+   * Returns CSS class for the marker.
+   *
+   * @param string $type
+   * @param string $textFormat
+   * @param string $markerTitle
+   * @param string|null $suffix
+   *
+   * @return string
+   */
+  private function getHighlightClass(string $type, string $textFormat, string $markerTitle, ?string $suffix): string {
+    if ($suffix) {
+      $class = 'custom-highlight' . '-' . $type . '-' . $suffix;
+    }
+    else {
+      $class = 'custom-highlight' . '-' . $type . '-' . str_replace(' ', '-', trim($markerTitle)) . '-' . $textFormat;
+    }
+    return $class;
   }
 
 }
