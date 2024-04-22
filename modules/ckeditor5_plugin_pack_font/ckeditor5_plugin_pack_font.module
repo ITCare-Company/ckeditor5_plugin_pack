@@ -15,17 +15,3 @@ use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 function ckeditor5_plugin_pack_font_library_info_build(): array {
   return ckeditor5_plugin_pack_library_loader(['font']);
 }
-
-/**
- * Implements hook_ckeditor5_plugin_info_alter().
- */
-function ckeditor5_plugin_pack_font_ckeditor5_plugin_info_alter(array &$plugin_definitions): void {
-    if (isset($plugin_definitions['ckeditor5_plugin_pack_font__font_color']) && !\Drupal::service('ckeditor5_plugin_pack.core_library_version_checker')->isLibraryVersionHigherOrEqual('38.0.0')) {
-    $plugin = $plugin_definitions['ckeditor5_plugin_pack_font__font_color'];
-
-    $definition = $plugin->toArray();
-    $definition['drupal']['class'] = \Drupal\ckeditor5_plugin_pack_font\Plugin\CKEditor5PluginLegacy\FontColor::class;
-    $pluginDefinition = new CKEditor5PluginDefinition($definition);
-    $plugin_definitions['ckeditor5_plugin_pack_font__font_color'] = $pluginDefinition;
-  }
-}
