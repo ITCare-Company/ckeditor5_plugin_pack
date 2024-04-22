@@ -26,6 +26,7 @@
   color: initial;
 }
 
+.revision-history-active .ck-word-count-container,
 .ck-word-count-hide-element {
   display: none;
 }
