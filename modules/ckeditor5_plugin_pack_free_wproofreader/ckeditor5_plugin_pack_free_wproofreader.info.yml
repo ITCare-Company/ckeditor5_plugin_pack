@@ -1,6 +1,6 @@
 name: CKEditor 5 WProofreader
 type: module
-description: "Provides free access  to the CKEditor 5 WProofreader plugin. Requires CKEditor 5 Premium Features module to work."
+description: "Provides free access  to the CKEditor 5 WProofreader plugin. Requires the CKEditor 5 Premium Features module to work."
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:

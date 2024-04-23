@@ -1,6 +1,6 @@
 name: CKEditor 5 Block Indentation
 type: module
-description: "Provides CKEditor 5 Indent Block plugin."
+description: "Provides the CKEditor 5 Indent Block plugin."
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:

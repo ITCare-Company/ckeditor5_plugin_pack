@@ -54,11 +54,11 @@ class FontFamily extends CKEditor5PluginDefault implements CKEditor5PluginConfig
     $form['options'] = [
       '#title' => $this->t('Options'),
       '#type' => 'textarea',
-      '#description' => $this->t('Each option consists of one or more comma–separated font family names. The first font name is used as the dropdown item description in the UI.<br />
+      '#description' => $this->t('Each option consists of one or more comma-separated font family names. The first font name is used as the dropdown item description in the UI.<br />
 
 <b>Note:</b> The family names that consist of spaces should not have quotes (as opposed to the CSS standard). The necessary quotes will be added automatically in the view.<br />
 
-Enter one or more values (one value = one line). Note that "default" is controlled by the default styles of the web page<br /> <br />
+Enter one or more values (one value = one line). Note that the "default" font is controlled by the default styles of the web page.<br /> <br />
                 <b>Example:</b><br />
                <code>
                 default<br />

@@ -43,7 +43,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $form['use_default_colors'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use CKEditor5 default colors'),
-      '#description' => $this->t('Default CKEditor5 colors will be available with custom added colors.'),
+      '#description' => $this->t('Default CKEditor5 colors will be available with added custom colors.'),
       '#default_value' => $this->configuration['use_default_colors'] ?? TRUE,
     ];
     $form['custom_colors_wrapper'] = [

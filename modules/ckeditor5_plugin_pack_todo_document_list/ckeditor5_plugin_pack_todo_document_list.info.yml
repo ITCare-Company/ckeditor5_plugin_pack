@@ -1,6 +1,6 @@
 name: CKEditor 5 To-do List
 type: module
-description: "Provides CKEditor 5 To-do List plugin."
+description: "Provides the CKEditor 5 To-do List plugin."
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^10.2
 dependencies:

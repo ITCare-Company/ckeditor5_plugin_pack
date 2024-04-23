@@ -1,6 +1,6 @@
 name: CKEditor 5 Plugin Pack
 type: module
-description: "Provides common functionalities for other modules in the Plugin Pack."
+description: "Provides common functions for other modules in the Plugin Pack."
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10.0
 dependencies:

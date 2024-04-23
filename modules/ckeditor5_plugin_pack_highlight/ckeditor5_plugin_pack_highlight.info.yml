@@ -1,6 +1,6 @@
 name: CKEditor 5 Highlight
 type: module
-description: 'Provides CKEditor 5 Highlight plugin'
+description: 'Provides the CKEditor 5 Highlight plugin'
 package: CKEditor 5 Plugin Pack
 core_version_requirement: ^9.4 || ^10
 dependencies:
