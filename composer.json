@@ -22,7 +22,7 @@
     },
     "require": {
         "php": "^8.0",
-        "drupal/core": "^9.3 || ^10.0",
+        "drupal/core": "^9.4 || ^10.0",
         "drupal/ckeditor5_premium_features": "^1.2"
     }
 }
