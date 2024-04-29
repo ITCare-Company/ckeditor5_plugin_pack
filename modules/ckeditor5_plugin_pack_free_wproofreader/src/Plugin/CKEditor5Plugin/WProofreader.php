@@ -44,6 +44,10 @@ final class WProofreader extends CKEditor5PluginDefault {
    * {@inheritdoc}
    */
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
+    $static_plugin_config['wproofreader']['autocomplete'] = FALSE;
+    $static_plugin_config['wproofreader']['autocorrect'] = FALSE;
+    $static_plugin_config['wproofreader']['disableDictionariesPreferences'] = TRUE;
+    $static_plugin_config['wproofreader']['settingsSections'] = ['dictionaries', 'languages', 'options'];
     $static_plugin_config['wproofreader']['serviceId'] = $this->serviceId;
     $static_plugin_config['wproofreader']['srcUrl'] = $this->bundleUrl;
     return $static_plugin_config;
