@@ -11,5 +11,3 @@ ckeditor5_plugin_pack_templates__content_templates:
     toolbar_items:
       insertTemplate:
         label: Insert template
-    productivity_pack:
-      plugin: template
