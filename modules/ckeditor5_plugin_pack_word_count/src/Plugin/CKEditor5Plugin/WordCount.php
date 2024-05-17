@@ -86,7 +86,9 @@ class WordCount extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
-    $this->setConfiguration($form_state->cleanValues()->getValues());
+    $values = $form_state->cleanValues()->getValues();
+    $values['word_count_enabled'] = isset($values['word_count_enabled']) && $values['word_count_enabled'];
+    $this->setConfiguration($values);
   }
 
   /**
