@@ -11,5 +11,5 @@ declare(strict_types=1);
  * Implements hook_library_info_build().
  */
 function ckeditor5_plugin_pack_select_all_library_info_build(): array {
-  return ckeditor5_plugin_pack_library_loader(['select-all']);
+  return ckeditor5_plugin_pack_library_loader(['essentials']);
 }
