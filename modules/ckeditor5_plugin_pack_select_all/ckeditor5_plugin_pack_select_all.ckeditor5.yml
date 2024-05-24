@@ -5,7 +5,7 @@ ckeditor5_plugin_pack_select_all__select_all:
   drupal:
     label: Select all
     elements: false
-    library: ckeditor5_plugin_pack_select_all/essentials
+    library: core/ckeditor5.essentials
     admin_library: ckeditor5_plugin_pack_select_all/admin.select_all
     toolbar_items:
       selectAll:
