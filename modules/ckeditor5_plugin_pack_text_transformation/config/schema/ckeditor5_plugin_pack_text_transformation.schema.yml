@@ -23,17 +23,18 @@ ckeditor5.plugin.ckeditor5_plugin_pack_text_transformation__text_transformation:
     groups:
       type: sequence
       label: 'Transformations groups'
-      mapping:
-        enabled:
-          type: boolean
-          label: 'Enabled'
-        transformations:
-          type: sequence
-          mapping:
-            transformation:
-              type: string
-              label: 'Transformation'
-            enabled:
-              type: boolean
-              label: 'Enabled'
+      sequence:
+        type: mapping
+        mapping:
+          transformations:
+            type: sequence
+            label: 'Transformation'
+            sequence:
+              type: mapping
+              mapping:
+                enabled:
+                  type: integer
+          enabled:
+            type: integer
+            label: 'Enabled'
 

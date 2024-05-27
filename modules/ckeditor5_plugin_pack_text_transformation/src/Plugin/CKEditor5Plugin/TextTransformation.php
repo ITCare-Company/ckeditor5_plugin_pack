@@ -223,7 +223,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->cleanValues()->getValues();
-    $this->configuration['enabled'] = $values['enabled'];
+    $this->configuration['enabled'] = isset($values['enabled']) && $values['enabled'];
     foreach ($values['groups_container']['groups'] as $key => $group) {
       $transformations = [];
       foreach ($group['transformations'] as $tkey => $transformation) {
