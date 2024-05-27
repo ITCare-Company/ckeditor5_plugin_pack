@@ -8,6 +8,9 @@ ckeditor5.plugin.ckeditor5_plugin_pack_text_transformation__text_transformation:
     extra_transformations:
       type: string
       label: 'Extra transformations'
+    extra_regex_transformations:
+      type: sequence
+      label: 'Extra transformations regex'
     groups:
       type: sequence
       label: 'Transformations groups'
