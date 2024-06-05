@@ -129,6 +129,14 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
 
     $form['regex_transformation_wrapper'] = [
       '#type' => 'details',
+      '#states' => [
+        'enable' => [
+          ':input[data-editor-text-transformation="status"]' => ['checked' => TRUE],
+        ],
+        'visible' => [
+          ':input[data-editor-text-transformation="status"]' => ['checked' => TRUE],
+        ],
+      ],
       '#title' => $this->t('Advanced settings'),
       '#description' => $this->t('You can define patterns using regular expressions.<br />
                      <b>Note</b>: The pattern must end with `$` and all its fragments must be wrapped
