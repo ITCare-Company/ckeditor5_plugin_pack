@@ -11,8 +11,8 @@ class TextTransformationAdapter {
 
   constructor( editor ) {
     this.editor = editor;
-    const regexExpressions = this.editor.config._config.typing.transformations.drupal_config?.regex;
-    if (!regexExpressions && regexExpressions.length > 0) {
+    const regexExpressions = this.editor.config._config.typing?.transformations?.drupal_config?.regex;
+    if (!regexExpressions || regexExpressions.length === 0) {
       return;
     }
     let extraRegex = [];
