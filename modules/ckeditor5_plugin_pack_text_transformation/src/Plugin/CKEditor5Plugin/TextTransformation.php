@@ -32,6 +32,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
     return [
       'enabled' => FALSE,
       'extra_transformations' => '',
+      'extra_regex_transformations' => [],
       'groups' => [],
     ];
   }
@@ -126,6 +127,77 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
       $form['groups_container']['groups'][$key] = $group;
     }
 
+    $form['regex_transformation_wrapper'] = [
+      '#type' => 'details',
+      '#states' => [
+        'enable' => [
+          ':input[data-editor-text-transformation="status"]' => ['checked' => TRUE],
+        ],
+        'visible' => [
+          ':input[data-editor-text-transformation="status"]' => ['checked' => TRUE],
+        ],
+      ],
+      '#title' => $this->t('Advanced settings'),
+      '#description' => $this->t('You can define patterns using regular expressions.<br />
+                     <b>Note</b>: The pattern must end with `$` and all its fragments must be wrapped
+                     with capturing groups.<br />
+                     The following rule replaces ` "foo"` with ` «foo»`.<br /><br />
+                     expression: (^|\s)(")([^"]*)(")$<br />
+                     replace: null,«,null,»
+                     '),
+      '#open' => $form_state->isRebuilding() ?? FALSE,
+      '#id' => 'regex-transformation-wrapper',
+    ];
+
+    $regexArr = $this->configuration['extra_regex_transformations'];
+    if ($form_state->isRebuilding()) {
+      $userInput = $form_state->getUserInput();
+      $regexArr = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'];
+    }
+
+    foreach ($regexArr as $regexId => $regex) {
+      $form['regex_transformation_wrapper'][$regexId] = [
+        '#type' => 'fieldset',
+        '#id' => 'regex-container',
+      ];
+      $form['regex_transformation_wrapper'][$regexId]['from'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Regex pattern'),
+        '#placeholder' => '(^|\s)(")([^"]*)(")$',
+        '#maxlength' => 255,
+        '#default_value' => $regex['from'] ?? '',
+      ];
+      $form['regex_transformation_wrapper'][$regexId]['to'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Regex replace match'),
+        '#placeholder' => 'null,«,null,»',
+        '#default_value' => $regex['to'] ?? '',
+      ];
+      $form['regex_transformation_wrapper'][$regexId]['delete'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Remove'),
+        '#name' => 'regex-' . $regexId . '-delete',
+        '#button_type' => 'danger',
+        '#submit' => [[$this, 'removeRegex']],
+        '#ajax' => [
+          'callback' => [$this, 'refreshRegexCallback'],
+          'wrapper' => 'regex-transformation-wrapper',
+        ],
+        '#attributes' => [
+          'data-regex-id' => $regexId,
+        ],
+      ];
+    }
+    $form['regex_transformation_wrapper']['add_regex'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add Regex'),
+      '#submit' => [[$this, 'addRegex']],
+      '#ajax' => [
+        'callback' => [$this, 'refreshRegexCallback'],
+        'wrapper' => 'regex-transformation-wrapper',
+      ],
+    ];
+
     return $form;
   }
 
@@ -140,6 +212,18 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
         $this->t('Unacceptable values provided for the extra transformations: <code>@wrong_values</code>',
         ['@wrong_values' => implode(', ', $wrongValues)]));
     }
+
+    $trigger = $form_state->getTriggeringElement();
+    $extraRegexTransformations = $form_state->getValue('regex_transformation_wrapper');
+    if (!empty($extraRegexTransformations) && !str_contains($trigger['#id'], 'ckeditor5-plugin-pack-text-transformation-text-transformation-regex-transformation-wrapper')) {
+      [, $wrongRegexValues] = $this->getParsedRegexTransformations($extraRegexTransformations);
+      if (!empty($wrongRegexValues)) {
+        foreach ($wrongRegexValues as $key => $value) {
+          $form_state->setError($form['regex_transformation_wrapper'][$key],
+            $this->t('Unacceptable values provided for the regex expression: @message', ['@message' => $value]));
+        }
+      }
+    }
   }
 
   /**
@@ -147,7 +231,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->cleanValues()->getValues();
-    $this->configuration['enabled'] = $values['enabled'];
+    $this->configuration['enabled'] = isset($values['enabled']) && $values['enabled'];
     foreach ($values['groups_container']['groups'] as $key => $group) {
       $transformations = [];
       foreach ($group['transformations'] as $tkey => $transformation) {
@@ -159,6 +243,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
       ];
     }
     $this->configuration['extra_transformations'] = $values['extra_transformations'];
+    $this->configuration['extra_regex_transformations'] = $values['regex_transformation_wrapper'];
   }
 
   /**
@@ -172,6 +257,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
 
     $transformationsGroups = $this->configuration['groups'];
     $extraTransformations = $this->configuration['extra_transformations'];
+    $extraRegexTransformations = $this->configuration['extra_regex_transformations'];
 
     $enabledTransformations = [];
     foreach ($transformationsGroups as $groupName => $group) {
@@ -190,8 +276,10 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
 
     [$extraValues] = $this->getParsedTransformations($extraTransformations);
     $include = array_merge($enabledTransformations, $extraValues);
+    [$regexTransformations] = $this->getParsedRegexTransformations($extraRegexTransformations);
 
     $static_plugin_config['typing']['transformations']['include'] = $include;
+    $static_plugin_config['typing']['transformations']['drupal_config']['regex'] = $regexTransformations;
 
     return $static_plugin_config;
   }
@@ -266,6 +354,84 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
       }
     }
     return [$extraValues, $wrongValues];
+  }
+
+  /**
+   * Transform array of regexes.
+   *
+   * @param array $regexTransformations
+   *   Array to be parsed.
+   *
+   * @return array
+   *   Array of values.
+   */
+  private function getParsedRegexTransformations(array $regexTransformations): array {
+    $regexValues = [];
+    $wrongValues = [];
+    foreach ($regexTransformations as $key => $regexTransformation) {
+      foreach ($regexTransformation as $rKey => $item) {
+        if (empty($item) && !isset($wrongValues[$key])) {
+          $wrongValues[$key] = $this->t('Value cannot be empty.');
+          continue;
+        }
+        if ($rKey === 'from' && !str_ends_with($item, '$')) {
+          $wrongValues[$key] = $this->t('Pattern must end with $');
+        }
+        if ($rKey === 'to') {
+          $regexTransformation[$rKey] = explode(',', $item);
+        }
+      }
+      if (empty($wrongValues[$key])) {
+        $regexValues[] = $regexTransformation;
+      }
+    }
+    return [$regexValues, $wrongValues];
+  }
+
+  /**
+   * Add regex pattern handler.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function addRegex(array &$form, FormStateInterface $form_state): void {
+    $userInput = $form_state->getUserInput();
+    $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'][] = [];
+    $form_state->setUserInput($userInput);
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Remove regex pattern handler.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function removeRegex(array &$form, FormStateInterface $form_state): void {
+    $trigger = $form_state->getTriggeringElement();
+    $id = $trigger['#attributes']['data-regex-id'];
+    $userInput = $form_state->getUserInput();
+    $plugin = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'];
+    if (isset($plugin[$id])) {
+      unset($plugin[$id]);
+    }
+    $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'] = $plugin;
+    $form_state->setUserInput($userInput);
+
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Refresh regex wrapper callback.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return array
+   */
+  public function refreshRegexCallback(array &$form, FormStateInterface $form_state): array {
+    $settings_element = $form['editor']['settings']['subform']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation'] ?? $form;
+    return $settings_element['regex_transformation_wrapper'] ?? $settings_element;
   }
 
 }
