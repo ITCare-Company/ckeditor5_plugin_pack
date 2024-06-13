@@ -27,16 +27,17 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
   use CKEditor5PluginConfigurableTrait;
 
   /**
+   * The id of the plugin in productivity pack.
+   */
+  const PRODUCTIVITY_PACK_PLUGIN_ID = 'template';
+
+  /**
    * Creates the plugin instance.
    *
-   * @param string $featuredPluginId
-   *   The id of the feature plugin.
-   *   The config factory.
    * @param mixed ...$parent_arguments
    *   The parent plugin arguments.
    */
   public function __construct(
-    protected string $featuredPluginId,
     ...$parent_arguments) {
     parent::__construct(...$parent_arguments);
   }
@@ -45,10 +46,7 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $config = $plugin_definition->toArray()['drupal']['productivity_pack'];
-
     return new static(
-      $config['plugin'],
       $configuration,
       $plugin_id,
       $plugin_definition);
@@ -76,7 +74,7 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
    *   The CKEditor plugin name.
    */
   public function getFeaturedPluginId(): string {
-    return $this->featuredPluginId;
+    return self::PRODUCTIVITY_PACK_PLUGIN_ID;
   }
 
   /**
