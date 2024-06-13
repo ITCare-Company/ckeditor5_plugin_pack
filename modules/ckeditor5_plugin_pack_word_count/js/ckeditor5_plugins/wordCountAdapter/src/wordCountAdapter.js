@@ -6,17 +6,23 @@
 class WordCountAdapter {
   constructor( editor ) {
     this.editor = editor;
-    this.elementId = this.editor.sourceElement.dataset.drupalSelector;
+  }
+
+  init() {
+    this.elementId = this.editor.sourceElement.getAttribute('id');
     this.isRevHistoryEnabled = false;
     if (this.elementId.includes("revision-history")) {
       this.isRevHistoryEnabled = true;
       return;
     }
     this.wordCountId = this.elementId + '-ck-word-count';
-    this.wordCountWrapper = document.getElementById( this.wordCountId );
-  }
+    const formItem = this.editor.sourceElement.closest(".form-item");
+    this.wordCountWrapper = document.createElement("div");
+    this.wordCountWrapper.setAttribute("class", "ck-word-count-container");
+    this.wordCountWrapper.setAttribute("id", this.wordCountId);
 
-  init() {
+    formItem.parentNode.insertBefore(this.wordCountWrapper, formItem.nextSibling);
+
     if (this.isRevHistoryEnabled) {
       return;
     }
