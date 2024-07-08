@@ -54,7 +54,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $colors = $this->configuration['colors'];
     if ($form_state->isRebuilding()) {
       $userInput = $form_state->getUserInput();
-      $colors = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_font__font_color']['custom_colors_wrapper'];
+      $colors = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_font__font_color']['custom_colors_wrapper'] ?? [];
     }
 
     foreach ($colors as $colorId => $option) {

@@ -99,7 +99,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $options = $this->configuration['options'];
     if ($form_state->isRebuilding()) {
       $userInput = $form_state->getUserInput();
-      $options = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_highlight__highlight']['custom_marker_wrapper'];
+      $options = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_highlight__highlight']['custom_marker_wrapper'] ?? [];
     }
 
     foreach ($options as $markerId => $option) {
