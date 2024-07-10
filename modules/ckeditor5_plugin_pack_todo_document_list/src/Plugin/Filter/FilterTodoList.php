@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Filter(
  *   id = "ckeditor5_plugin_pack_todo_list_filter",
- *   title = @Translation("Removes the <b>disabled</b> attribute for each element in the To-Do list."),
+ *   title = @Translation("CKEditor5 To-Do List: Removes the <b>disabled</b> attribute for each element in the To-Do list."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  *   weight = -100
  * )
