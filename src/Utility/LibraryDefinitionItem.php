@@ -16,11 +16,15 @@ use Drupal\Component\Utility\NestedArray;
  */
 class LibraryDefinitionItem {
 
+  // Translations available through CKSource CDN.
   const AVAILABLE_TRANSLATIONS = [
     'ar', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en-au', 'es', 'et', 'fi', 'fr', 'gl', 'he', 'hi', 'hr', 'hu',
     'id', 'it', 'ja', 'ko', 'lt', 'lv', 'ms', 'nl', 'no', 'pl', 'pt', 'pt-br', 'ro', 'ru', 'sk', 'sr', 'sr-latn', 'sv',
     'th', 'tr', 'uk', 'vi', 'zh', 'zh-cn',
   ];
+
+  // Plugins that does not have any translations.
+  // Currently all Plugin Pack plugins have translations.
   const UNTRANSLATABLE_PLUGINS = [];
 
   /**
@@ -136,7 +140,13 @@ class LibraryDefinitionItem {
     ];
   }
 
-  private function getAvailableTranslations() {
+  /**
+   * Gets langcodes of all enabled UI languages
+   *
+   * @return array
+   *   Array of ISO 639 language codes for all enabled UI languages.
+   */
+  private function getAvailableTranslations(): array {
     $languages = \Drupal::entityTypeManager()->getStorage('configurable_language')->loadMultiple();
     $langcodes = array_keys($languages);
 
