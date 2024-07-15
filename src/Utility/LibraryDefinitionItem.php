@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Drupal\ckeditor5_plugin_pack\Utility;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\File\FileExists;
 
 /**
  * Provides the library definition item.
@@ -66,6 +67,34 @@ class LibraryDefinitionItem {
         'crossorigin' => 'anonymous'
       ]
     ];
+  }
+
+  /**
+   * Adds the local JS to the library.
+   *
+   * @param string $name
+   *   The name of the library file without extension.
+   */
+  public function addLocalJs(string $name): void {
+    $file_names = ["{$this->baseDirectory}/{$name}.js"];
+
+    /** @var \Drupal\ckeditor5_plugin_pack\Config\SettingsConfigHandlerInterface $config_handler */
+    $config_handler = \Drupal::service('ckeditor5_plugin_pack.config_handler.settings');
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $dll_location = $config_handler->getDllLocation(plugin_name: $name);
+    $translations_location = str_replace('dll', 'translations', $dll_location);
+    $translations_location .= $langcode . '.js';
+    if (file_exists(DRUPAL_ROOT . $translations_location)) {
+      $file_names[] = $translations_location;
+    }
+
+    foreach ($file_names as $file_name) {
+      $this->jsData[$file_name] = [
+        'group' => JS_LIBRARY,
+        'type' => 'file',
+        'minified' => FALSE,
+      ];
+    }
   }
 
   /**

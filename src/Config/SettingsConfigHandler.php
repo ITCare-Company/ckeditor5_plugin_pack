@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Drupal\ckeditor5_plugin_pack\Config;
 
 use Drupal\Core\Asset\LibraryDiscoveryInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 class SettingsConfigHandler implements SettingsConfigHandlerInterface {
 
@@ -20,6 +21,12 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
    */
   protected LibraryDiscoveryInterface $libraryDiscovery;
 
+  /**
+   * The configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
 
   /**
    * Constructs the handler.
@@ -27,20 +34,20 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
    * @param \Drupal\Core\Asset\LibraryDiscoveryInterface $library_discovery
    *   Library discovery service.
    */
-  public function __construct(protected LibraryDiscoveryInterface $library_discovery) {
+  public function __construct(protected LibraryDiscoveryInterface $library_discovery, protected ConfigFactoryInterface $config_factory) {
     $this->libraryDiscovery = $library_discovery;
+    $this->config = $config_factory->get('ckeditor5_plugin_pack.settings');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getDllLocation(string $file_name = ''): string {
-    //TODO: config for dll location?
-    $base_path = $this->getDefaultDllLocation();
+  public function getDllLocation(string $file_name = '', string $plugin_name = ''): string {
+    $base_path = $this->config?->get('dll_location') ?: $this->getDefaultDllLocation();
 
     $base_path = rtrim($base_path, ' /') . '/';
 
-    $base_path = $this->replaceTokens($base_path);
+    $base_path = $this->replaceTokens($base_path, $plugin_name);
 
     return $base_path . $file_name;
   }
@@ -65,14 +72,26 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
   }
 
   /**
-   * Replaces supported tokens in passed parameter path..
+   * {@inheritdoc}
+   */
+  public function isLocalLibraryPathSpecified(): bool {
+    return !empty($this->config?->get('dll_location'));
+  }
+
+  /**
+   * Replaces supported tokens in passed parameter path.
    *
    * @param string $path
    *   A URL with potential tokens to replace.
+   * @param string $plugin_name
+   *   The token of the plugin name to replace.
+   *
+   * @return string
    */
-  protected function replaceTokens(string $path): string {
+  protected function replaceTokens(string $path, string $plugin_name = ''): string {
     $tokens = [
       SettingsConfigHandlerInterface::DLL_PATH_VERSION_TOKEN => $this->getDllVersion(),
+      SettingsConfigHandlerInterface::PATH_PLUGIN_NAME_TOKEN => $plugin_name,
     ];
 
     foreach ($tokens as $token => $value) {

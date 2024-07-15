@@ -10,14 +10,20 @@ namespace Drupal\ckeditor5_plugin_pack\Config;
 interface SettingsConfigHandlerInterface {
 
   const DLL_PATH_VERSION_TOKEN = 'VERSION_TOKEN';
+  const PATH_PLUGIN_NAME_TOKEN = 'PLUGIN_NAME';
 
   /**
    * Gets the DLLs location.
    *
+   * @param string $file_name
+   *   Dll file name.
+   * @param string $plugin_name
+   *   Plugin name to replace token.
+   *
    * @return string
    *   The DLLs location.
    */
-  public function getDllLocation(string $file_name = ''): string;
+  public function getDllLocation(string $file_name = '', string $plugin_name = ''): string;
 
   /**
    * Gets the default DLL location if it was not overridden in the config.
@@ -34,5 +40,13 @@ interface SettingsConfigHandlerInterface {
    *   The DLLs version.
    */
   public function getDllVersion(): string;
+
+  /**
+   * Indicates if local path to plugins is configured.
+   * This means that we have to include local libraries instead of CDNs.
+   *
+   * @return bool
+   */
+  public function isLocalLibraryPathSpecified(): bool;
 
 }
