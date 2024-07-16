@@ -184,7 +184,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     $values = $form_state->cleanValues()->getValues();
     $this->configuration['colors'] = $values['custom_colors_wrapper'] ?? [];
-    $this->configuration['use_default_colors'] = $values['use_default_colors'] ?? TRUE;
+    $this->configuration['use_default_colors'] = (bool) $values['use_default_colors'];
   }
 
   /**
