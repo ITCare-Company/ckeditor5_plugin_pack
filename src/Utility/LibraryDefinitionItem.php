@@ -69,7 +69,7 @@ class LibraryDefinitionItem {
   public function addRemoteJs(string $name): void {
     $file_names = ["{$this->baseDirectory}{$name}/{$name}.js"];
 
-    if (!in_array($name, $this::UNTRANSLATABLE_PLUGINS)) {
+    if (!in_array($name, $this::UNTRANSLATABLE_PLUGINS) && \Drupal::moduleHandler()->moduleExists('language')) {
       $languages = $this->getAvailableTranslations();
       foreach ($languages as $language) {
         $file_names[] = "{$this->baseDirectory}{$name}/translations/{$language}.js";
@@ -130,7 +130,7 @@ class LibraryDefinitionItem {
    * @return array
    *   The definition.
    */
-  public function getBaseDefinition() {
+  public function getBaseDefinition(): array {
     return [
       'remote' => 'https://ckeditor.com/',
       'license' => [],
