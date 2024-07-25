@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Drupal\ckeditor5_plugin_pack\Utility;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\File\FileExists;
 
 /**
  * Provides the library definition item.
@@ -61,11 +60,11 @@ class LibraryDefinitionItem {
 
     $this->jsData[$file_name] = [
       'type' => 'external',
-      'minified' => 'true',
+      'minified' => TRUE,
       'preprocess' => FALSE,
       'attributes' => [
-        'crossorigin' => 'anonymous'
-      ]
+        'crossorigin' => 'anonymous',
+      ],
     ];
   }
 
@@ -76,14 +75,10 @@ class LibraryDefinitionItem {
    *   The name of the library file without extension.
    */
   public function addLocalJs(string $name): void {
-    $file_names = ["{$this->baseDirectory}/{$name}.js"];
-
-    /** @var \Drupal\ckeditor5_plugin_pack\Config\SettingsConfigHandlerInterface $config_handler */
-    $config_handler = \Drupal::service('ckeditor5_plugin_pack.config_handler.settings');
+    $file_names = ["{$this->baseDirectory}{$name}/{$name}.js"];
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    $dll_location = $config_handler->getDllLocation(plugin_name: $name);
-    $translations_location = str_replace('dll', 'translations', $dll_location);
-    $translations_location .= $langcode . '.js';
+    $translations_path = "{$this->baseDirectory}{$name}/translations/";
+    $translations_location = $translations_path . $langcode . '.js';
     if (file_exists(DRUPAL_ROOT . $translations_location)) {
       $file_names[] = $translations_location;
     }
@@ -92,7 +87,8 @@ class LibraryDefinitionItem {
       $this->jsData[$file_name] = [
         'group' => JS_LIBRARY,
         'type' => 'file',
-        'minified' => FALSE,
+        'minified' => TRUE,
+        'preprocess' => FALSE,
       ];
     }
   }

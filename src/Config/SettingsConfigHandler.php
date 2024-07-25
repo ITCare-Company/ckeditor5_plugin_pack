@@ -42,12 +42,12 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDllLocation(string $file_name = '', string $plugin_name = ''): string {
+  public function getDllLocation(string $file_name = ''): string {
     $base_path = $this->config?->get('dll_location') ?: $this->getDefaultDllLocation();
 
     $base_path = rtrim($base_path, ' /') . '/';
 
-    $base_path = $this->replaceTokens($base_path, $plugin_name);
+    $base_path = $this->replaceTokens($base_path);
 
     return $base_path . $file_name;
   }
@@ -83,15 +83,12 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
    *
    * @param string $path
    *   A URL with potential tokens to replace.
-   * @param string $plugin_name
-   *   The token of the plugin name to replace.
    *
    * @return string
    */
-  protected function replaceTokens(string $path, string $plugin_name = ''): string {
+  protected function replaceTokens(string $path): string {
     $tokens = [
       SettingsConfigHandlerInterface::DLL_PATH_VERSION_TOKEN => $this->getDllVersion(),
-      SettingsConfigHandlerInterface::PATH_PLUGIN_NAME_TOKEN => $plugin_name,
     ];
 
     foreach ($tokens as $token => $value) {

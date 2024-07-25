@@ -16,7 +16,7 @@ function ckeditor5_plugin_pack_library_loader(array $libraries): array {
   $config_handler = \Drupal::service('ckeditor5_plugin_pack.config_handler.settings');
   $definitions = [];
   foreach ($libraries as $library) {
-    $definition = new LibraryDefinitionItem($library, $config_handler->getDllLocation(plugin_name: $library));
+    $definition = new LibraryDefinitionItem($library, $config_handler->getDllLocation());
     $config_handler->isLocalLibraryPathSpecified()
       ? $definition->addLocalJs($definition->id())
       : $definition->addRemoteJs($definition->id());
