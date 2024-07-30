@@ -152,7 +152,7 @@ class TextTransformation extends CKEditor5PluginDefault implements CKEditor5Plug
     $regexArr = $this->configuration['extra_regex_transformations'];
     if ($form_state->isRebuilding()) {
       $userInput = $form_state->getUserInput();
-      $regexArr = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'];
+      $regexArr = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_text_transformation__text_transformation']['regex_transformation_wrapper'] ?? [];
     }
 
     foreach ($regexArr as $regexId => $regex) {
