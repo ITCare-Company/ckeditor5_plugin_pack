@@ -78,15 +78,40 @@ class LibraryDefinitionItem {
 
     foreach ($file_names as $file_name) {
       $this->jsData[$file_name] = [
-          'type' => 'external',
-          'minified' => 'true',
-          'preprocess' => FALSE,
-          'attributes' => [
-              'crossorigin' => 'anonymous'
-          ]
+        'type' => 'external',
+        'minified' => 'true',
+        'preprocess' => FALSE,
+        'attributes' => [
+          'crossorigin' => 'anonymous',
+        ],
       ];
     }
 
+  }
+
+  /**
+   * Adds the local JS to the library.
+   *
+   * @param string $name
+   *   The name of the library file without extension.
+   */
+  public function addLocalJs(string $name): void {
+    $file_names = ["{$this->baseDirectory}{$name}/{$name}.js"];
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $translations_path = "{$this->baseDirectory}{$name}/translations/";
+    $translations_location = $translations_path . $langcode . '.js';
+    if (file_exists(DRUPAL_ROOT . $translations_location)) {
+      $file_names[] = $translations_location;
+    }
+
+    foreach ($file_names as $file_name) {
+      $this->jsData[$file_name] = [
+        'group' => JS_LIBRARY,
+        'type' => 'file',
+        'minified' => TRUE,
+        'preprocess' => FALSE,
+      ];
+    }
   }
 
   /**
@@ -141,7 +166,7 @@ class LibraryDefinitionItem {
   }
 
   /**
-   * Gets langcodes of all enabled UI languages
+   * Gets langcodes of all enabled UI languages.
    *
    * @return array
    *   Array of ISO 639 language codes for all enabled UI languages.
