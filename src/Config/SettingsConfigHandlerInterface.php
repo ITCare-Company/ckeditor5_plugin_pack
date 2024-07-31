@@ -14,6 +14,9 @@ interface SettingsConfigHandlerInterface {
   /**
    * Gets the DLLs location.
    *
+   * @param string $file_name
+   *   Dll file name.
+   *
    * @return string
    *   The DLLs location.
    */
@@ -34,5 +37,13 @@ interface SettingsConfigHandlerInterface {
    *   The DLLs version.
    */
   public function getDllVersion(): string;
+
+  /**
+   * Indicates if local path to plugins is configured.
+   * This means that we have to include local libraries instead of CDNs.
+   *
+   * @return bool
+   */
+  public function isLocalLibraryPathSpecified(): bool;
 
 }

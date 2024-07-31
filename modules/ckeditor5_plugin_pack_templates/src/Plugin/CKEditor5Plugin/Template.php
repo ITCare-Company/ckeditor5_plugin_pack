@@ -62,7 +62,7 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
     if ($definitions) {
       $static_plugin_config[$plugin]['definitions'] = $definitions;
     }
-    $static_plugin_config['licenseKey'] = '82UaG/zGHb9KdadTVfOHwykqcBsrU2PZ673M5RcHb0AhLDTkJ0JmHIG5nhjCoMr4/5XO508KxWa90Cn+lyea9RpthTECMqJAW0clwfEsoeIPgbjrEltXo4aAAyJIeqGedDfnJzXrDn3yWAecR7GLCzl9AyjXlhtjJ5gQ9r5P+8ubscKX8erRf/nrP3PeDY6Rh0hUyhjqCVsr4yCtiAg6sd2WfYP/eipXSNotkVFmBewx5rnbHCDfHXJc9V7mXaM=';
+    $static_plugin_config['licenseKey'] = 'mvjCLVz5pGxH8MTs8i7JeAe1NRFhSje+KTnvnv+MNvIFS/H2KaXFCAHbGdmv5Tt5Zc+vWE/714QzFE2qSvJuIB4cFKpVEOQ+sUsK8FuAjTsgn26GXvFc49LJCZBdyUFpbS1Yh075A8Co0NNufa7JZAKvhfUpHpkorj75V7+EdblTVB8H14PcQDk0CJ60bng0i/Mdh8GA4SE1Ox1OLg/LisJif2HJ82eSFxAeVlg94bvYWzGkNWfPa+oEYo4Mzjo=';
 
     return $static_plugin_config;
   }
