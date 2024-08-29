@@ -5,6 +5,7 @@ ckeditor5_plugin_pack_find_and_replace__find_and_replace:
   drupal:
     label: Find and replace
     elements: false
+    class: Drupal\ckeditor5_plugin_pack_find_and_replace\Plugin\CKEditor5Plugin\FindAndReplace
     library: ckeditor5_plugin_pack_find_and_replace/find-and-replace
     admin_library: ckeditor5_plugin_pack_find_and_replace/admin.find_and_replace
     toolbar_items:
