@@ -10,8 +10,10 @@
   padding: var(--ck-spacing-small) var(--ck-spacing-standard);
   border: 1px solid var(--ck-color-toolbar-border);
   border-top-width: 0;
-  border-radius: 0 0 var(--ck-border-radius);
+  border-radius: 0 0 var(--ck-border-radius) var(--ck-border-radius);
   font-size: var(--font-size-s);
+  margin-top: -5px;
+  padding-top: 10px;
 }
 
 .ck.ck-word-count .ck-word-count__words {
