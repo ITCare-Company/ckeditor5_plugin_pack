@@ -79,7 +79,8 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['options'] = $form_state->getValue('options');
+    [$options] = $this->getParsedOptions($form_state->getValue('options'));
+    $this->configuration['options'] = implode("\n", $options);
   }
 
   /**
@@ -104,7 +105,7 @@ class FontSize extends CKEditor5PluginDefault implements CKEditor5PluginConfigur
         if (!is_numeric($trimmedOption) && $trimmedOption !== 'default') {
           $wrongValues[] = $trimmedOption;
         }
-        $returnOptions[] = $trimmedOption;
+        $returnOptions[] = is_numeric($trimmedOption) ? abs($trimmedOption + 0) : $trimmedOption;
       }
     }
     return [$returnOptions, $wrongValues];
