@@ -1,0 +1,7 @@
+ckeditor5.plugin.ckeditor5_plugin_pack_link_attributes__link_attributes:
+  type: mapping
+  label: 'Link attributes'
+  mapping:
+    attributes:
+      type: sequence
+      label: 'Attributes'

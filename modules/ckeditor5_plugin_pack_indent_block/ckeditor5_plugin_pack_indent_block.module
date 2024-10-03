@@ -1,0 +1,15 @@
+<?php
+
+/*
+ * Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ckeditor5_plugin_pack_indent_block_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'ckeditor5_plugin_pack_indent_block/indent_block';
+}
