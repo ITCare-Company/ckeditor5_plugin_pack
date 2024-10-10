@@ -80,7 +80,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
           'font' => $this->t('Font Color'),
           'background' => $this->t('Background Color'),
         ],
-        '#default_value' => $option['type'],
+        '#default_value' => $option['type'] ?? [],
         '#ajax' => FALSE,
       ];
       $form['custom_colors_wrapper'][$colorId]['delete'] = [
