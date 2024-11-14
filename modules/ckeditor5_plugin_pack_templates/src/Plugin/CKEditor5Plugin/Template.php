@@ -62,7 +62,7 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
     if ($definitions) {
       $static_plugin_config[$plugin]['definitions'] = $definitions;
     }
-    $static_plugin_config['licenseKey'] = 'mvjCLVz5pGxH8MTs8i7JeAe1NRFhSje+KTnvnv+MNvIFS/H2KaXFCAHbGdmv5Tt5Zc+vWE/714QzFE2qSvJuIB4cFKpVEOQ+sUsK8FuAjTsgn26GXvFc49LJCZBdyUFpbS1Yh075A8Co0NNufa7JZAKvhfUpHpkorj75V7+EdblTVB8H14PcQDk0CJ60bng0i/Mdh8GA4SE1Ox1OLg/LisJif2HJ82eSFxAeVlg94bvYWzGkNWfPa+oEYo4Mzjo=';
+    $static_plugin_config['licenseKey'] = 'ZmlrcG1PM0RWMUU2Z2hvSEQ4eWViVEswTkxBRkFoWUxqUEpsS1JwT2o2YnhNREJvTmNPekE1TmRxL2VJa0I2OUVJZDM2ajF0WVIrWFRUY0tPZERYanoxdnRJUjljV3RkR0RhTHFSV3dQVkJtMzNLdjJNWWpVVmlSQ0pKcjVuUWpJaWpYNGhqTzYxZ0ZKbzIyVkNqRWQweEtMUXJxSzU2K1dFMGtSYVNVeXVja1FxNGtLZFJ5R3ZaSFd2REN1aWFaQmNFRUhzZUtTR01SV1Ira2NUR29iTmJ1Vi9IUFMxWWxHRkFtN3F6T0VLTnBqd1dNTTQ3V1lFVGUwSmI4bXBJPS1NakF5TlRFeE1UTT0=';
 
     return $static_plugin_config;
   }
