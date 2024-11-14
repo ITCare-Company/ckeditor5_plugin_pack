@@ -32,6 +32,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     return [
       'colors' => [],
       'use_default_colors' => TRUE,
+      'use_colorpicker' => TRUE,
     ];
   }
 
@@ -46,6 +47,14 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       '#description' => $this->t('Default CKEditor5 colors will be available with custom added colors.'),
       '#default_value' => $this->configuration['use_default_colors'] ?? TRUE,
     ];
+
+    $form['use_colorpicker'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use CKEditor5 color picker'),
+      '#description' => $this->t('Allow editors to define their own colors'),
+      '#default_value' => $this->configuration['use_colorpicker'] ?? TRUE,
+    ];
+
     $form['custom_colors_wrapper'] = [
       '#type' => 'fieldset',
       '#id' => 'custom-colors-wrapper',
@@ -176,6 +185,11 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       }
     }
 
+    if (empty($customColors) && empty($values['use_default_colors'])) {
+      $element = $form['use_colorpicker'];
+      $form_state->setError($element, $this->t('Use CKEditor5 default colors or add custom colors to disable the color picker'));
+    }
+
   }
 
   /**
@@ -185,6 +199,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $values = $form_state->cleanValues()->getValues();
     $this->configuration['colors'] = $values['custom_colors_wrapper'] ?? [];
     $this->configuration['use_default_colors'] = (bool) $values['use_default_colors'];
+    $this->configuration['use_colorpicker'] = (bool) $values['use_colorpicker'];
   }
 
   /**
@@ -192,6 +207,7 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    */
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
     $colors = $this->configuration['colors'];
+    $use_colorpicker = $this->configuration['use_colorpicker'];
 
     $fontColors = array_filter($colors, fn($color) => !empty($color['type']['font']));
     $backgroundColors = array_filter($colors, fn($color) => !empty($color['type']['background']));
@@ -210,7 +226,13 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       $static_plugin_config['fontBackgroundColor']['colors'] = array_values($backgroundColors);
     }
 
-    $static_plugin_config['fontColor']['colorPicker']['format'] = 'hex';
+    if ($use_colorpicker) {
+      $static_plugin_config['fontColor']['colorPicker']['format'] = 'hex';
+    }
+    else {
+      $static_plugin_config['fontColor']['colorPicker'] = FALSE;
+      $static_plugin_config['fontBackgroundColor']['colorPicker'] = FALSE;
+    }
 
     return $static_plugin_config;
   }
