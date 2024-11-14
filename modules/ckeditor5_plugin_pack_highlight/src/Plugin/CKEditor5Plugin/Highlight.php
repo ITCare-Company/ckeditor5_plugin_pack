@@ -280,7 +280,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     $values = $form_state->cleanValues()->getValues();
     $this->configuration['options'] = $values['custom_marker_wrapper'] ?? [];
-    $this->configuration['use_default_markers'] = $values['use_default_markers'] ?? TRUE;
+    $this->configuration['use_default_markers'] = (bool) $values['use_default_markers'];
   }
 
   /**
