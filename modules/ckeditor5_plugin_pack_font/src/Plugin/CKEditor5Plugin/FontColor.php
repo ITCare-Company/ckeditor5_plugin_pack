@@ -46,6 +46,30 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       '#description' => $this->t('Default CKEditor5 colors will be available with custom added colors.'),
       '#default_value' => $this->configuration['use_default_colors'] ?? TRUE,
     ];
+    $form['font_color_columns'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Font color columns'),
+      '#description' => $this->t('Number of columns in the font color grid.'),
+      '#default_value' => $this->configuration['font_color_columns'] ?? 5,
+    ];
+    $form['font_color_document_colors'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Font color document colors'),
+      '#description' => $this->t('Number of document colors displayed in the dropdown. It lists colors that are already used in the document, which might be different from predefined ones in the main section of the dropdown. Set value to 0 to hide the document colors section completely.'),
+      '#default_value' => $this->configuration['font_color_document_colors'] ?? 10,
+    ];
+    $form['bg_color_columns'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Background color columns'),
+      '#description' => $this->t('Number of columns in the background color grid.'),
+      '#default_value' => $this->configuration['bg_color_columns'] ?? 5,
+    ];
+    $form['bg_color_document_colors'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Background color document colors'),
+      '#description' => $this->t('Number of document colors displayed in the dropdown. It lists colors that are already used in the document, which might be different from predefined ones in the main section of the dropdown. Set value to 0 to hide the document colors section completely..'),
+      '#default_value' => $this->configuration['bg_color_document_colors'] ?? 10,
+    ];
     $form['custom_colors_wrapper'] = [
       '#type' => 'fieldset',
       '#id' => 'custom-colors-wrapper',
@@ -185,6 +209,10 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $values = $form_state->cleanValues()->getValues();
     $this->configuration['colors'] = $values['custom_colors_wrapper'] ?? [];
     $this->configuration['use_default_colors'] = (bool) $values['use_default_colors'];
+    $this->configuration['font_color_columns'] = $values['font_color_columns'];
+    $this->configuration['font_color_document_colors'] = $values['font_color_document_colors'];
+    $this->configuration['bg_color_columns'] = $values['bg_color_columns'];
+    $this->configuration['bg_color_document_colors'] = $values['bg_color_document_colors'];
   }
 
   /**
@@ -211,6 +239,11 @@ class FontColor extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     }
 
     $static_plugin_config['fontColor']['colorPicker']['format'] = 'hex';
+
+    $static_plugin_config['fontColor']['columns'] = $this->configuration['font_color_columns'] ?? 5;
+    $static_plugin_config['fontColor']['documentColors'] = $this->configuration['font_color_document_colors'] ?? 10;
+    $static_plugin_config['fontBackgroundColor']['columns'] = $this->configuration['bg_color_columns'] ?? 5;
+    $static_plugin_config['fontBackgroundColor']['documentColors'] = $this->configuration['bg_color_document_colors'] ?? 10;
 
     return $static_plugin_config;
   }
