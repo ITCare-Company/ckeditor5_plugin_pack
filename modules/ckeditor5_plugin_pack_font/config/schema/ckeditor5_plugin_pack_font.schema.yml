@@ -25,3 +25,27 @@ ckeditor5.plugin.ckeditor5_plugin_pack_font__font_color:
     use_colorpicker:
       type: boolean
       label: Use colorpickers
+    font_color_columns:
+      type: integer
+      label: 'Font color columns'
+      constraints:
+        Range:
+          min: 1
+    font_color_document_colors:
+      type: integer
+      label: 'Font color document colors'
+      constraints:
+        Range:
+          min: 0
+    bg_color_columns:
+      type: integer
+      label: 'Background color columns'
+      constraints:
+        Range:
+          min: 1
+    bg_color_document_colors:
+      type: integer
+      label: 'Background color document colors'
+      constraints:
+        Range:
+          min: 0
