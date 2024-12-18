@@ -99,7 +99,8 @@ Enter one or more values (one value = one line). Note that the "default" font is
     $returnOptions = [];
     $wrongValues = [];
     if ($options) {
-      $regex = '/\b\w+\b,\s*\b\w+\b/';
+      $regex = '/[\w\,\-\s]*/';
+      $options = str_replace(array("\r\n", "\r"), "\n", $options);
       $options = explode("\n", $options);
       foreach ($options as $option) {
         $trimmedOption = trim($option);
