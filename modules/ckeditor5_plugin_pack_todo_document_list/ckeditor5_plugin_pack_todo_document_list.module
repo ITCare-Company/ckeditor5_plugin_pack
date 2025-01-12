@@ -23,3 +23,10 @@ function ckeditor5_plugin_pack_todo_document_list_ckeditor5_plugin_info_alter(ar
     $plugin_definitions['ckeditor5_plugin_pack_todo_document_list__todo_document_list'] = $pluginDefinition;
   }
 }
+
+/**
+ * Implements hook_install().
+ */
+function ckeditor5_plugin_pack_todo_document_list_install($is_syncing): void {
+  ckeditor5_plugin_pack_display_trial_info_message();
+}

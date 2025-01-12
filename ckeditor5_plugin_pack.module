@@ -6,6 +6,14 @@
  */
 
 use Drupal\ckeditor5_plugin_pack\Utility\LibraryDefinitionItem;
+use Drupal\Core\Messenger\MessengerInterface;
+
+/**
+ * Implements hook_install().
+ */
+function ckeditor5_plugin_pack_install($is_syncing): void {
+  ckeditor5_plugin_pack_display_trial_info_message();
+}
 
 /**
  * @param array $libraries
@@ -25,4 +33,69 @@ function ckeditor5_plugin_pack_library_loader(array $libraries): array {
   }
 
   return $definitions;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function ckeditor5_plugin_pack_form_filter_format_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id): void {
+  if (ckeditor5_plugin_pack_check_premium_key()) {
+    return;
+  }
+
+  $form['editor']['premium'] = [
+    '#type' => 'container',
+    '#weight' => -9,
+    '#states' => [
+      'visible' => [
+        ':input[name="editor[editor]"]' => ['value' => 'ckeditor5'],
+      ],
+    ],
+    'msg' => [
+      '#markup' => ckeditor5_plugin_pack_premium_info_message(),
+    ],
+  ];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function ckeditor5_plugin_pack_module_implements_alter(&$implementations, $hook) {
+  if (isset($implementations['ckeditor5_plugin_pack'])) {
+    $val = $implementations['ckeditor5_plugin_pack'];
+    unset($implementations['ckeditor5_plugin_pack']);
+    $implementations['ckeditor5_plugin_pack'] = $val;
+  }
+}
+
+/**
+ * Returns a message with information about the premium features trial.
+ *
+ * @return \Drupal\Core\Render\Markup|string
+ */
+function ckeditor5_plugin_pack_premium_info_message(): \Drupal\Component\Render\MarkupInterface|string {
+  return \Drupal\Core\Render\Markup::create('<p>If you’d like to explore the full potential of CKEditor 5 with its premium features, you can sign up for a <a href="https://portal.ckeditor.com/signup" target="_blank">free trial</a></p>');
+}
+
+/**
+ * Checks if the premium key is set.
+ *
+ * @return bool
+ */
+function ckeditor5_plugin_pack_check_premium_key(): bool {
+  if (\Drupal::moduleHandler()->moduleExists('ckeditor5_premium_features')) {
+    return !empty(\Drupal::config('ckeditor5_premium_features.settings')->get('license_key'));
+  }
+  return FALSE;
+}
+
+/**
+ * Displays a message with information about premium features trial.
+ */
+function ckeditor5_plugin_pack_display_trial_info_message(): void {
+  if (ckeditor5_plugin_pack_check_premium_key()) {
+    return;
+  }
+  $message = ckeditor5_plugin_pack_premium_info_message();
+  \Drupal::messenger()->addMessage($message, MessengerInterface::TYPE_STATUS, FALSE);
 }
