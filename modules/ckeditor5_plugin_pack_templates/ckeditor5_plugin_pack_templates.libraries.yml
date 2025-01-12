@@ -3,3 +3,8 @@ admin.content_templates:
   css:
     theme:
       css/content-templates.admin.css: { }
+
+distribution-channel:
+  version: 20241217
+  js:
+    js/ckeditor5_distribution_channel.js: { }

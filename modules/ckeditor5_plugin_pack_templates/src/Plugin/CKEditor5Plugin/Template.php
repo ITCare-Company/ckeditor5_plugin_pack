@@ -12,6 +12,7 @@ namespace Drupal\ckeditor5_plugin_pack_templates\Plugin\CKEditor5Plugin;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableTrait;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginInterface;
+use Drupal\ckeditor5_plugin_pack\Utility\LibraryVersionChecker;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\editor\EditorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,10 +35,13 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
   /**
    * Creates the plugin instance.
    *
+   * @param \Drupal\ckeditor5_plugin_pack\Utility\LibraryVersionChecker $libraryVersionChecker
+   *   The CKEditor 5 library version checker.
    * @param mixed ...$parent_arguments
    *   The parent plugin arguments.
    */
   public function __construct(
+    protected LibraryVersionChecker $libraryVersionChecker,
     ...$parent_arguments) {
     parent::__construct(...$parent_arguments);
   }
@@ -47,6 +51,7 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
+      $container->get('ckeditor5_plugin_pack.core_library_version_checker'),
       $configuration,
       $plugin_id,
       $plugin_definition);
@@ -62,7 +67,13 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
     if ($definitions) {
       $static_plugin_config[$plugin]['definitions'] = $definitions;
     }
-    $static_plugin_config['licenseKey'] = 'ZmlrcG1PM0RWMUU2Z2hvSEQ4eWViVEswTkxBRkFoWUxqUEpsS1JwT2o2YnhNREJvTmNPekE1TmRxL2VJa0I2OUVJZDM2ajF0WVIrWFRUY0tPZERYanoxdnRJUjljV3RkR0RhTHFSV3dQVkJtMzNLdjJNWWpVVmlSQ0pKcjVuUWpJaWpYNGhqTzYxZ0ZKbzIyVkNqRWQweEtMUXJxSzU2K1dFMGtSYVNVeXVja1FxNGtLZFJ5R3ZaSFd2REN1aWFaQmNFRUhzZUtTR01SV1Ira2NUR29iTmJ1Vi9IUFMxWWxHRkFtN3F6T0VLTnBqd1dNTTQ3V1lFVGUwSmI4bXBJPS1NakF5TlRFeE1UTT0=';
+
+    if ($this->libraryVersionChecker->isLibraryVersionHigherOrEqual('44.0.0')) {
+      $static_plugin_config['licenseKey'] = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjU4NDMyMDAsImp0aSI6Ijc3ODRmMzRjLTdhYzMtNDU5ZS1iZTljLTIyODU5OTY1NWJkNiIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCJdLCJ2YyI6IjZlM2QxYWEwIn0.u2VxSw6ed4FjRh2kRYxBaHUUXOFOMyMMRLA89ihYRGclY9cvLSJNqVv32UKcyUbHZJfyVFBWiCiynmIMEPd99A';
+    }
+    else {
+      $static_plugin_config['licenseKey'] = 'ZmlrcG1PM0RWMUU2Z2hvSEQ4eWViVEswTkxBRkFoWUxqUEpsS1JwT2o2YnhNREJvTmNPekE1TmRxL2VJa0I2OUVJZDM2ajF0WVIrWFRUY0tPZERYanoxdnRJUjljV3RkR0RhTHFSV3dQVkJtMzNLdjJNWWpVVmlSQ0pKcjVuUWpJaWpYNGhqTzYxZ0ZKbzIyVkNqRWQweEtMUXJxSzU2K1dFMGtSYVNVeXVja1FxNGtLZFJ5R3ZaSFd2REN1aWFaQmNFRUhzZUtTR01SV1Ira2NUR29iTmJ1Vi9IUFMxWWxHRkFtN3F6T0VLTnBqd1dNTTQ3V1lFVGUwSmI4bXBJPS1NakF5TlRFeE1UTT0=';
+    }
 
     return $static_plugin_config;
   }

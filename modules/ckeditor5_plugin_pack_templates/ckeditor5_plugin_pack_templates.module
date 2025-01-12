@@ -20,3 +20,14 @@ function ckeditor5_plugin_pack_templates_library_info_build(): array {
 function ckeditor5_plugin_pack_templates_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
 }
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function ckeditor5_plugin_pack_templates_library_info_alter(&$libraries, $extension): void {
+  if ($extension === 'core' && isset($libraries['ckeditor5'])) {
+    if (version_compare($libraries['ckeditor5']['version'], '44.0.0') >= 0) {
+      $libraries['ckeditor5']['dependencies'][] = 'ckeditor5_plugin_pack_templates/distribution-channel';
+    }
+  }
+}
