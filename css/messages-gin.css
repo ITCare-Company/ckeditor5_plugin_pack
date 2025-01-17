@@ -1,0 +1,10 @@
+.messages.messages--ckeditor5_plugin_pack {
+  color: hsl(263, 59%, 73%)!important;
+  background: hsl(263, 59%, 26%)!important;
+}
+
+.messages.messages--ckeditor5_plugin_pack .messages__header:before {
+  content: url(../img/ckeditor-logo.png);
+  display: inline-block;
+  margin-right: 10px;
+}
