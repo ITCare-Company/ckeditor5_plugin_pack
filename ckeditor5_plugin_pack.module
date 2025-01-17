@@ -6,7 +6,6 @@
  */
 
 use Drupal\ckeditor5_plugin_pack\Utility\LibraryDefinitionItem;
-use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * Implements hook_install().
@@ -74,7 +73,7 @@ function ckeditor5_plugin_pack_module_implements_alter(&$implementations, $hook)
  * @return \Drupal\Core\Render\Markup|string
  */
 function ckeditor5_plugin_pack_premium_info_message(): \Drupal\Component\Render\MarkupInterface|string {
-  return \Drupal\Core\Render\Markup::create('If you’d like to explore the full potential of CKEditor 5 with its premium features, you can sign up for a <a href="https://portal.ckeditor.com/signup" target="_blank">free trial</a>');
+  return \Drupal\Core\Render\Markup::create('If you’d like to explore the full potential of CKEditor 5 Premium Features, <a href="https://portal.ckeditor.com/signup" target="_blank">sign up for the 14-day free trial</a>');
 }
 
 /**
@@ -111,8 +110,7 @@ function ckeditor5_plugin_pack_preprocess_status_messages(&$variables) {
   $ckeditor5_message = $variables['message_list']['ckeditor5_plugin_pack'];
   unset($variables['message_list']['ckeditor5_plugin_pack']);
   $variables['message_list']['ckeditor5_plugin_pack'] = $ckeditor5_message;
-
-  $variables['status_headings']['ckeditor5_plugin_pack'] = t('CKEditor 5 Plugin Pack');
+  $variables['status_headings']['ckeditor5_plugin_pack'] = t('Congratulations! You’ve successfully installed the CKEditor 5 Plugin Pack') . ' 🎉';
 
   $variables['#attached']['library'][] = 'ckeditor5_plugin_pack/messages';
 }
