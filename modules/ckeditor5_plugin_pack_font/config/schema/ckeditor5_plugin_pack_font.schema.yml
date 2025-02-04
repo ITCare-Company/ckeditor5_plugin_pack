@@ -19,6 +19,21 @@ ckeditor5.plugin.ckeditor5_plugin_pack_font__font_color:
     colors:
       type: sequence
       label: 'Colors'
+      sequence:
+        type: mapping
+        label: 'Color'
+        mapping:
+          label:
+            type: string
+          color:
+            type: string
+          type:
+            type: mapping
+            mapping:
+              font:
+                type: string
+              background:
+                type: string
     use_default_colors:
       type: boolean
       label: Use default colors
