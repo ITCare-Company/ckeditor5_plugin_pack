@@ -13,3 +13,10 @@ declare(strict_types=1);
 function ckeditor5_plugin_pack_indent_block_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'ckeditor5_plugin_pack_indent_block/indent_block';
 }
+
+/**
+ * Implements hook_install().
+ */
+function ckeditor5_plugin_pack_indent_block_install($is_syncing): void {
+  ckeditor5_plugin_pack_display_trial_info_message();
+}

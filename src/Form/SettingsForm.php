@@ -37,6 +37,11 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('ckeditor5_plugin_pack.settings');
+
+    $form['premium'] = [
+      '#markup' => ckeditor5_plugin_pack_premium_info_message(),
+    ];
+
     $dll_location_description = $this->t('
     <b>If the field is empty, the DLL path is set to the CKEditor CDN server by default.</b></br></br>
     Specify the path to the directory with plugins e.g.
