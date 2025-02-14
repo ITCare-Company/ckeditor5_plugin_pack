@@ -3,7 +3,7 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-import TextTransformationAdapter from './textTransformationAdapter';
+import TextTransformationAdapter from './textTransformationAdapter.js';
 
 export default {
   TextTransformationAdapter: TextTransformationAdapter

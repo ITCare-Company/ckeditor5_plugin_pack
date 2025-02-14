@@ -12,7 +12,7 @@
  */
 // cSpell:ignore simplebox
 
-import WordCountAdapter from "./wordCountAdapter";
+import WordCountAdapter from "./wordCountAdapter.js";
 
 export default {
   WordCountAdapter,

@@ -3,7 +3,7 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-import DrupalPoweredBy from './drupalPoweredBy';
+import DrupalPoweredBy from './drupalPoweredBy.js';
 
 export default {
   DrupalPoweredBy: DrupalPoweredBy,

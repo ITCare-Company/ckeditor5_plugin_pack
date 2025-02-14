@@ -4,14 +4,14 @@
   "description": "Drupal CKEditor 5 Plugin Pack integration",
   "author": "",
   "license": "GPL-2.0-or-later",
+  "type": "module",
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack"
   },
   "devDependencies": {
-
-    "@ckeditor/ckeditor5-dev-utils": "^38.0.0",
-    "ckeditor5": "^43.1.1",
+    "@ckeditor/ckeditor5-dev-utils": "^44.0.0",
+    "ckeditor5": "^44.0.0",
     "css-loader": "^6.7.1",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",

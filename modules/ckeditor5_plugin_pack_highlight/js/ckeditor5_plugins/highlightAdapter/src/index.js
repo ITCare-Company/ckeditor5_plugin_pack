@@ -3,7 +3,7 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-import HighlightAdapter from './highlightAdapter';
+import HighlightAdapter from './highlightAdapter.js';
 
 export default {
   HighlightAdapter
