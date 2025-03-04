@@ -80,7 +80,6 @@ class LibraryDefinitionItem {
       $this->jsData[$file_name] = [
         'type' => 'external',
         'minified' => 'true',
-        'preprocess' => FALSE,
         'attributes' => [
           'crossorigin' => 'anonymous',
         ],
@@ -109,7 +108,6 @@ class LibraryDefinitionItem {
         'group' => JS_LIBRARY,
         'type' => 'file',
         'minified' => TRUE,
-        'preprocess' => FALSE,
       ];
     }
   }
@@ -158,9 +156,12 @@ class LibraryDefinitionItem {
   public function getBaseDefinition(): array {
     return [
       'remote' => 'https://ckeditor.com/',
-      'license' => [],
+      'license' => [
+        'name' => 'GNU-GPL-2.0-or-later',
+        'url' => 'https://raw.githubusercontent.com/ckeditor/ckeditor5/master/LICENSE.md'
+      ],
       'dependencies' => [
-        'ckeditor5/ckeditor5',
+        'core/ckeditor5',
       ],
     ];
   }
