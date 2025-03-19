@@ -11,7 +11,21 @@ declare(strict_types=1);
  * Implements hook_library_info_build().
  */
 function ckeditor5_plugin_pack_bookmark_library_info_build(): array {
+  $libraryVersionChecker = \Drupal::service('ckeditor5_plugin_pack.core_library_version_checker');
+  if (!$libraryVersionChecker->isLibraryVersionHigherOrEqual('44.0.0')) {
+    return [];
+  }
   return ckeditor5_plugin_pack_library_loader(['bookmark']);
+}
+
+/**
+ * Implements hook_ckeditor5_plugin_info_alter().
+ */
+function ckeditor5_plugin_pack_bookmark_ckeditor5_plugin_info_alter(array &$plugin_definitions): void {
+  $libraryVersionChecker = \Drupal::service('ckeditor5_plugin_pack.core_library_version_checker');
+  if (!$libraryVersionChecker->isLibraryVersionHigherOrEqual('44.0.0')) {
+    unset($plugin_definitions['ckeditor5_plugin_pack_bookmark__bookmark']);
+  }
 }
 
 /**
