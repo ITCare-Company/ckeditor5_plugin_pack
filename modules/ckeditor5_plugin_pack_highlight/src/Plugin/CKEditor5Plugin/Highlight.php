@@ -14,6 +14,7 @@ use Drupal\ckeditor5\Plugin\CKEditor5PluginConfigurableTrait;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\EditorInterface;
 
@@ -27,6 +28,15 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
 
   use CKEditor5PluginConfigurableTrait;
 
+  const DEFAULST_CSS = '
+.marker-yellow { background-color: #fdfd77; }
+.marker-green { background-color: #62f962; }
+.marker-pink { background-color: #fc7899; }
+.marker-blue { background-color: #72ccfd; }
+.pen-red { background-color: transparent; color: #e71313; }
+.pen-green { background-color: transparent; color: #128a00; }
+  ';
+
   /**
    * {@inheritdoc}
    */
@@ -34,6 +44,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     return [
       'options' => [],
       'use_default_markers' => TRUE,
+      'attach_styles' => FALSE,
     ];
   }
 
@@ -52,18 +63,18 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       ],
     ];
 
+    $form['attach_styles'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Add styles for rendered content automatically'),
+      '#description' => $this->t('Use this option if you want to automatically add required CSS for Highlight to display properly in a rendered content outside CKEditor.'),
+      '#default_value' => $this->configuration['attach_styles'] ?? FALSE,
+    ];
+
     $form['classes_list'] = [
       '#type' => 'details',
       '#title' => $this->t('Default classes'),
       '#open' => FALSE,
-      '#markup' => '<pre><code>
-.marker-yellow { background-color: #fdfd77; }<br />
-.marker-green { background-color: #62f962; }<br />
-.marker-pink { background-color: #fc7899; }<br />
-.marker-blue { background-color: #72ccfd; }<br />
-.pen-red { background-color: transparent; color: #e71313; }<br />
-.pen-green { background-color: transparent; color: #128a00; }<br />
-</code></pre>',
+      '#markup' => '<pre><code>' . str_replace("\n", '<br />', self::DEFAULST_CSS) . '</code></pre>',
       '#states' => [
         'visible' => [
           ':input[data-editor-highlight-use-default-markers="status"]' => ['checked' => TRUE],
@@ -175,9 +186,32 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
    * @return \Drupal\Core\Ajax\AjaxResponse
    */
   public function classesPreview(array $form, FormStateInterface $form_state): AjaxResponse {
+    $data = $this->buildCustomMarkersCSS($form, $form_state);
+
+    $response = new AjaxResponse();
+    $response->addCommand(new HtmlCommand('#cke5-content-custom-classes-container', '<pre><code>' . $data . '</code></pre>'));
+    return $response;
+  }
+
+  /**
+   * Build CSS for the custom markers.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return string
+   */
+  private function buildCustomMarkersCSS(array $form, FormStateInterface $form_state): string {
     $userInput = $form_state->getUserInput();
+    if (!isset($userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_highlight__highlight']['custom_marker_wrapper'])) {
+      return '';
+    }
     $input = $userInput['editor']['settings']['plugins']['ckeditor5_plugin_pack_highlight__highlight']['custom_marker_wrapper'];
+    if (empty($input)) {
+      return '';
+    }
     $data = '';
+    $format = $form['format']['#value'] ?? $form_state->getCompleteForm()['format']['#value'];
     foreach ($input as $marker) {
       $type = array_filter($marker['type'], fn($x) => !empty($x));
       if (empty($type) || empty($marker['title'])) {
@@ -187,7 +221,7 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         if (!$typeValue) {
           continue;
         }
-        $className = $this->getHighlightClass($typeValue, $form['format']['#value'], $marker['title'], $marker['class_suffix']);
+        $className = $this->getHighlightClass($typeValue, $format, $marker['title'], $marker['class_suffix']);
 
         if ($typeValue === 'marker') {
           $className .= ' { ' . 'background-color: ' . $marker['color'] . '; }';
@@ -195,13 +229,11 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
         else {
           $className .= ' { ' . 'background-color: transparent; color: ' . $marker['color'] . '; }';
         }
-        $data .= '.' . $className . '<br /><br />';
+        $data .= '.' . $className . "\n";
       }
 
     }
-    $response = new AjaxResponse();
-    $response->addCommand(new HtmlCommand('#cke5-content-custom-classes-container', '<pre><code>' . $data . '</code></pre>'));
-    return $response;
+    return $data;
   }
 
   /**
@@ -281,6 +313,11 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
     $values = $form_state->cleanValues()->getValues();
     $this->configuration['options'] = $values['custom_marker_wrapper'] ?? [];
     $this->configuration['use_default_markers'] = (bool) $values['use_default_markers'];
+    $this->configuration['attach_styles'] = (bool) $values['attach_styles'];
+
+    if ($this->configuration['attach_styles']) {
+      $this->saveCSS($form, $form_state);
+    }
   }
 
   /**
@@ -387,6 +424,34 @@ class Highlight extends CKEditor5PluginDefault implements CKEditor5PluginConfigu
       $class = 'custom-highlight' . '-' . $type . '-' . str_replace(' ', '-', trim($markerTitle)) . '-' . $textFormat;
     }
     return $class;
+  }
+
+  /**
+   * Save CSS file.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return bool
+   */
+  private function saveCSS(array &$form, FormStateInterface $form_state): bool {
+    $css = '';
+    if ($this->configuration['use_default_markers']) {
+      $css .= self::DEFAULST_CSS;
+    }
+    $css .= $this->buildCustomMarkersCSS($form, $form_state);
+    $fileSystem = \Drupal::service('file_system');
+    $directory = 'public://ckeditor5/';
+    if (!$fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY)) {
+      return FALSE;
+    }
+    $format = $form['format']['#value'] ?? $form_state->getCompleteForm()['format']['#value'];
+    $filename = 'ckeditor5_plugin_pack_highlight-' . $format . '.css';
+    $filePath = $directory . $filename;
+
+    $fileSystem->saveData($css, $filePath, FileSystemInterface::EXISTS_REPLACE);
+
+    return TRUE;
   }
 
 }

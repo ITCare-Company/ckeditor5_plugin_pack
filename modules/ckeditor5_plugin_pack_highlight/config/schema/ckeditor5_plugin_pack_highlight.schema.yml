@@ -22,7 +22,9 @@ ckeditor5.plugin.ckeditor5_plugin_pack_highlight__highlight:
             label: 'Marker type'
             sequence:
               type: string
-
     use_default_markers:
       type: boolean
       label: Use default markers
+    attach_styles:
+      type: boolean
+      label: 'Attach styles'
