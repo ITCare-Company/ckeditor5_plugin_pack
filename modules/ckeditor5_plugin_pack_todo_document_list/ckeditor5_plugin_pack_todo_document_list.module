@@ -30,3 +30,22 @@ function ckeditor5_plugin_pack_todo_document_list_ckeditor5_plugin_info_alter(ar
 function ckeditor5_plugin_pack_todo_document_list_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ckeditor5_plugin_pack_todo_document_list_preprocess_page(&$variables): void {
+  $editors = \Drupal::entityTypeManager()->getStorage('editor')->loadMultiple();
+  foreach ($editors as $editor) {
+    if ($editor->getEditor() !== 'ckeditor5') {
+      continue;
+    }
+
+    $settings = $editor->getSettings();
+    $isAttachOption = isset($settings["plugins"]["ckeditor5_plugin_pack_todo_document_list__todo_document_list"]["attach_default_styles"]);
+    if ($isAttachOption && $settings["plugins"]["ckeditor5_plugin_pack_todo_document_list__todo_document_list"]["attach_default_styles"]) {
+      $variables['#attached']['library'][] = 'ckeditor5_plugin_pack_todo_document_list/style.todo_document_list';
+      return;
+    }
+  }
+}
