@@ -9,6 +9,9 @@ class WordCountAdapter {
   }
 
   init() {
+    if (typeof this.editor.sourceElement === "undefined") {
+      return;
+    }
     this.elementId = this.editor.sourceElement.getAttribute('id');
     this.isRevHistoryEnabled = false;
     if (this.elementId.includes("revision-history")) {
@@ -34,6 +37,9 @@ class WordCountAdapter {
   }
 
   afterInit() {
+    if (typeof this.editor.sourceElement === "undefined") {
+      return;
+    }
     if (this.isRevHistoryEnabled) {
       return;
     }

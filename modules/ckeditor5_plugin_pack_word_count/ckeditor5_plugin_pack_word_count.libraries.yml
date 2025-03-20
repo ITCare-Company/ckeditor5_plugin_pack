@@ -1,5 +1,5 @@
 word-count-adapter:
-  version: 20240426
+  version: 20250318
   css:
     theme:
       css/word-count.css: { }
