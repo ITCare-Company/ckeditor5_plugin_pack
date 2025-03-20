@@ -69,10 +69,10 @@ class Template extends CKEditor5PluginDefault implements CKEditor5PluginInterfac
     }
 
     if ($this->libraryVersionChecker->isLibraryVersionHigherOrEqual('44.0.0')) {
-      $static_plugin_config['licenseKey'] = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjU4NDMyMDAsImp0aSI6Ijc3ODRmMzRjLTdhYzMtNDU5ZS1iZTljLTIyODU5OTY1NWJkNiIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCJdLCJ2YyI6IjZlM2QxYWEwIn0.u2VxSw6ed4FjRh2kRYxBaHUUXOFOMyMMRLA89ihYRGclY9cvLSJNqVv32UKcyUbHZJfyVFBWiCiynmIMEPd99A';
+      $static_plugin_config['licenseKey'] = 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzM4Nzg0MDAsImp0aSI6IjViZGM1ZjYwLTE1ZmUtNGM1MC1hZWI2LTI4OTYwMmMzYjYzOCIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOiJkcnVwYWwiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiOWNmNjQ2NjIifQ.vUav_GC_MfCjOisTEMcqQEBVXnrqTekJkkt41LdD5LoRi1NqfsViafq9n_-wUTqpFvIDxglYjfCwDTVIS9-vaA';
     }
     else {
-      $static_plugin_config['licenseKey'] = 'ZmlrcG1PM0RWMUU2Z2hvSEQ4eWViVEswTkxBRkFoWUxqUEpsS1JwT2o2YnhNREJvTmNPekE1TmRxL2VJa0I2OUVJZDM2ajF0WVIrWFRUY0tPZERYanoxdnRJUjljV3RkR0RhTHFSV3dQVkJtMzNLdjJNWWpVVmlSQ0pKcjVuUWpJaWpYNGhqTzYxZ0ZKbzIyVkNqRWQweEtMUXJxSzU2K1dFMGtSYVNVeXVja1FxNGtLZFJ5R3ZaSFd2REN1aWFaQmNFRUhzZUtTR01SV1Ira2NUR29iTmJ1Vi9IUFMxWWxHRkFtN3F6T0VLTnBqd1dNTTQ3V1lFVGUwSmI4bXBJPS1NakF5TlRFeE1UTT0=';
+      $static_plugin_config['licenseKey'] = 'UOUTM6hmxLMMZw07dLXGvRwFs7OFyIVSZw4CE9jtdB0MGMu2uF3rB5Bc1axQLzF5oMokvAvrV/49sEQbVufuUMtDvpWeKnwAkUUzAyAAbyHbYqHcTx7wnDjZNPh7ZBNfvIhcdtuVsgxCxzT+wPtk3dDA5Hff9dopnsXMoO1pb7+n8aDjVXPKILj5WnXwk7HN7Jg6QeNFY274lbgxa/URxXKEoZXdmoqQWcC3QwURWcMw1X9dwXh9ebzh/IM5jms=';
     }
 
     return $static_plugin_config;
