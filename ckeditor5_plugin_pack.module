@@ -6,6 +6,8 @@
  */
 
 use Drupal\ckeditor5_plugin_pack\Utility\LibraryDefinitionItem;
+use Drupal\Component\Render\MarkupInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_install().
@@ -70,10 +72,22 @@ function ckeditor5_plugin_pack_module_implements_alter(&$implementations, $hook)
 /**
  * Returns a message with information about the premium features trial.
  *
- * @return \Drupal\Core\Render\Markup|string
+ * @return MarkupInterface
  */
-function ckeditor5_plugin_pack_premium_info_message(): \Drupal\Component\Render\MarkupInterface|string {
-  return \Drupal\Core\Render\Markup::create('If you’d like to explore the full potential of CKEditor 5 Premium Features, <a href="https://portal.ckeditor.com/signup" target="_blank">sign up for the 14-day free trial</a>');
+function ckeditor5_plugin_pack_premium_info_message(): MarkupInterface {
+  return Markup::create('If you’d like to explore the full potential of CKEditor 5 Premium Features, <a href="https://portal.ckeditor.com/signup" target="_blank">sign up for the 14-day free trial</a>');
+}
+
+/**
+ * Returns a message with uninstall survey info.
+ *
+ * @return MarkupInterface
+ */
+function ckeditor5_plugin_pack_uninstall_message(): MarkupInterface {
+  return Markup::create("<p>Help us improve Plugin Pack! Your feedback helps us fix issues, add the right features, and make our module better for everyone - it's only 2 short questions.</p>
+    <p><a href=\"https://c6wj48kez1y.typeform.com/to/pxfqyFLl\" target=\"_blank\">Click here to share your feedback</a></p>
+    <p>Thank you!</p>
+  ");
 }
 
 /**
@@ -130,4 +144,12 @@ function ckeditor5_plugin_pack_library_info_build(): array {
     ],
   ];
   return $libraries;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_uninstall($is_syncing): void {
+  $message = ckeditor5_plugin_pack_uninstall_message();
+  \Drupal::messenger()->addMessage($message, 'status', FALSE);
 }
