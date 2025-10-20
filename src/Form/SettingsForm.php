@@ -43,9 +43,11 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     $dll_location_description = $this->t('
-    <b>If the field is empty, the DLL path is set to the CKEditor CDN server by default.</b></br></br>
+    <b>If the field is empty, the DLL path is set to the CKEditor CDN server by default.</b></br>
+    Recent Drupal core versions include plugins that are used by Plugin Pack in the vendor directory.
+    If possible local source will be used. The user specified path will always have the highest priority.</br></br>
     Specify the path to the directory with plugins e.g.
-    /libraries/ckeditor5_plugins/@token/dll/ </br>
+    /libraries/ckeditor5_plugins/@token/dll </br>
     "@token" - replaced dynamically with the version of your CKEditor.
     </br></br>
     Example of Font plugin directory:</br>
@@ -58,6 +60,13 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('DLL location'),
       '#description' => $dll_location_description,
       '#default_value' => $config->get('dll_location'),
+    ];
+
+    $form['block_cdn'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Block CDN source.'),
+      '#description' => $this->t("If checked, plugins won't be loaded from CDN even if they're not available locally. This may lead to editor initialization error."),
+      '#default_value' => $config->get('block_cdn'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -74,6 +83,10 @@ class SettingsForm extends ConfigFormBase {
     if (!empty($cleanValues['dll_location'])) {
       $cleanValues['dll_location'] = rtrim($cleanValues['dll_location'], ' /') . '/';
     }
+
+    $config
+      ->set('block_cdn', $cleanValues['block_cdn'])
+      ->save();
 
     $config
       ->set('dll_location', $cleanValues['dll_location'])
