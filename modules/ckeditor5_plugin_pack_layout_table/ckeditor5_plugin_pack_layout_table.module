@@ -29,6 +29,20 @@ function ckeditor5_plugin_pack_layout_table_ckeditor5_plugin_info_alter(array &$
 }
 
 /**
+ * Implements hook_editor_js_settings_alter().
+ */
+function ckeditor5_plugin_pack_layout_table_editor_js_settings_alter(array &$settings) {
+  // Ensure that the table contentToolbar items are unique.
+  foreach ($settings["editor"]["formats"] as $format_id => $format) {
+    if ($settings["editor"]["formats"][$format_id]["editor"] == 'ckeditor5'
+        && isset($format["editorSettings"]["config"]["table"])
+        && isset($format["editorSettings"]["config"]["table"]['contentToolbar'])) {
+      $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_unique($format["editorSettings"]["config"]["table"]['contentToolbar']);
+    }
+  }
+}
+
+/**
  * Implements hook_install().
  */
 function ckeditor5_plugin_pack_layout_table_install($is_syncing): void {
