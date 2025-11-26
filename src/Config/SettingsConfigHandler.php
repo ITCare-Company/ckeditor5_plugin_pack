@@ -67,7 +67,8 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
 
     $local_path = $this->config?->get('dll_location');
     if (!empty($local_path)) {
-      $local_path = rtrim($local_path, ' /');
+      // Ensure trailing slash is always present.
+      $local_path = rtrim($local_path, ' /') . '/';
       $local_path = $this->replaceTokens($local_path);
       $paths[] = $local_path;
     }
@@ -82,7 +83,7 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
     if (!$isVersionOverrideActive) {
       // Use default local path only if version override is not active,
       // to prevent plugin version incompatibilities.
-      $paths[] = '/core/assets/vendor/ckeditor5';
+      $paths[] = '/core/assets/vendor/ckeditor5/';
     }
 
     return $paths;
