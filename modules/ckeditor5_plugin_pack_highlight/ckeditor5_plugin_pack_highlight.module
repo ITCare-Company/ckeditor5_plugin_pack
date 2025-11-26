@@ -23,6 +23,13 @@ function ckeditor5_plugin_pack_highlight_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
 }
 
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_highlight_uninstall($is_syncing) {
+  ckeditor5_plugin_pack_remove_ckeditor_plugins(['highlight'], ['ckeditor5_plugin_pack_highlight__highlight']);
+}
+
 function ckeditor5_plugin_pack_highlight_build_style_library(): array {
   $editors = \Drupal::entityTypeManager()->getStorage('editor')->loadMultiple();
   $libraries = [];

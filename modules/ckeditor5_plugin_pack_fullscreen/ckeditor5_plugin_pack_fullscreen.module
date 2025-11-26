@@ -18,3 +18,10 @@ function ckeditor5_plugin_pack_fullscreen_library_info_build(): array {
 function ckeditor5_plugin_pack_fullscreen_install($is_syncing): void {
   ckeditor5_plugin_pack_display_trial_info_message();
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function ckeditor5_plugin_pack_fullscreen_uninstall($is_syncing) {
+  ckeditor5_plugin_pack_remove_ckeditor_plugins(['fullscreen']);
+}
