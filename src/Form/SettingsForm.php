@@ -69,6 +69,24 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('block_cdn'),
     ];
 
+    $description = $this->t('Enables installation of the module on the Extend page.<br/>
+      Please read the <a href=":config_guide" target="_blank">configuration guide</a> and the <a href=":security_link" target="_blank">security information</a> before.', [
+      ':config_guide' => 'https://www.drupal.org/docs/extending-drupal/contributed-modules/contributed-module-documentation/ckeditor-5-plugin-pack/configuration-guide',
+      ':security_link' => 'https://ckeditor.com/docs/ckeditor5/latest/features/html/html-embed.html#security',
+    ]);
+
+    $form['html_embed_info'] = [
+      '#type' => 'item',
+      '#title' => $this->t('HTML embed'),
+    ];
+    $form['html_embed_info']['allow_html_embed'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow HTML embed module installation'),
+      '#description' => $description,
+      '#default_value' => $config->get('allow_html_embed'),
+      '#wrapper_attributes' => ['style' => ['margin-top: 0;']],
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -78,6 +96,8 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('ckeditor5_plugin_pack.settings');
     $cleanValues = $form_state->cleanValues()->getValues();
+
+    $config->set('allow_html_embed', (bool) $cleanValues['allow_html_embed']);
 
     // Let's make sure the path ends with the trailing slash.
     if (!empty($cleanValues['dll_location'])) {
