@@ -109,6 +109,16 @@ function ckeditor5_plugin_pack_uninstall_message(): MarkupInterface {
 }
 
 /**
+ * Displays a warning message about plugin being disabled due to too old CKEditor 5 version.
+ *
+ * @param string $plugin
+ *  The plugin name.
+ */
+function ckeditor5_plugin_pack_old_version_warning_message(string $plugin): void {
+  \Drupal::messenger()->addWarning(t('The "%plugin" CKEditor 5 plugin has been disabled because current CKEditor 5 library version does not support it. You can either update Drupal core or use <a href="https://www.drupal.org/docs/extending-drupal/contributed-modules/contributed-module-documentation/ckeditor-5-premium-features/configuration-guide#s-ckeditor-5-version-override" target="_blank">CKEditor 5 Version Override module</a> to use a newer version of CKEditor 5.', ['%plugin' => $plugin]));
+}
+
+/**
  * Checks if the premium key is set.
  *
  * @return bool
