@@ -24,8 +24,9 @@ class LibraryDefinitionItem {
   ];
 
   // Plugins that does not have any translations.
-  // Currently all Plugin Pack plugins have translations.
-  const UNTRANSLATABLE_PLUGINS = [];
+  const UNTRANSLATABLE_PLUGINS = [
+    'mention',
+  ];
 
   /**
    * Constructs the library instance.
