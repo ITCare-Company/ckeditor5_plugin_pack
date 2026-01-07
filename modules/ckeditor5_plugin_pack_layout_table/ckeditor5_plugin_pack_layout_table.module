@@ -34,22 +34,24 @@ function ckeditor5_plugin_pack_layout_table_ckeditor5_plugin_info_alter(array &$
 function ckeditor5_plugin_pack_layout_table_editor_js_settings_alter(array &$settings) {
   // Ensure that the table contentToolbar items are unique.
   foreach ($settings["editor"]["formats"] as $format_id => $format) {
+    if ($format['editor'] !== 'ckeditor5') {
+      continue;
+    }
     $editorConfig = $format["editorSettings"]["config"];
-    if ($format["editor"] == 'ckeditor5' && isset($editorConfig["table"])) {
+    if (isset($editorConfig["table"]['disableProperties'])) {
 
-      if (isset($editorConfig["table"]['contentToolbar'])) {
-        if (isset($editorConfig["table"]['disableProperties']) && $editorConfig["table"]['disableProperties']) {
-          foreach ($editorConfig["table"]['contentToolbar'] as $key => $value) {
-            if (in_array($value, ['tableProperties', 'tableCellProperties'])) {
-              unset($editorConfig["table"]['contentToolbar'][$key]);
-            }
+      if ($editorConfig["table"]['disableProperties']) {
+        foreach ($editorConfig["table"]['contentToolbar'] as $key => $value) {
+          if (in_array($value, ['tableProperties', 'tableCellProperties'])) {
+            unset($editorConfig["table"]['contentToolbar'][$key]);
           }
-          $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_values($editorConfig["table"]['contentToolbar']);
         }
-        else {
-          $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_unique($editorConfig["table"]['contentToolbar']);
-        }
+        $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_values($editorConfig["table"]['contentToolbar']);
       }
+      else {
+        $settings["editor"]["formats"][$format_id]["editorSettings"]["config"]["table"]['contentToolbar'] = array_unique($editorConfig["table"]['contentToolbar']);
+      }
+
     }
   }
 }

@@ -80,7 +80,7 @@ class RestrictedEditingPermissions implements ContainerInjectionInterface {
     uasort($formats, 'Drupal\Core\Config\Entity\ConfigEntityBase::sort');
     foreach ($formats as $format) {
       $editorConfig = $this->configFactory->get('editor.editor.' . $format->id());
-      if ($editorConfig->isNew()) {
+      if ($editorConfig->isNew() || $editorConfig->get('editor') !== 'ckeditor5') {
         continue;
       }
       $editorSettings = $editorConfig->get('settings');
