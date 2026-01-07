@@ -9,7 +9,10 @@
 }
 
 .ck-fullscreen__main-wrapper .ck-fullscreen__editable .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-  width: 100%!important;
+  padding: 1em!important;
+  width: 65vw!important;
+  max-width: 65vw!important;
+  background: var(--ck-color-base-background)!important;
 }
 
 .ck-fullscreen__main-wrapper ~ .ui-dialog {
