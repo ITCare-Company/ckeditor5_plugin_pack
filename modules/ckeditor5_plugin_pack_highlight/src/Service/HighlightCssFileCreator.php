@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Drupal\ckeditor5_plugin_pack_highlight\Service;
 
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -81,7 +82,7 @@ class HighlightCssFileCreator {
     $filename = 'ckeditor5_plugin_pack_highlight-' . $format . '.css';
     $filePath = $directory . $filename;
 
-    $this->fileSystem->saveData($css, $filePath, FileSystemInterface::EXISTS_REPLACE);
+    $this->fileSystem->saveData($css, $filePath, FileExists::Replace);
 
     return TRUE;
   }
