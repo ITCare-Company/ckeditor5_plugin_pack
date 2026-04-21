@@ -6,7 +6,6 @@
 import path from 'path';
 import { glob } from 'glob';
 import webpack from 'webpack';
-import { styles, builds } from '@ckeditor/ckeditor5-dev-utils';
 import TerserPlugin from 'terser-webpack-plugin';
 import manifest from './node_modules/ckeditor5/build/ckeditor5-dll.manifest.json' with { type: 'json' };
 
