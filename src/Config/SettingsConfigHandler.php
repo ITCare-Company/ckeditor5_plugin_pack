@@ -145,4 +145,19 @@ class SettingsConfigHandler implements SettingsConfigHandlerInterface {
     return (bool) $this->config?->get('block_cdn');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function libraryExists(string $library): bool {
+    $dllLocations = $this->getDllLocations();
+    foreach ($dllLocations as $location) {
+      $path = './' . $location . '/' . $library . '/' . $library . '.js';
+      if (realpath($path)) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
 }
