@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Drupal\ckeditor5_plugin_pack_templates;
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Config\Entity\DraggableListBuilder;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -69,7 +70,12 @@ class CKEditor5TemplateListBuilder extends DraggableListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     $entityFormatOptions = $entity->get('textFormats');
-    $availableFilterFormats = filter_formats();
+    $availableFilterFormats = DeprecationHelper::backwardsCompatibleCall(
+      \Drupal::VERSION,
+      '11.4.0',
+      fn() => \Drupal::service(\Drupal\filter\FilterFormatRepositoryInterface::class)->getAllFormats(),
+      fn() => filter_formats(),
+    );
     $textFormats = array_map(fn($format) =>
       in_array($format->id(), $entityFormatOptions) ? $format->label() : NULL,
       $availableFilterFormats);

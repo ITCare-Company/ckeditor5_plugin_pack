@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Drupal\ckeditor5_plugin_pack_templates\Form\ContentTemplates;
 
+use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Entity\EntityForm;
@@ -145,7 +146,12 @@ class CKEditor5TemplateEntityForm extends EntityForm {
    */
   protected function getAvailableTextFormats(): array {
     $availableFormats = [];
-    $filterFormats = filter_formats();
+    $filterFormats = DeprecationHelper::backwardsCompatibleCall(
+      \Drupal::VERSION,
+      '11.4.0',
+      fn() => \Drupal::service(\Drupal\filter\FilterFormatRepositoryInterface::class)->getAllFormats(),
+      fn() => filter_formats(),
+    );
     foreach ($filterFormats as $format) {
       $editor = $this->entityTypeManager->getStorage('editor')->load($format->id());
       if ($editor && $editor->getEditor() === 'ckeditor5') {
