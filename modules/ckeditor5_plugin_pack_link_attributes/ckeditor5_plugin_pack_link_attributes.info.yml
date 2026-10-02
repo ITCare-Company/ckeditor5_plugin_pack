@@ -2,6 +2,6 @@ name: CKEditor 5 Link Attributes
 type: module
 description: "Provides the CKEditor 5 Link Attributes."
 package: CKEditor 5 Plugin Pack
-core_version_requirement: ^10.3 || ^11.0
+core_version_requirement: ^10.3 || ^11.0 || ^12
 dependencies:
   - ckeditor5_plugin_pack:ckeditor5_plugin_pack
