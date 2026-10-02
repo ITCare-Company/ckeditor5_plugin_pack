@@ -42,12 +42,14 @@ function ckeditor5_plugin_pack_html_embed_requirements($phase): array {
 function ckeditor5_plugin_pack_html_embed_runtime_requirements(): array {
   $requirements = [];
 
+  $severity_ok = class_exists('\Drupal\Core\Extension\Requirement\RequirementSeverity') ? \Drupal\Core\Extension\Requirement\RequirementSeverity::OK : REQUIREMENT_OK;
+  $severity_warning = class_exists('\Drupal\Core\Extension\Requirement\RequirementSeverity') ? \Drupal\Core\Extension\Requirement\RequirementSeverity::Warning : REQUIREMENT_WARNING;
   if (ckeditor5_plugin_pack_html_embed_is_library_installed()) {
-    $severity = REQUIREMENT_OK;
+    $severity = $severity_ok;
     $description = t('The DOMPurify library is installed. Preview sanitization can be enabled.');
   }
   else {
-    $severity = REQUIREMENT_WARNING;
+    $severity = $severity_warning;
     $description = t('The DOMPurify library is not installed. Preview sanitization won\'t be available.');
   }
 
